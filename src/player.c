@@ -16,6 +16,8 @@
 // Pixels per second per second
 #define GRAVITY 600
 
+static int s_gravity = GRAVITY;
+
 Rectangle get_player_bounds(const Player *player) {
   return (Rectangle) {
     player->position.x - PLAYER_WIDTH / 2.0,
@@ -93,6 +95,7 @@ void detect_stage_collisions(Player *player, Level *level, float dt) {
 
 void resolve_stage_collisions(Player *player, Level *level) {
   player->grounded = false;
+  s_gravity = GRAVITY;
 
   for (int i = 0; i < collision_count; i++) {
     Vector2 normal_depth = Vector2Multiply(platform_collisions[i].normal, platform_collisions[i].depth);
@@ -113,6 +116,7 @@ void resolve_stage_collisions(Player *player, Level *level) {
 
     if (platform_collisions[i].normal.y < 0) {
       player->grounded = true;
+      s_gravity = 0;
       player->position.y -= platform_collisions[i].depth.y;
       player->velocity.y /= 2;
     }
@@ -159,7 +163,6 @@ void move(Player *player, float dt) {
     player->inverted = false;
   }
   if(player->grounded){
-    if (!(IsKeyDown(KEY_A) || IsKeyDown(KEY_D))) player->velocity.x /= FRICTION * dt;
     if (!(IsKeyDown(KEY_A) || IsKeyDown(KEY_D))) player->velocity.x /= FRICTION * dt;
   }
   if(fabs(player->velocity.x) > VEL_X_MAX) player->velocity.x *= VEL_X_MAX/fabs(player->velocity.x);
@@ -210,6 +213,7 @@ void player_reset(Player *player, Level *level) {
   player->position = level->startingPosition;
   player->velocity = (Vector2){0, 0};
   player->grounded = false;
+  s_gravity = GRAVITY;
   player->jumptime = 0;
 }
 
@@ -227,7 +231,7 @@ void detect_death_collisions(Player *player, Level *level) {
 }
 
 void player_update(Player *player, Level *level, float dt) {
-  player->velocity.y += GRAVITY * dt;
+  player->velocity.y += s_gravity * dt;
   player->position = Vector2Add(player->position, Vector2Scale(player->velocity, dt));
 
   detect_stage_collisions(player, level, dt);
