@@ -12,7 +12,7 @@ Level sample_level() {
 
   level.platforms[0] = (Platform){(Rectangle){0, 220, 320, 20}};
   level.platforms[1] = (Platform){(Rectangle){35, 0, 10, 240}};
-  level.platforms[2] = (Platform){(Rectangle){150, 0, 10, 240}};
+  level.platforms[2] = (Platform){(Rectangle){150, 0, 100, 240}};
   level.platforms[3] = (Platform){(Rectangle){40, 0, 115, 10}};
   level.platform_count = 4;
 

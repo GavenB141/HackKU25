@@ -1,7 +1,10 @@
 #include "player.h"
+#include "animation.h"
 #include "level.h"
 #include "raylib.h"
 #include "raymath.h"
+#include <stdio.h>
+#include <string.h>
 
 #define PLAYER_WIDTH 39
 #define PLAYER_HEIGHT 19
@@ -23,7 +26,9 @@ Rectangle get_player_bounds(const Player *player) {
 }
 
 void player_draw(Player* player) {
-  DrawRectangleRec(get_player_bounds(player), ORANGE);
+  const Rectangle bounds = get_player_bounds(player);
+
+  animation_draw(&player->sprite, (Vector2){bounds.x, bounds.y}, player->inverted);
 }
 
 // Collision storage
@@ -92,7 +97,7 @@ void resolve_stage_collisions(Player *player, Level *level) {
 
     player->velocity = Vector2Add(player->velocity, velocity_correction);
 
-    if (platform_collisions[i].normal.y == -1) {
+    if (platform_collisions[i].normal.y < 0) {
       player->grounded = true;
     }
   }
@@ -125,12 +130,67 @@ void move(Player *player, float dt) {
   if(fabs(player->velocity.x) > VEL_X_MAX) player->velocity.x *= VEL_X_MAX/fabs(player->velocity.x);
 }
 
-void player_update(Player *player, Level *level, float dt) {
-  player->position = Vector2Add(player->position, Vector2Scale(player->velocity, dt));
-  player->velocity.y += GRAVITY * dt;
+void activate_walk_animation(Player *player) {
+  int walk_indices[6] = {0,1,2,3,4,5};
+  memcpy(&player->sprite.indices, walk_indices, 6 * sizeof(int));
+  player->sprite.frames = 6;
+  player->sprite.current_time = 0;
+}
 
-  move(player, dt);
+void activate_idle_animation(Player *player) {
+  int idle_indices[1] = {0};
+  memcpy(&player->sprite.indices, idle_indices, sizeof(int));
+  player->sprite.frames = 1;
+  player->sprite.current_time = 0;
+}
+
+// Indexed by PlayerState
+static void (*animation_selectors[])(Player *player) = {
+  activate_idle_animation,
+  activate_walk_animation
+};
+
+void select_animation(Player *player) {
+  PlayerState new_state;
+  if (player->grounded == false) {
+    new_state = IDLE;
+  } else if (player->velocity.x > 0.1) {
+    new_state = WALK;
+    player->inverted = false;
+  } else if (player->velocity.x < -0.1) {
+    new_state = WALK;
+    player->inverted = true;
+  } else {
+    new_state = IDLE;
+  }
+
+  if (new_state != player->state)
+    animation_selectors[new_state](player);
+
+  player->state = new_state;
+}
+
+void player_update(Player *player, Level *level, float dt) {
+  player->velocity.y += GRAVITY * dt;
+  player->position = Vector2Add(player->position, Vector2Scale(player->velocity, dt));
 
   detect_stage_collisions(player, level, dt);
   resolve_stage_collisions(player, level);
+
+  move(player, dt);
+  select_animation(player);
+  animation_update(&player->sprite, dt);
 }
+
+AnimationController load_player_sprite(){
+  return (AnimationController) {
+    .spritesheet = LoadTexture("assets/lizard_sprite.png"),
+    .sprite_size = (Vector2){39, 19},
+    .current_frame = 0,
+    .frame_time = 0.15,
+    .current_time = 0,
+    .frames = 1,
+    .indices = {0}
+  };
+}
+

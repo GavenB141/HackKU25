@@ -2,6 +2,7 @@
 #define ANIMATION_H
 
 #include "raylib.h"
+#include <stdbool.h>
 
 #define MAX_ANIMATION_LENGTH 6
 
@@ -18,6 +19,6 @@ typedef struct {
 } AnimationController;
 
 void animation_update(AnimationController *controller, float dt);
-void animation_draw(AnimationController *controller, Vector2 position);
+void animation_draw(AnimationController *controller, Vector2 position, bool invert);
 
 #endif
