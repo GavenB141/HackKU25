@@ -2,7 +2,6 @@
 #include "level.h"
 #include "raylib.h"
 #include "raymath.h"
-#include <stdio.h>
 
 #define PLAYER_WIDTH 38
 #define PLAYER_HEIGHT 19
@@ -41,7 +40,7 @@ void detect_stage_collisions(Player *player, Level *level, float dt) {
     }
 
     const Vector2 depth = {overlap.width, overlap.height};
-    Vector2 times = {0, 0};
+    Vector2 times = {dt, dt};
 
     if (translation.x != 0) {
       times.x = fabs(depth.x / translation.x) * dt;
@@ -66,13 +65,11 @@ void detect_stage_collisions(Player *player, Level *level, float dt) {
       .time = time,
       .platform_id = i
     };
-
-    printf("Normal: %f %f\n", normal.x, normal.y);
   }
 }
 
 void resolve_stage_collisions(Player *player, Level *level) {
-  // May be naive
+  player->grounded = false;
 
   for (int i = 0; i < collision_count; i++) {
     Vector2 normal_depth = Vector2Multiply(platform_collisions[i].normal, platform_collisions[i].depth);
@@ -89,8 +86,11 @@ void resolve_stage_collisions(Player *player, Level *level) {
       }
     }
 
-    // printf("Correction: %f %f\n", velocity_correction.x, velocity_correction.y);
     player->velocity = Vector2Add(player->velocity, velocity_correction);
+
+    if (platform_collisions[i].normal.y == -1) {
+      player->grounded = true;
+    }
   }
 }
 
@@ -100,6 +100,4 @@ void player_update(Player *player, Level *level, float dt) {
 
   detect_stage_collisions(player, level, dt);
   resolve_stage_collisions(player, level);
-
-  // printf("%f %f\n", player->velocity.x, player->velocity.y);
 }
