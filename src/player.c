@@ -5,9 +5,13 @@
 
 #define PLAYER_WIDTH 38
 #define PLAYER_HEIGHT 19
+#define JUMP_STRENGTH 1750
+#define MOVE_STRENGTH 500
+#define VEL_X_MAX 100
+#define FRICTION 80
 
 // Pixels per second per second
-#define GRAVITY 100
+#define GRAVITY 400
 
 Rectangle get_player_bounds(const Player *player) {
   return (Rectangle) {
@@ -94,9 +98,38 @@ void resolve_stage_collisions(Player *player, Level *level) {
   }
 }
 
+void move(Player *player, float dt) {
+  if(IsKeyDown(KEY_W) && (player->jumptime > 0)){
+    player->velocity.y -= JUMP_STRENGTH * dt;
+    player->jumptime -= dt;
+  }
+  else player->jumptime = 0;
+  if(IsKeyDown(KEY_W) && player->grounded){
+    player->velocity.y -= JUMP_STRENGTH * dt * .4;
+    player->jumptime = 10.0/60.0;
+  }
+  float mult = 1;
+  if((IsKeyDown(KEY_A) && (player->velocity.x > 0)) || (IsKeyDown(KEY_D) && (player->velocity.x < 0))){
+    mult = 1.3;
+  }
+  float del_x = MOVE_STRENGTH * dt * mult;
+  if(IsKeyDown(KEY_A)){
+    player->velocity.x -= MOVE_STRENGTH * dt;
+  }
+  if(IsKeyDown(KEY_D)){
+    player->velocity.x += MOVE_STRENGTH * dt;
+  }
+  if(player->grounded){
+    player->velocity.x /= FRICTION * dt;
+  }
+  if(fabs(player->velocity.x) > VEL_X_MAX) player->velocity.x *= VEL_X_MAX/fabs(player->velocity.x);
+}
+
 void player_update(Player *player, Level *level, float dt) {
   player->position = Vector2Add(player->position, Vector2Scale(player->velocity, dt));
   player->velocity.y += GRAVITY * dt;
+
+  move(player, dt);
 
   detect_stage_collisions(player, level, dt);
   resolve_stage_collisions(player, level);

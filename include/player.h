@@ -9,6 +9,7 @@ typedef struct {
   Vector2 position;
   Vector2 velocity;
   bool grounded;
+  float jumptime;
 } Player;
 
 typedef struct {
