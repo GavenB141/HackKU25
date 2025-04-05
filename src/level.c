@@ -3,10 +3,6 @@
 #include "objects.h"
 #include "raylib.h"
 #include "raymath.h"
-<<<<<<< HEAD
-=======
-#include <stdio.h>
->>>>>>> 670e465 (type movement)
 
 static Texture2D spike = {0};
 
