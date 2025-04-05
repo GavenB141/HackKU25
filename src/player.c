@@ -137,7 +137,7 @@ void move(Player *player, float dt) {
   player->dash_timer -= dt;
   player->dash_cooldown_timer -= dt;
 
-  if(IsKeyDown(KEY_W) && (player->jumptime > 0)){
+  if((IsKeyDown(KEY_W) || IsKeyDown(KEY_SPACE)) && (player->jumptime > 0)){
     player->velocity.y -= JUMP_STRENGTH * dt;
     player->jumptime -= dt;
   }
