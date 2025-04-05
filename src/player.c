@@ -180,6 +180,8 @@ void player_update(Player *player, Level *level, float dt) {
   move(player, dt);
   select_animation(player);
   animation_update(&player->sprite, dt);
+
+  printf("%f\n", player->velocity.y);
 }
 
 AnimationController load_player_sprite(){

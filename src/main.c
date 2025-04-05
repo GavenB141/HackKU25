@@ -16,7 +16,7 @@ static GameState state = {0};
 
 void initialize_state() {
   state.player.position = (Vector2){100, 20};
-  state.player.velocity = (Vector2){0, 0};
+  state.player.velocity = (Vector2){10, 0};
   state.player.sprite = load_player_sprite();
 
   state.level = sample_level();
