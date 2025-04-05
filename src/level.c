@@ -3,6 +3,10 @@
 #include "objects.h"
 #include "raylib.h"
 #include "raymath.h"
+<<<<<<< HEAD
+=======
+#include <stdio.h>
+>>>>>>> 670e465 (type movement)
 
 static Texture2D spike = {0};
 
@@ -93,6 +97,9 @@ Level transition_level() {
   level.spikes[1] = (Spike){(Rectangle){192, 176, 32, 32}, get_spike_animation()};
   level.spikes[2] = (Spike){(Rectangle){224, 176, 32, 32}, get_spike_animation()};
   level.spikes_count = 3;
+
+  level.orbs[0] = (MagneticOrb){{20, 20}, false};
+  level.orbs_count = 1;
 
   level.orbs[0] = (MagneticOrb){{20, 20}, false};
   level.orbs_count = 1;
