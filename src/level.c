@@ -2,12 +2,19 @@
 #include "raylib.h"
 #include <stdio.h>
 
+static Texture2D spike;
 void level_draw(Level *level) {
+
   for (int i = 0; i < level->platform_count; i++) {
     DrawRectangleRec(level->platforms[i].bounds, WHITE);
   }
   for (int i = 0; i < level->death_count; i++) {
-    Texture2D spike = LoadTexture("assets/Spike.png");
+    static bool spike_loaded = false;
+    
+    if (!spike_loaded) {
+      spike = LoadTexture("assets/Spike.png");
+      spike_loaded = true;
+    }
     DrawRectangleRec(level->death[i].bounds, RED);
     //DrawTextureRec(spike, (Rectangle){0,0,32,32}, (Vector2){level->death[i].bounds.x, level->death[i].bounds.y}, WHITE);
     DrawTexturePro(spike, (Rectangle){0,0,32,32}, level->death[i].bounds, (Vector2){0,32}, 90.0f, WHITE);
