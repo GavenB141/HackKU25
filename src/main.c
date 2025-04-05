@@ -1,4 +1,4 @@
-#include <raylib.h>
+#include "raylib.h"
 
 int main () {
   InitWindow(640, 480, "HackKU 2025");
