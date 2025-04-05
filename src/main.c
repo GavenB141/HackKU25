@@ -87,7 +87,7 @@ int main () {
     level_draw(&state.level, dt);
     player_draw(&state.player);
     fade_in(state.fade, (Rectangle){0, 0, resolution.x, resolution.y});
-    state.fade -= dt;
+    state.fade -= dt / 2;
     EndMode2D();
     EndTextureMode();
     
