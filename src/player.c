@@ -1,8 +1,10 @@
 #include "player.h"
 #include "animation.h"
 #include "level.h"
+#include "objects.h"
 #include "raylib.h"
 #include "raymath.h"
+#include <math.h>
 #include <stdio.h>
 #include <string.h>
 
@@ -271,6 +273,41 @@ void detect_death_collisions(Player *player, Level *level) {
   }
 }
 
+void orb_manipulation(Player *player, Level *level) {
+  if (player->is_holding_orb) {
+    MagneticOrb *orb = &level->orbs[player->targeted_orb];
+    orb->free = false;
+    orb->position = (Vector2){floor(player->position.x), floor(player->position.y) - 5}; 
+
+    if(IsKeyPressed(KEY_E)) {
+      orb->free = true;
+      player->is_holding_orb = false;
+    } 
+
+    return;
+  }
+
+  float min_distance = 15;
+  int selectable_orb = -1;
+
+  // Find nearest orb within a range
+  for (int i = 0; i < level->orbs_count; i++) {
+    MagneticOrb *orb = &level->orbs[i];
+
+    const float distance = Vector2Distance(player->position, orb->position); 
+
+    if (distance <= min_distance) {
+      min_distance = distance;
+      selectable_orb = i;
+    }
+  }
+
+  player->targeted_orb = selectable_orb;
+
+  if (IsKeyPressed(KEY_E)) {
+    player->is_holding_orb = true;
+  }
+}
 
 /**
  * Public update code
@@ -289,7 +326,10 @@ void player_update(Player *player, Level *level, float dt) {
     *level = getLevel(level_index);
     player_reset(player, level);
   }
+
   move(player, dt);
+  orb_manipulation(player, level);
+
   select_animation(player);
   animation_update(&player->sprite, dt);
 }

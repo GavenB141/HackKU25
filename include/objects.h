@@ -19,6 +19,7 @@ typedef struct {
   Vector2 position;
   Vector2 velocity;
   bool positive;
+  bool free;
 } MagneticOrb;
 
 typedef struct {

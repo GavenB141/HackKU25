@@ -96,9 +96,13 @@ void orb_handle_stage_collisions(MagneticOrb *orb, Level *level, double dt) {
 #define ORB_GRAVITY 600
 
 void orb_update(MagneticOrb *orb, Level *level, float dt) {
-  orb->velocity.y += ORB_GRAVITY * dt;
-  orb->position = Vector2Add(orb->position, Vector2Scale(orb->velocity, dt));
-  orb_handle_stage_collisions(orb, level, dt);
+  if (orb->free) {
+    orb->velocity.y += ORB_GRAVITY * dt;
+    orb->position = Vector2Add(orb->position, Vector2Scale(orb->velocity, dt));
+    orb_handle_stage_collisions(orb, level, dt);
+  } else {
+    orb->velocity = Vector2Zero();
+  }
 }
 
 Rectangle get_orb_bounds(const MagneticOrb *orb) {
