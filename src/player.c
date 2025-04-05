@@ -142,7 +142,7 @@ void move(Player *player, float dt) {
     player->jumptime -= dt;
   }
   else player->jumptime = 0;
-  if(IsKeyDown(KEY_W) && player->grounded){
+  if((IsKeyDown(KEY_W) || IsKeyDown(KEY_SPACE)) && player->grounded){
     player->velocity.y -= JUMP_STRENGTH * dt * .4;
     player->jumptime = 10.0/60.0;
   }
