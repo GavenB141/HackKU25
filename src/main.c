@@ -68,6 +68,7 @@ int main () {
   SetTargetFPS(60);
 
   while (!WindowShouldClose()) {
+    if (IsKeyPressed(KEY_F11)) ToggleBorderlessWindowed();
     if (IsWindowResized()) {
       screen_target = calculate_screen_target(resolution);
     }
