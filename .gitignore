@@ -1,1 +1,3 @@
 game
+src/libraylib.a
+src/raylib.h
