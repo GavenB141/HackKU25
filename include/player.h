@@ -26,6 +26,7 @@ typedef struct {
   PlayerState state;
   float dash_timer;         
   float dash_cooldown_timer; 
+  int teleported;
 } Player;
 
 typedef struct {

@@ -8,8 +8,7 @@
 
 #define PLAYER_WIDTH 39
 #define PLAYER_HEIGHT 19
-
-#define JUMP_STRENGTH 1750
+#define JUMP_STRENGTH 2000
 #define MOVE_STRENGTH 400
 #define VEL_X_MAX 125
 #define FRICTION 80
@@ -17,7 +16,6 @@
 // Pixels per second per second
 #define GRAVITY 600
 
-// For drawing
 Rectangle get_player_bounds(const Player *player) {
   return (Rectangle) {
     player->position.x - PLAYER_WIDTH / 2.0,
@@ -31,6 +29,114 @@ void player_draw(Player* player) {
   const Rectangle bounds = get_player_bounds(player);
 
   animation_draw(&player->sprite, (Vector2){bounds.x, bounds.y}, player->inverted);
+}
+
+/**
+ * Collision code
+ */
+
+static PlatformCollision platform_collisions[MAX_PLATFORMS] = {0};
+static int collision_count = 0;
+
+int detect_transition_collision(Player *player, Level *level) {
+  const Rectangle player_bounds = get_player_bounds(player);
+  for (int i = 0; i < level->transition_count; i++)
+  {
+    const Rectangle trans_bounds = level->transition[i].bounds;
+    printf("Checking transition %d... \n", i);
+    if (CheckCollisionRecs(player_bounds, trans_bounds)) {
+      printf("transition\n");
+      return level->transition->transition_index;
+    }
+  }
+  return -1;
+}
+
+void detect_stage_collisions(Player *player, Level *level, double dt) {
+  collision_count = 0;
+
+  const Rectangle player_bounds = get_player_bounds(player);
+  const Vector2 translation = Vector2Scale(player->velocity, dt);
+
+  for (int i = 0; i < level->platform_count; i++) {
+    const Rectangle plat_bounds = level->platforms[i].bounds;
+    const Rectangle overlap = GetCollisionRec(player_bounds, plat_bounds);
+    if (overlap.width == 0 || overlap.height == 0) {
+      continue;
+    }
+
+    Vector2 depth = {overlap.width, overlap.height};
+    Vector2 times = {dt, dt};
+
+    // full overlap correction
+    // if (depth.x == PLAYER_WIDTH) {
+    //   if (translation.x > 0) {
+    //     depth.x = plat_bounds.width - (plat_bounds.width + plat_bounds.x - (player_bounds.x + player_bounds.width));
+    //   } else {
+    //     depth.x = plat_bounds.width - (player_bounds.x - plat_bounds.x);
+    //   }
+    // }
+    //
+    // if (depth.y == PLAYER_HEIGHT) {
+    //   if (translation.y > 0) {
+    //     depth.y = plat_bounds.height - (plat_bounds.height + plat_bounds.y - (player_bounds.y + player_bounds.height));
+    //   } else {
+    //     depth.y = plat_bounds.height - (player_bounds.y - plat_bounds.y);
+    //   }
+    // }
+
+    if (translation.x != 0) {
+      times.x = fabs(depth.x / translation.x) * dt;
+    }
+    if (translation.y != 0) {
+      times.y = fabs(depth.y / translation.y) * dt;
+    }
+
+    Vector2 normal;
+    float time;
+    if (times.x >= times.y || fabs(translation.x) < 0.1) {
+      normal = Vector2Normalize((Vector2){0, -translation.y});
+      time = times.y; 
+    } else {
+      normal = Vector2Normalize((Vector2){-translation.x, 0});
+      time = times.x;
+    }
+
+    platform_collisions[collision_count++] = (PlatformCollision) {
+      .depth = depth,
+      .normal = normal,
+      .time = time,
+      .platform_id = i
+    };
+  }
+}
+
+void resolve_stage_collisions(Player *player, Level *level) {
+  player->grounded = false;
+
+  for (int i = 0; i < collision_count; i++) {
+    Platform *platform = &level->platforms[platform_collisions[i].platform_id];
+    Vector2 normal_depth = Vector2Multiply(platform_collisions[i].normal, platform_collisions[i].depth);
+
+    player->position = Vector2Add(player->position, normal_depth);
+    Vector2 velocity_correction = Vector2Multiply(player->velocity, platform_collisions[i].normal);
+
+    if (platform_collisions[i].normal.y) {
+      if (player->velocity.y < 0) {
+        velocity_correction = Vector2Negate(velocity_correction);
+      }
+    } else if (platform_collisions[i].normal.x) {
+      if (player->velocity.x < 0) {
+        velocity_correction = Vector2Negate(velocity_correction);
+      }
+    }
+
+    player->velocity = Vector2Add(player->velocity, velocity_correction);
+
+    if (platform_collisions[i].normal.y < 0) {
+      player->grounded = true;
+    }
+  }
 }
 
 void move(Player *player, float dt) {
@@ -135,120 +241,13 @@ void select_animation(Player *player) {
 
 void player_reset(Player *player, Level *level) {
   player->position = level->startingPosition;
-  player->velocity = (Vector2){1, 0};
+  player->velocity = (Vector2){0, 0};
   player->grounded = false;
   player->jumptime = 0;
+  player->teleported = 1;
 }
 
-
-
-/**
- * Collision code
- */
-
-static PlatformCollision platform_collisions[MAX_PLATFORMS] = {0};
-static int collision_count = 0;
-
-void detect_stage_collisions(Player *player, Level *level, double dt) {
-  collision_count = 0;
-
-  const Rectangle player_bounds = get_player_bounds(player);
-  const Vector2 translation = Vector2Scale(player->velocity, dt);
-
-  for (int i = 0; i < level->platform_count; i++) {
-    const Rectangle plat_bounds = level->platforms[i].bounds;
-    const Rectangle overlap = GetCollisionRec(player_bounds, plat_bounds);
-    if (overlap.width == 0 || overlap.height == 0) {
-      continue;
-    }
-
-    Vector2 depth = {overlap.width, overlap.height};
-    Vector2 times = {dt, dt};
-
-    // full overlap correction
-    // if (depth.x == PLAYER_WIDTH) {
-    //   if (translation.x > 0) {
-    //     depth.x = plat_bounds.width - (plat_bounds.width + plat_bounds.x - (player_bounds.x + player_bounds.width));
-    //   } else {
-    //     depth.x = plat_bounds.width - (player_bounds.x - plat_bounds.x);
-    //   }
-    // }
-    //
-    // if (depth.y == PLAYER_HEIGHT) {
-    //   if (translation.y > 0) {
-    //     depth.y = plat_bounds.height - (plat_bounds.height + plat_bounds.y - (player_bounds.y + player_bounds.height));
-    //   } else {
-    //     depth.y = plat_bounds.height - (player_bounds.y - plat_bounds.y);
-    //   }
-    // }
-
-    if (translation.x != 0) {
-      times.x = fabs(depth.x / translation.x) * dt;
-    }
-    if (translation.y != 0) {
-      times.y = fabs(depth.y / translation.y) * dt;
-    }
-
-    Vector2 normal;
-    float time;
-    if (times.x >= times.y || fabs(translation.x) < 0.1) {
-      normal = Vector2Normalize((Vector2){0, -translation.y});
-      time = times.y; 
-    } else {
-      normal = Vector2Normalize((Vector2){-translation.x, 0});
-      time = times.x;
-    }
-
-    platform_collisions[collision_count++] = (PlatformCollision) {
-      .depth = depth,
-      .normal = normal,
-      .time = time,
-      .platform_id = i
-    };
-  }
-}
-
-void resolve_stage_collisions(Player *player, Level *level) {
-  player->grounded = false;
-
-  for (int i = 0; i < collision_count; i++) {
-    Platform *platform = &level->platforms[platform_collisions[i].platform_id];
-    Vector2 normal_depth = Vector2Multiply(platform_collisions[i].normal, platform_collisions[i].depth);
-
-    player->position = Vector2Add(player->position, normal_depth);
-    Vector2 velocity_correction = Vector2Multiply(player->velocity, platform_collisions[i].normal);
-
-    if (platform_collisions[i].normal.y) {
-      if (player->velocity.y < 0) {
-        velocity_correction = Vector2Negate(velocity_correction);
-      }
-    } else if (platform_collisions[i].normal.x) {
-      if (player->velocity.x < 0) {
-        velocity_correction = Vector2Negate(velocity_correction);
-      }
-    }
-
-    player->velocity = Vector2Add(player->velocity, velocity_correction);
-
-    if (platform_collisions[i].normal.y < 0) {
-      player->grounded = true;
-    }
-  }
-}
-
-int transition_collision(Player *player, Level *level) {
-  const Rectangle player_bounds = get_player_bounds(player);
-  for (int i = 0; i < level->transition_count; i++)
-  {
-    const Rectangle trans_bounds = level->transition[i].bounds;
-    if (CheckCollisionRecs(player_bounds, trans_bounds)) {
-      return level->transition->transition_index;
-    }
-  }
-  return -1;
-}
-
-void spike_collisions(Player *player, Level *level) {
+void detect_death_collisions(Player *player, Level *level) {
   const Rectangle player_bounds = get_player_bounds(player);
   for (int i = 0; i < level->spikes_count; i++)
   {
@@ -260,25 +259,25 @@ void spike_collisions(Player *player, Level *level) {
     player_reset(player, level);
   }
 }
+
+
 /**
  * Public update code
  */
 void player_update(Player *player, Level *level, float dt) {
+  player->teleported = 0;
   player->velocity.y += GRAVITY * dt;
   player->position = Vector2Add(player->position, Vector2Scale(player->velocity, dt));
 
   detect_stage_collisions(player, level, dt);
   resolve_stage_collisions(player, level);
-
-  int level_index = transition_collision(player, level);
-  spike_collisions(player, level);
-
+  int level_index = detect_transition_collision(player, level);
+  detect_death_collisions(player, level);
   if(level_index != -1){
     printf("Level index: %d\n", level_index);    
     *level = getLevel(level_index);
     player_reset(player, level);
   }
-
   move(player, dt);
   select_animation(player);
   animation_update(&player->sprite, dt);

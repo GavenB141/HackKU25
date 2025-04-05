@@ -102,9 +102,10 @@ int main () {
       0,
       WHITE
     );
-    if (IsKeyPressed(KEY_R)) {
+    if (IsKeyPressed(KEY_R) || state.player.teleported == 1) {
       state.player.position = state.level.startingPosition;
       state.player.velocity = (Vector2){0,0};
+      state.fade = 0.8f;
     }
     EndDrawing();
   }
