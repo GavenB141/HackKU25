@@ -116,7 +116,6 @@ void resolve_stage_collisions(Player *player, Level *level) {
 
     if (platform_collisions[i].normal.y < 0) {
       player->grounded = true;
-      s_gravity = 0;
       player->position.y -= platform_collisions[i].depth.y;
       player->velocity.y /= 2;
     }
