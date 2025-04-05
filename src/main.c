@@ -16,7 +16,7 @@ static GameState state = {0};
 
 void initialize_state() {
   state.player.position = (Vector2){100, 20};
-  state.player.velocity = (Vector2){-20, -50};
+  state.player.velocity = (Vector2){0, 0};
 
   state.level = sample_level();
 
@@ -72,6 +72,7 @@ int main () {
     BeginTextureMode(render_tex);
     BeginMode2D(state.camera);
     ClearBackground(DARKGRAY);
+    // printf("Drawing player at: %d")
     player_draw(&state.player);
     level_draw(&state.level);
     EndMode2D();
