@@ -5,6 +5,7 @@
 
 typedef struct {
   Vector2 position;
+  Vector2 velocity;
 } Player;
 
 void player_update(Player* player, float dt);
