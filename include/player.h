@@ -1,6 +1,10 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
+#define DASH_STRENGTH 360     
+#define DASH_DURATION 10/60.0      
+#define DASH_COOLDOWN .5 
+
 #include "animation.h"
 #include "raylib.h"
 #include "level.h"
@@ -20,6 +24,8 @@ typedef struct {
   bool inverted;
   float jumptime;
   PlayerState state;
+  float dash_timer;         
+  float dash_cooldown_timer; 
 } Player;
 
 typedef struct {

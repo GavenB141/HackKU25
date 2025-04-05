@@ -8,7 +8,7 @@ void level_draw(Level *level) {
   }
   for (int i = 0; i < level->death_count; i++) {
     Texture2D spike = LoadTexture("assets/Spike.png");
-    DrawRectangleRec(level->death[i].bounds, RED);
+    DrawRectangleRec(level->death[i].bounds, BLANK);
     //DrawTextureRec(spike, (Rectangle){0,0,32,32}, (Vector2){level->death[i].bounds.x, level->death[i].bounds.y}, WHITE);
     DrawTexturePro(spike, (Rectangle){0,0,32,32}, level->death[i].bounds, (Vector2){0,32}, 90.0f, WHITE);
   }
