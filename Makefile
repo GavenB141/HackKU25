@@ -13,7 +13,7 @@ ifeq ($(PLATFORM), Linux)
 endif
 ifeq ($(PLATFORM), Mac)
 	CC = eval cc
-	LDFLAGS := $(pkg-config --libs --cflags raylib)
+	LDFLAGS := $(shell pkg-config --libs --cflags raylib)
 endif
 
 BIN_NAME := game
