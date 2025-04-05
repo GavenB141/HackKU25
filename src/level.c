@@ -7,8 +7,16 @@
 static Texture2D spike = {0};
 
 void level_draw(Level *level, float dt) {
+  static Texture ground_texture = {0};
+  if (ground_texture.id == 0) {
+    ground_texture = LoadTexture("assets/metal_crate_sprite.png");
+  }
+
   for (int i = 0; i < level->platform_count; i++) {
-    DrawRectangleRec(level->platforms[i].bounds, WHITE);
+    Rectangle bounds = level->platforms[i].bounds;
+    Vector2 position = (Vector2){bounds.x, bounds.y};
+    bounds.x = 0, bounds.y = 0;
+    DrawTextureRec(ground_texture, bounds, position, WHITE);
   }
 
   for (int i = 0; i < level->spikes_count; i++) {
@@ -38,11 +46,13 @@ Level getLevel(int level_index) {
 Level sample_level() {
   Level level = {0};
   level.startingPosition = (Vector2){100, 20};
-  level.platforms[0] = (Platform){(Rectangle){0, 220, 320, 200000}};
-  level.platforms[1] = (Platform){(Rectangle){40, 0, 5, 240}};
-  level.transition[0] = (Transition){(Rectangle){340, 0, 100, 240}, 1};
+  level.platforms[0] = (Platform){(Rectangle){0, 208, 320, 32}};
+  level.platforms[1] = (Platform){(Rectangle){0, 0, 2, 208}};
+  level.platforms[2] = (Platform){(Rectangle){318, 0, 2, 160}};
+  level.transition[0] = (Transition){(Rectangle){318, 160, 1000, 48}, 1};
+
   level.transition_count = 1;
-  level.platform_count = 2;
+  level.platform_count = 3;
   
   return level;
 }
