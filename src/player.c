@@ -16,7 +16,19 @@
 // Pixels per second per second
 #define GRAVITY 600
 
+#define TAIL_SPACE 11
+// For physics (doesn't include tail)
 Rectangle get_player_bounds(const Player *player) {
+  return (Rectangle) {
+    player->position.x - PLAYER_WIDTH / 2.0 + (player->inverted ? 0 : 11),
+    player->position.y - PLAYER_HEIGHT / 2.0,
+    PLAYER_WIDTH - TAIL_SPACE,
+    PLAYER_HEIGHT
+  };
+}
+
+// For drawing
+Rectangle get_player_sprite_bounds(const Player *player) {
   return (Rectangle) {
     player->position.x - PLAYER_WIDTH / 2.0,
     player->position.y - PLAYER_HEIGHT / 2.0,
@@ -26,7 +38,7 @@ Rectangle get_player_bounds(const Player *player) {
 }
 
 void player_draw(Player* player) {
-  const Rectangle bounds = get_player_bounds(player);
+  const Rectangle bounds = get_player_sprite_bounds(player);
 
   animation_draw(&player->sprite, (Vector2){bounds.x, bounds.y}, player->inverted);
 }
@@ -288,7 +300,7 @@ AnimationController load_player_sprite(){
     .spritesheet = LoadTexture("assets/lizard_sprite.png"),
     .sprite_size = (Vector2){39, 19},
     .current_frame = 0,
-    .frame_time = 0.15,
+    .frame_time = 0.1,
     .current_time = 0,
     .frames = 1,
     .indices = {0}
