@@ -16,7 +16,7 @@ void animation_draw(AnimationController *controller, Vector2 position, bool inve
   DrawTexturePro(
     controller->spritesheet,
     (Rectangle) {
-      controller->sprite_size.x * controller->current_frame,
+      controller->sprite_size.x * controller->indices[controller->current_frame],
       0,
       controller->sprite_size.x * (inverted ? -1 : 1),
       controller->sprite_size.y

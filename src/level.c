@@ -22,24 +22,23 @@ void level_draw(Level *level) {
 }
 
 Level getLevel(int level_index) {
-  Level level;
   switch (level_index) {
     case 0:
-      level = sample_level();
+      return sample_level();
       break;
     case 1:
-      level = transition_level();
+      return transition_level();
       break;
     default:
+      return sample_level();
       break;
   }
-  return level;
 }
 
 Level sample_level() {
   Level level = {0};
   level.startingPosition = (Vector2){100, 20};
-  level.platforms[0] = (Platform){(Rectangle){0, 220, 320, 20}};
+  level.platforms[0] = (Platform){(Rectangle){0, 220, 320, 200000}};
   level.platforms[1] = (Platform){(Rectangle){40, 0, 5, 240}};
   level.transition[0] = (Transition){(Rectangle){340, 0, 100, 240}, 1};
   level.transition_count = 1;

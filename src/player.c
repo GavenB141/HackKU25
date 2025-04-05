@@ -8,6 +8,7 @@
 
 #define PLAYER_WIDTH 39
 #define PLAYER_HEIGHT 19
+#define PLAYER_SIZE (Vector2){PLAYER_WIDTH, PLAYER_HEIGHT}
 #define JUMP_STRENGTH 2000
 #define MOVE_STRENGTH 400
 #define VEL_X_MAX 125
@@ -15,8 +16,6 @@
 
 // Pixels per second per second
 #define GRAVITY 600
-
-static int s_gravity = GRAVITY;
 
 Rectangle get_player_bounds(const Player *player) {
   return (Rectangle) {
@@ -33,7 +32,10 @@ void player_draw(Player* player) {
   animation_draw(&player->sprite, (Vector2){bounds.x, bounds.y}, player->inverted);
 }
 
-// Collision storage
+/**
+ * Collision code
+ */
+
 static PlatformCollision platform_collisions[MAX_PLATFORMS] = {0};
 static int collision_count = 0;
 
@@ -64,8 +66,28 @@ void detect_stage_collisions(Player *player, Level *level, float dt) {
       continue;
     }
 
-    const Vector2 depth = {overlap.width, overlap.height};
+    Vector2 depth = {overlap.width, overlap.height};
     Vector2 times = {dt, dt};
+
+    // full overlap correction
+    if (depth.x == PLAYER_WIDTH) {
+      if (translation.x > 0) {
+        depth.x = plat_bounds.width - (plat_bounds.width + plat_bounds.x - player_bounds.x + player_bounds.width);
+      } else {
+        depth.x = plat_bounds.width - (player_bounds.x - plat_bounds.x);
+      }
+    }
+
+    if (depth.y == PLAYER_HEIGHT) {
+      if (translation.y > 0) {
+        depth.y = plat_bounds.height - (plat_bounds.height + plat_bounds.y - player_bounds.y + player_bounds.height);
+      } else {
+        depth.y = plat_bounds.height - (player_bounds.y - plat_bounds.y);
+      }
+    }
+
+    printf("Collision depth: %f %f\n", depth.x, depth.y);
+
 
     if (translation.x != 0) {
       times.x = fabs(depth.x / translation.x) * dt;
@@ -95,10 +117,11 @@ void detect_stage_collisions(Player *player, Level *level, float dt) {
 
 void resolve_stage_collisions(Player *player, Level *level) {
   player->grounded = false;
-  s_gravity = GRAVITY;
 
   for (int i = 0; i < collision_count; i++) {
+    Platform *platform = &level->platforms[platform_collisions[i].platform_id];
     Vector2 normal_depth = Vector2Multiply(platform_collisions[i].normal, platform_collisions[i].depth);
+
     player->position = Vector2Add(player->position, normal_depth);
     Vector2 velocity_correction = Vector2Multiply(player->velocity, platform_collisions[i].normal);
 
@@ -116,8 +139,7 @@ void resolve_stage_collisions(Player *player, Level *level) {
 
     if (platform_collisions[i].normal.y < 0) {
       player->grounded = true;
-      player->position.y -= platform_collisions[i].depth.y;
-      player->velocity.y /= 2;
+      player->velocity.y = 0;
     }
   }
 }
@@ -169,6 +191,11 @@ void move(Player *player, float dt) {
   }
 }
 
+
+/**
+ * Animation selection code
+ */
+
 void activate_walk_animation(Player *player) {
   int walk_indices[6] = {0,1,2,3,4,5};
   memcpy(&player->sprite.indices, walk_indices, 6 * sizeof(int));
@@ -183,25 +210,33 @@ void activate_idle_animation(Player *player) {
   player->sprite.current_time = 0;
 }
 
+void activate_jump_animation(Player *player) {
+  int jump_indices[1] = {6};
+  memcpy(&player->sprite.indices, jump_indices, sizeof(int));
+  player->sprite.frames = 1;
+  player->sprite.current_time = 0;
+}
+
 // Indexed by PlayerState
 static void (*animation_selectors[])(Player *player) = {
   activate_idle_animation,
-  activate_walk_animation
+  activate_walk_animation,
+  activate_jump_animation
 };
 
 void select_animation(Player *player) {
-  PlayerState new_state;
-  if (player->grounded == false) {
-    new_state = IDLE;
-  } else if (player->velocity.x > 0.1) {
+  PlayerState new_state = IDLE;
+
+  if (player->velocity.x > 0.1) {
     new_state = WALK;
     player->inverted = false;
   } else if (player->velocity.x < -0.1) {
     new_state = WALK;
     player->inverted = true;
-  } else {
-    new_state = IDLE;
   }
+
+  if (!player->grounded)
+    new_state = JUMP;
 
   if (new_state != player->state)
     animation_selectors[new_state](player);
@@ -211,9 +246,8 @@ void select_animation(Player *player) {
 
 void player_reset(Player *player, Level *level) {
   player->position = level->startingPosition;
-  player->velocity = (Vector2){0, 0};
+  player->velocity = (Vector2){1, 0};
   player->grounded = false;
-  s_gravity = GRAVITY;
   player->jumptime = 0;
 }
 
@@ -230,8 +264,12 @@ void detect_death_collisions(Player *player, Level *level) {
   }
 }
 
+
+/**
+ * Public update code
+ */
 void player_update(Player *player, Level *level, float dt) {
-  player->velocity.y += s_gravity * dt;
+  player->velocity.y += GRAVITY * dt;
   player->position = Vector2Add(player->position, Vector2Scale(player->velocity, dt));
 
   detect_stage_collisions(player, level, dt);
@@ -246,8 +284,6 @@ void player_update(Player *player, Level *level, float dt) {
   move(player, dt);
   select_animation(player);
   animation_update(&player->sprite, dt);
-
-  //printf("%f\n", player->velocity.y);
 }
 
 AnimationController load_player_sprite(){
