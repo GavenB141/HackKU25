@@ -3,7 +3,7 @@
 #include "raylib.h"
 #include "raymath.h"
 
-#define PLAYER_WIDTH 38
+#define PLAYER_WIDTH 39
 #define PLAYER_HEIGHT 19
 #define JUMP_STRENGTH 1750
 #define MOVE_STRENGTH 500
