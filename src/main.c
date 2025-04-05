@@ -15,6 +15,7 @@ typedef struct {
   Player player;
   Level level;
   Camera2D camera;
+  float fade;
 } GameState;
 
 static GameState state = {0};
@@ -24,6 +25,7 @@ void initialize_state(int level_index) {
   state.player.velocity = (Vector2){1, 0};
   state.player.sprite = load_player_sprite();
 
+  state.fade = 0.8f;
   state.level = getLevel(level_index);
 
   state.camera.zoom = 1.0f;
@@ -84,6 +86,8 @@ int main () {
     // printf("Drawing player at: %d")
     player_draw(&state.player);
     level_draw(&state.level, dt);
+    fade_in(state.fade, screen_target);
+    state.fade /= 1.1;
     EndMode2D();
     EndTextureMode();
     

@@ -17,6 +17,10 @@ void level_draw(Level *level, float dt) {
   }
 }
 
+void fade_in(float fade, Rectangle screen){
+  DrawRectangleRec(screen, ColorAlpha(BLACK, fade));
+}
+
 Level getLevel(int level_index) {
   switch (level_index) {
     case 0:
