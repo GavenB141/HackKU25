@@ -116,7 +116,6 @@ void resolve_stage_collisions(Player *player, Level *level) {
 
     if (platform_collisions[i].normal.y < 0) {
       player->grounded = true;
-      s_gravity = 0;
       player->position.y -= platform_collisions[i].depth.y;
       player->velocity.y /= 2;
     }
@@ -124,6 +123,19 @@ void resolve_stage_collisions(Player *player, Level *level) {
 }
 
 void move(Player *player, float dt) {
+  if (IsKeyPressed(KEY_LEFT_SHIFT) && player->dash_cooldown_timer <= 0) {
+    player->dash_timer = DASH_DURATION;  
+    player->dash_cooldown_timer = DASH_COOLDOWN; 
+    printf("Dashing %f:\n", player->dash_timer);
+    if (player->inverted) {
+        player->velocity.x = -DASH_STRENGTH;  
+    } else {
+        player->velocity.x = DASH_STRENGTH;   
+    }  
+  }
+  player->dash_timer -= dt;
+  player->dash_cooldown_timer -= dt;
+
   if(IsKeyDown(KEY_W) && (player->jumptime > 0)){
     player->velocity.y -= JUMP_STRENGTH * dt;
     player->jumptime -= dt;
@@ -134,10 +146,7 @@ void move(Player *player, float dt) {
     player->jumptime = 10.0/60.0;
   }
   float mult = 1;
-  if((IsKeyDown(KEY_A) && (player->velocity.x > 0)) || (IsKeyDown(KEY_D) && (player->velocity.x < 0))){
-    mult = 1.3;
-  }
-  float del_x = MOVE_STRENGTH * dt * mult;
+  if (player->dash_timer <= 0) {
   if(IsKeyDown(KEY_A)){
     player->velocity.x -= MOVE_STRENGTH * dt;
     if (player->velocity.x > 0) player->velocity.x = 0;
@@ -156,6 +165,7 @@ void move(Player *player, float dt) {
     if (!(IsKeyDown(KEY_A) || IsKeyDown(KEY_D))) player->velocity.x /= FRICTION * dt;
   }
   if(fabs(player->velocity.x) > VEL_X_MAX) player->velocity.x *= VEL_X_MAX/fabs(player->velocity.x);
+  }
 }
 
 void activate_walk_animation(Player *player) {
