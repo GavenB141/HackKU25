@@ -82,7 +82,7 @@ int main () {
     // Render the frame to texture
     BeginTextureMode(render_tex);
     BeginMode2D(state.camera);
-    ClearBackground(DARKGRAY);
+    ClearBackground(GRAY);
     // printf("Drawing player at: %d")
     level_draw(&state.level, dt);
     player_draw(&state.player);

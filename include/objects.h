@@ -7,7 +7,7 @@
 
 #define MAX_PLATFORMS 20
 #define MAX_TRANS 4
-#define MAX_SPIKES 4
+#define MAX_SPIKES 10
 #define MAX_ORBS 4
 
 typedef struct {
@@ -41,6 +41,7 @@ typedef struct {
   int spikes_count;
   int orbs_count;
   Vector2 startingPosition;
+  int id;
 } Level;
 
 typedef struct {

@@ -4,8 +4,8 @@
 #include "raylib.h"
 #include "objects.h"
 
-Level sample_level();
-Level transition_level();
+Level tutorial_0();
+Level tutorial_1();
 
 void level_draw(Level *level, float dt);
 void level_update(Level *level, float dt);
