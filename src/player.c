@@ -113,6 +113,8 @@ void resolve_stage_collisions(Player *player, Level *level) {
 
     if (platform_collisions[i].normal.y < 0) {
       player->grounded = true;
+      player->position.y -= platform_collisions[i].depth.y;
+      player->velocity.y /= 2;
     }
   }
 }
@@ -136,13 +138,18 @@ void move(Player *player, float dt) {
     player->velocity.x -= MOVE_STRENGTH * dt;
     if (player->velocity.x > 0) player->velocity.x = 0;
     player->inverted = true;
+    if (player->velocity.x > 0) player->velocity.x = 0;
+    player->inverted = true;
   }
   if(IsKeyDown(KEY_D)){
     player->velocity.x += MOVE_STRENGTH * dt;
     if (player->velocity.x < 0) player->velocity.x = 0;
     player->inverted = false;
+    if (player->velocity.x < 0) player->velocity.x = 0;
+    player->inverted = false;
   }
   if(player->grounded){
+    if (!(IsKeyDown(KEY_A) || IsKeyDown(KEY_D))) player->velocity.x /= FRICTION * dt;
     if (!(IsKeyDown(KEY_A) || IsKeyDown(KEY_D))) player->velocity.x /= FRICTION * dt;
   }
   if(fabs(player->velocity.x) > VEL_X_MAX) player->velocity.x *= VEL_X_MAX/fabs(player->velocity.x);
