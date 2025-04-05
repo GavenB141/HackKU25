@@ -35,6 +35,20 @@ void player_draw(Player* player) {
 static PlatformCollision platform_collisions[MAX_PLATFORMS] = {0};
 static int collision_count = 0;
 
+int detect_transition_collision(Player *player, Level *level) {
+  const Rectangle player_bounds = get_player_bounds(player);
+  for (int i = 0; i < level->transition_count; i++)
+  {
+    const Rectangle trans_bounds = level->transition[i].bounds;
+    const Rectangle overlap = GetCollisionRec(player_bounds, trans_bounds);
+    if (overlap.width == 0 || overlap.height == 0) {
+      continue;
+    }
+    return level->transition->transition_index;
+  }
+  return -1;
+}
+
 void detect_stage_collisions(Player *player, Level *level, float dt) {
   collision_count = 0;
 
@@ -170,13 +184,25 @@ void select_animation(Player *player) {
   player->state = new_state;
 }
 
+void player_reset(Player *player, Level *level) {
+  player->position = level->startingPosition;
+  player->velocity = (Vector2){0, 0};
+  player->grounded = false;
+  player->jumptime = 0;
+}
+
 void player_update(Player *player, Level *level, float dt) {
   player->velocity.y += GRAVITY * dt;
   player->position = Vector2Add(player->position, Vector2Scale(player->velocity, dt));
 
   detect_stage_collisions(player, level, dt);
   resolve_stage_collisions(player, level);
-
+  int level_index = detect_transition_collision(player, level);
+  if(level_index != -1){
+    printf("Level index: %d\n", level_index);    
+    *level = getLevel(level_index);
+    player_reset(player, level);
+  }
   move(player, dt);
   select_animation(player);
   animation_update(&player->sprite, dt);

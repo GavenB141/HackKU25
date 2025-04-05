@@ -3,6 +3,10 @@
 #include "level.h"
 #include "player.h"
 
+#include <stdio.h>
+#define TOTAL_LEVELS 2
+static const Vector2 resolution = {320, 240};
+static Level levels[TOTAL_LEVELS];
 /**
  * Main game state
  */
@@ -29,7 +33,6 @@ void initialize_state() {
  * Driver code
  */
 
-static const Vector2 resolution = {320, 240};
 
 Rectangle calculate_screen_target(Vector2 resolution) {
   Vector2 screen_size = {GetScreenWidth(), GetScreenHeight()};
@@ -51,6 +54,9 @@ Rectangle calculate_screen_target(Vector2 resolution) {
 int main () {
   InitWindow(resolution.x * 3, resolution.y * 3, "HackKU 2025");
 
+  for(int i = 0; i < TOTAL_LEVELS; i++){
+    levels[i] = getLevel(i);
+  }
   // Program state
   initialize_state();
   RenderTexture2D render_tex = LoadRenderTexture(resolution.x, resolution.y);
