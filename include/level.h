@@ -7,8 +7,6 @@
 
 Level tutorial_0();
 Level tutorial_1();
-Level sample_level();
-Level transition_level();
 Level gaven_level();
 
 void level_draw(Level *level, Player *player, float dt);

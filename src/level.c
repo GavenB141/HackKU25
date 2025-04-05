@@ -3,6 +3,7 @@
 #include "objects.h"
 #include "player.h"
 #include "raylib.h"
+#include "raymath.h"
 #include <stdio.h>
 
 static Texture2D spike = {0};
@@ -19,12 +20,12 @@ void level_draw(Level *level, Player *player, float dt) {
     positive_orb_texture = LoadTexture("assets/positive_orb_sprite.png");
     negative_orb_texture = LoadTexture("assets/negative_orb_sprite.png");
     highlight_shader = LoadShader(0, "assets/shaders/highlight_outline.fs.glsl");
+    foont = LoadFont("assets/setback.png");
   }
 
   for (int i = 0; i < level->spikes_count; i++) {
     animation_update(&level->spikes[i].sprite, dt);
     animation_draw(&level->spikes[i].sprite, (Vector2){level->spikes[i].bounds.x, level->spikes[i].bounds.y}, false);
-    foont = LoadFont("assets/setback.png");
   }
 
   for (int i = 0; i < level->platform_count; i++) {
@@ -50,6 +51,12 @@ void level_draw(Level *level, Player *player, float dt) {
     if (i == player->targeted_orb && !player->is_holding_orb)
       EndShaderMode();
   }
+  switch (level->id){
+    case 0: DrawTextEx(foont, "Press A or D to WALK", (Vector2){70,120},16, 1, WHITE);
+      break;
+    case 1: break;
+    default: break;
+  }
 }
 
 void level_update(Level *level, float dt) {
@@ -59,12 +66,6 @@ void level_update(Level *level, float dt) {
   for (int i = 0; i < level->spikes_count; i++) {
     animation_update(&level->spikes[i].sprite, dt);
     animation_draw(&level->spikes[i].sprite, (Vector2){level->spikes[i].bounds.x, level->spikes[i].bounds.y}, false);
-  }
-  switch (level->id){
-    case 0: DrawTextEx(foont, "Press A or D to WALK", (Vector2){70,120},16, 1, WHITE);
-      break;
-    case 1: break;
-    default: break;
   }
 }
 
