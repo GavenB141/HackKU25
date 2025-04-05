@@ -21,12 +21,12 @@ typedef struct {
 static GameState state = {0};
 
 void initialize_state(int level_index) {
-  state.player.position = (Vector2){100, 20};
-  state.player.velocity = (Vector2){1, 0};
   state.player.sprite = load_player_sprite();
 
   state.fade = 0.8f;
   state.level = getLevel(level_index);
+  state.player.position = state.level.startingPosition;
+  state.player.velocity = (Vector2){0, 0};
 
   state.camera.zoom = 1.0f;
 }
