@@ -126,12 +126,13 @@ void move(Player *player, float dt) {
   if (IsKeyPressed(KEY_LEFT_SHIFT) && player->dash_cooldown_timer <= 0) {
     player->dash_timer = DASH_DURATION;  
     player->dash_cooldown_timer = DASH_COOLDOWN; 
-    printf("Dashing %f:\n", player->dash_timer);
+    // printf("Dashing %f:\n", player->dash_timer);
     if (player->inverted) {
         player->velocity.x = -DASH_STRENGTH;  
     } else {
         player->velocity.x = DASH_STRENGTH;   
-    }  
+    } 
+    player->velocity.y = 0;
   }
   player->dash_timer -= dt;
   player->dash_cooldown_timer -= dt;
