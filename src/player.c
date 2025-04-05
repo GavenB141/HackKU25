@@ -8,9 +8,9 @@
 
 #define PLAYER_WIDTH 39
 #define PLAYER_HEIGHT 19
-#define JUMP_STRENGTH 1750
-#define MOVE_STRENGTH 500
-#define VEL_X_MAX 100
+#define JUMP_STRENGTH 1500
+#define MOVE_STRENGTH 400
+#define VEL_X_MAX 125
 #define FRICTION 80
 
 // Pixels per second per second
@@ -134,12 +134,16 @@ void move(Player *player, float dt) {
   float del_x = MOVE_STRENGTH * dt * mult;
   if(IsKeyDown(KEY_A)){
     player->velocity.x -= MOVE_STRENGTH * dt;
+    if (player->velocity.x > 0) player->velocity.x = 0;
+    player->inverted = true;
   }
   if(IsKeyDown(KEY_D)){
     player->velocity.x += MOVE_STRENGTH * dt;
+    if (player->velocity.x < 0) player->velocity.x = 0;
+    player->inverted = false;
   }
   if(player->grounded){
-    player->velocity.x /= FRICTION * dt;
+    if (!(IsKeyDown(KEY_A) || IsKeyDown(KEY_D))) player->velocity.x /= FRICTION * dt;
   }
   if(fabs(player->velocity.x) > VEL_X_MAX) player->velocity.x *= VEL_X_MAX/fabs(player->velocity.x);
 }
