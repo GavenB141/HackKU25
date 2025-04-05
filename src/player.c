@@ -202,6 +202,19 @@ void player_reset(Player *player, Level *level) {
   player->jumptime = 0;
 }
 
+void detect_death_collisions(Player *player, Level *level) {
+  const Rectangle player_bounds = get_player_bounds(player);
+  for (int i = 0; i < level->death_count; i++)
+  {
+    const Rectangle bounds = level->death[i].bounds;
+    const Rectangle overlap = GetCollisionRec(player_bounds, bounds);
+    if (overlap.width < 3 || overlap.height < 7) {
+      continue;
+    }
+    player_reset(player, level);
+  }
+}
+
 void player_update(Player *player, Level *level, float dt) {
   player->velocity.y += GRAVITY * dt;
   player->position = Vector2Add(player->position, Vector2Scale(player->velocity, dt));
@@ -209,6 +222,7 @@ void player_update(Player *player, Level *level, float dt) {
   detect_stage_collisions(player, level, dt);
   resolve_stage_collisions(player, level);
   int level_index = detect_transition_collision(player, level);
+  detect_death_collisions(player, level);
   if(level_index != -1){
     printf("Level index: %d\n", level_index);    
     *level = getLevel(level_index);

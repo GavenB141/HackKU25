@@ -5,6 +5,7 @@
 
 #define MAX_PLATFORMS 20
 #define MAX_TRANS 4
+#define MAX_DEATH 4
 
 typedef struct {
   Rectangle bounds;
@@ -16,10 +17,16 @@ typedef struct {
 } Transition;
 
 typedef struct {
+  Rectangle bounds;
+} Death;
+
+typedef struct {
   Platform platforms[MAX_PLATFORMS];
   Transition transition[MAX_TRANS];
+  Death death[MAX_DEATH];
   int platform_count;
   int transition_count;
+  int death_count;
   Vector2 startingPosition;
 } Level;
 
