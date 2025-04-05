@@ -7,7 +7,10 @@ void level_draw(Level *level) {
     DrawRectangleRec(level->platforms[i].bounds, WHITE);
   }
   for (int i = 0; i < level->death_count; i++) {
+    Texture2D spike = LoadTexture("assets/Spike.png");
     DrawRectangleRec(level->death[i].bounds, RED);
+    //DrawTextureRec(spike, (Rectangle){0,0,32,32}, (Vector2){level->death[i].bounds.x, level->death[i].bounds.y}, WHITE);
+    DrawTexturePro(spike, (Rectangle){0,0,32,32}, level->death[i].bounds, (Vector2){0,32}, 90.0f, WHITE);
   }
 }
 
@@ -45,7 +48,7 @@ Level transition_level() {
   level.platforms[1] = (Platform){(Rectangle){40, 0, 5, 240}};
   level.platforms[2] = (Platform){(Rectangle){150, 0, 5, 0}};
   level.platforms[3] = (Platform){(Rectangle){40, 0, 115, 10}};
-  level.death[0] = (Death){(Rectangle){300, 0, 10, 200}};
+  level.death[0] = (Death){(Rectangle){200, 188, 32, 32}};
 
   level.death_count = 1;
   level.platform_count = 4;
