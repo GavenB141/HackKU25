@@ -12,17 +12,21 @@ void level_draw(Level *level, float dt) {
     ground_texture = LoadTexture("assets/metal_crate_sprite.png");
   }
 
+  for (int i = 0; i < level->spikes_count; i++) {
+    animation_update(&level->spikes[i].sprite, dt);
+    animation_draw(&level->spikes[i].sprite, (Vector2){level->spikes[i].bounds.x, level->spikes[i].bounds.y}, false);
+  }
+
   for (int i = 0; i < level->platform_count; i++) {
     Rectangle bounds = level->platforms[i].bounds;
     Vector2 position = (Vector2){bounds.x, bounds.y};
     bounds.x = 0, bounds.y = 0;
     DrawTextureRec(ground_texture, bounds, position, WHITE);
   }
+}
 
-  for (int i = 0; i < level->spikes_count; i++) {
-    animation_update(&level->spikes[i].sprite, dt);
-    animation_draw(&level->spikes[i].sprite, (Vector2){level->spikes[i].bounds.x, level->spikes[i].bounds.y}, false);
-  }
+void level_update(Level *level, float dt) {
+
 }
 
 void fade_in(float fade, Rectangle screen){
@@ -66,14 +70,16 @@ Level transition_level() {
   level.platforms[0] = (Platform){(Rectangle){0, 208, 320, 32}};
   level.platforms[1] = (Platform){(Rectangle){0, 0, 2, 176}};
   level.platforms[2] = (Platform){(Rectangle){318, 0, 2, 176}};
-  level.platforms[3] = (Platform){(Rectangle){0, 176, 160, 32}};
+  level.platforms[3] = (Platform){(Rectangle){0, 176, 128, 32}};
   level.platforms[4] = (Platform){(Rectangle){256, 176, 64, 32}};
   level.platform_count = 5;
 
-  level.spikes[0] = (Spike){(Rectangle){160, 176, 32, 32}, get_spike_animation()};
-  level.spikes[1] = (Spike){(Rectangle){192, 176, 32, 32}, get_spike_animation()};
-  level.spikes[2] = (Spike){(Rectangle){224, 176, 32, 32}, get_spike_animation()};
-  level.spikes_count = 3;
+
+  level.spikes[0] = (Spike){(Rectangle){128, 180, 32, 32}, get_spike_animation()};
+  level.spikes[1] = (Spike){(Rectangle){160, 180, 32, 32}, get_spike_animation()};
+  level.spikes[2] = (Spike){(Rectangle){192, 180, 32, 32}, get_spike_animation()};
+  level.spikes[3] = (Spike){(Rectangle){224, 180, 32, 32}, get_spike_animation()};
+  level.spikes_count = 4;
 
   return level;
 }
