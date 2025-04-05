@@ -8,7 +8,6 @@
 
 #define PLAYER_WIDTH 39
 #define PLAYER_HEIGHT 19
-#define PLAYER_SIZE (Vector2){PLAYER_WIDTH, PLAYER_HEIGHT}
 #define JUMP_STRENGTH 2000
 #define MOVE_STRENGTH 400
 #define VEL_X_MAX 125
@@ -44,16 +43,16 @@ int detect_transition_collision(Player *player, Level *level) {
   for (int i = 0; i < level->transition_count; i++)
   {
     const Rectangle trans_bounds = level->transition[i].bounds;
-    const Rectangle overlap = GetCollisionRec(player_bounds, trans_bounds);
-    if (overlap.width == 0 || overlap.height == 0) {
-      continue;
+    printf("Checking transition %d... \n", i);
+    if (CheckCollisionRecs(player_bounds, trans_bounds)) {
+      printf("transition\n");
+      return level->transition->transition_index;
     }
-    return level->transition->transition_index;
   }
   return -1;
 }
 
-void detect_stage_collisions(Player *player, Level *level, float dt) {
+void detect_stage_collisions(Player *player, Level *level, double dt) {
   collision_count = 0;
 
   const Rectangle player_bounds = get_player_bounds(player);
@@ -70,24 +69,21 @@ void detect_stage_collisions(Player *player, Level *level, float dt) {
     Vector2 times = {dt, dt};
 
     // full overlap correction
-    if (depth.x == PLAYER_WIDTH) {
-      if (translation.x > 0) {
-        depth.x = plat_bounds.width - (plat_bounds.width + plat_bounds.x - player_bounds.x + player_bounds.width);
-      } else {
-        depth.x = plat_bounds.width - (player_bounds.x - plat_bounds.x);
-      }
-    }
-
-    if (depth.y == PLAYER_HEIGHT) {
-      if (translation.y > 0) {
-        depth.y = plat_bounds.height - (plat_bounds.height + plat_bounds.y - player_bounds.y + player_bounds.height);
-      } else {
-        depth.y = plat_bounds.height - (player_bounds.y - plat_bounds.y);
-      }
-    }
-
-    printf("Collision depth: %f %f\n", depth.x, depth.y);
-
+    // if (depth.x == PLAYER_WIDTH) {
+    //   if (translation.x > 0) {
+    //     depth.x = plat_bounds.width - (plat_bounds.width + plat_bounds.x - (player_bounds.x + player_bounds.width));
+    //   } else {
+    //     depth.x = plat_bounds.width - (player_bounds.x - plat_bounds.x);
+    //   }
+    // }
+    //
+    // if (depth.y == PLAYER_HEIGHT) {
+    //   if (translation.y > 0) {
+    //     depth.y = plat_bounds.height - (plat_bounds.height + plat_bounds.y - (player_bounds.y + player_bounds.height));
+    //   } else {
+    //     depth.y = plat_bounds.height - (player_bounds.y - plat_bounds.y);
+    //   }
+    // }
 
     if (translation.x != 0) {
       times.x = fabs(depth.x / translation.x) * dt;
@@ -98,12 +94,12 @@ void detect_stage_collisions(Player *player, Level *level, float dt) {
 
     Vector2 normal;
     float time;
-    if (times.x <= times.y) {
+    if (times.x >= times.y || fabs(translation.x) < 0.1) {
+      normal = Vector2Normalize((Vector2){0, -translation.y});
+      time = times.y; 
+    } else {
       normal = Vector2Normalize((Vector2){-translation.x, 0});
       time = times.x;
-    } else {
-      normal = Vector2Normalize((Vector2){0, -translation.y});
-      time = times.y;
     }
 
     platform_collisions[collision_count++] = (PlatformCollision) {
@@ -139,7 +135,6 @@ void resolve_stage_collisions(Player *player, Level *level) {
 
     if (platform_collisions[i].normal.y < 0) {
       player->grounded = true;
-      player->velocity.y = 0;
     }
   }
 }
