@@ -107,6 +107,11 @@ int main () {
       state.player.velocity = (Vector2){0,0};
       state.fade = 0.8f;
     }
+    if (IsKeyPressed(KEY_EQUAL)){
+      state.level = getLevel(0);
+      state.player.position = state.level.startingPosition;
+      state.fade = 0.8f;
+    }
     EndDrawing();
   }
 
