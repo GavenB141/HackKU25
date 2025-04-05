@@ -9,15 +9,18 @@
 typedef struct {
   Player player;
   Level level;
+  Camera2D camera;
 } GameState;
 
 static GameState state = {0};
 
 void initialize_state() {
-  state.player.position = (Vector2){20, 20};
-  state.player.velocity = (Vector2){10, -50};
+  state.player.position = (Vector2){100, 20};
+  state.player.velocity = (Vector2){20, -50};
 
   state.level = sample_level();
+
+  state.camera.zoom = 1.0f;
 }
 
 
@@ -67,9 +70,11 @@ int main () {
 
     // Render the frame to texture
     BeginTextureMode(render_tex);
+    BeginMode2D(state.camera);
     ClearBackground(DARKGRAY);
     player_draw(&state.player);
     level_draw(&state.level);
+    EndMode2D();
     EndTextureMode();
 
     // Draw frame texture to screen
