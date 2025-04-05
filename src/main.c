@@ -82,12 +82,12 @@ int main () {
     // Render the frame to texture
     BeginTextureMode(render_tex);
     BeginMode2D(state.camera);
-    ClearBackground(DARKGRAY);
+    ClearBackground(BLACK);
     // printf("Drawing player at: %d")
-    player_draw(&state.player);
     level_draw(&state.level, dt);
-    fade_in(state.fade, screen_target);
-    state.fade /= 1.1;
+    player_draw(&state.player);
+    fade_in(state.fade, (Rectangle){0, 0, resolution.x, resolution.y});
+    state.fade -= dt;
     EndMode2D();
     EndTextureMode();
     

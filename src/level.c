@@ -56,17 +56,24 @@ Level sample_level() {
   
   return level;
 }
+
 Level transition_level() {
   printf("Transition level\n");
   Level level = {0};
-  level.startingPosition = (Vector2){100, 20};
-  level.platforms[0] = (Platform){(Rectangle){0, 220, 320, 20}};
-  level.platforms[1] = (Platform){(Rectangle){20, 0, 10, 240}};
-  level.platforms[2] = (Platform){(Rectangle){150, 0, 5, 0}};
-  level.platforms[3] = (Platform){(Rectangle){40, 0, 115, 10}};
-  level.spikes[0] = (Spike){(Rectangle){200, 188, 32, 32}, get_spike_animation()};
 
-  level.spikes_count = 1;
-  level.platform_count = 4;
+  level.startingPosition = (Vector2){100, 20};
+  
+  level.platforms[0] = (Platform){(Rectangle){0, 208, 320, 32}};
+  level.platforms[1] = (Platform){(Rectangle){0, 0, 2, 176}};
+  level.platforms[2] = (Platform){(Rectangle){318, 0, 2, 176}};
+  level.platforms[3] = (Platform){(Rectangle){0, 176, 160, 32}};
+  level.platforms[4] = (Platform){(Rectangle){256, 176, 64, 32}};
+  level.platform_count = 5;
+
+  level.spikes[0] = (Spike){(Rectangle){160, 176, 32, 32}, get_spike_animation()};
+  level.spikes[1] = (Spike){(Rectangle){192, 176, 32, 32}, get_spike_animation()};
+  level.spikes[2] = (Spike){(Rectangle){224, 176, 32, 32}, get_spike_animation()};
+  level.spikes_count = 3;
+
   return level;
 }
