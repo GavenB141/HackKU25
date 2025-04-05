@@ -1,7 +1,7 @@
 PLATFORM ?= Windows
 # Linux or Mac
 
-COMP_FILES = src/main.c src/player.c src/level.c src/animation.c
+COMP_FILES = src/main.c src/player.c src/level.c src/animation.c src/objects.c
 CC = gcc
 
 ifeq ($(PLATFORM), Windows)

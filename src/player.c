@@ -248,9 +248,9 @@ void player_reset(Player *player, Level *level) {
 
 void detect_death_collisions(Player *player, Level *level) {
   const Rectangle player_bounds = get_player_bounds(player);
-  for (int i = 0; i < level->death_count; i++)
+  for (int i = 0; i < level->spikes_count; i++)
   {
-    const Rectangle bounds = level->death[i].bounds;
+    const Rectangle bounds = level->spikes[i].bounds;
     const Rectangle overlap = GetCollisionRec(player_bounds, bounds);
     if (overlap.width < 3 || overlap.height < 7) {
       continue;

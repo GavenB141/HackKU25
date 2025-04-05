@@ -3,10 +3,11 @@
 #include "level.h"
 #include "player.h"
 
-#include <stdio.h>
 #define TOTAL_LEVELS 2
+
 static const Vector2 resolution = {320, 240};
 static Level levels[TOTAL_LEVELS];
+
 /**
  * Main game state
  */
@@ -82,7 +83,7 @@ int main () {
     ClearBackground(DARKGRAY);
     // printf("Drawing player at: %d")
     player_draw(&state.player);
-    level_draw(&state.level);
+    level_draw(&state.level, dt);
     EndMode2D();
     EndTextureMode();
     
