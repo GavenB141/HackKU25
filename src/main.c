@@ -18,12 +18,12 @@ typedef struct {
 
 static GameState state = {0};
 
-void initialize_state() {
+void initialize_state(int level_index) {
   state.player.position = (Vector2){100, 20};
   state.player.velocity = (Vector2){10, 0};
   state.player.sprite = load_player_sprite();
 
-  state.level = sample_level();
+  state.level = getLevel(level_index);
 
   state.camera.zoom = 1.0f;
 }
@@ -58,7 +58,7 @@ int main () {
     levels[i] = getLevel(i);
   }
   // Program state
-  initialize_state();
+  initialize_state(0);
   RenderTexture2D render_tex = LoadRenderTexture(resolution.x, resolution.y);
   Rectangle screen_target = calculate_screen_target(resolution);
 
@@ -84,7 +84,7 @@ int main () {
     level_draw(&state.level);
     EndMode2D();
     EndTextureMode();
-
+    
     // Draw frame texture to screen
     BeginDrawing();
     ClearBackground(BLACK);
@@ -96,6 +96,10 @@ int main () {
       0,
       WHITE
     );
+    if (IsKeyPressed(KEY_R)) {
+      state.player.position = state.level.startingPosition;
+      state.player.velocity = (Vector2){0,0};
+    }
     EndDrawing();
   }
 
