@@ -1,7 +1,7 @@
 PLATFORM ?= Windows
 # Linux or Mac
 
-COMP_FILES = src/main.c src/player.c
+COMP_FILES = src/main.c src/player.c src/level.c
 CC = gcc
 
 ifeq ($(PLATFORM), Windows)
@@ -18,7 +18,7 @@ endif
 
 BIN_NAME := game
 
-$(BIN_NAME): src/main.c
+$(BIN_NAME): $(COMP_FILES)
 	$(CC) $(COMP_FILES) -o $(BIN_NAME) $(LDFLAGS) -Iinclude
 
 clean:
