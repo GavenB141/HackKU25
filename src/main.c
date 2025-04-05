@@ -3,7 +3,7 @@
 #include "level.h"
 #include "player.h"
 
-#define TOTAL_LEVELS 2
+#define TOTAL_LEVELS 3
 
 static const Vector2 resolution = {320, 240};
 static Level levels[TOTAL_LEVELS];
@@ -24,7 +24,7 @@ void initialize_state(int level_index) {
   state.player.sprite = load_player_sprite();
 
   state.fade = 0.8f;
-  state.level = getLevel(level_index);
+  state.level = getLevel(2);
   state.player.position = state.level.startingPosition;
   state.player.velocity = (Vector2){0, 0};
 
@@ -77,6 +77,7 @@ int main () {
     }
 
     float dt = GetFrameTime();
+    level_update(&state.level, dt);
     player_update(&state.player, &state.level, dt);
 
     // Render the frame to texture
@@ -84,7 +85,7 @@ int main () {
     BeginMode2D(state.camera);
     ClearBackground(DARKGRAY);
     // printf("Drawing player at: %d")
-    level_draw(&state.level, dt);
+    level_draw(&state.level, &state.player, dt);
     player_draw(&state.player);
     fade_in(state.fade, (Rectangle){0, 0, resolution.x, resolution.y});
     state.fade -= dt / 2;

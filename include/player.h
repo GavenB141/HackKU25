@@ -27,6 +27,9 @@ typedef struct {
   float dash_timer;         
   float dash_cooldown_timer; 
   int teleported;
+
+  int targeted_orb;
+  bool is_holding_orb;
 } Player;
 
 void player_update(Player *state, Level *level, float dt);
