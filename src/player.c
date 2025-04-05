@@ -128,11 +128,11 @@ void move(Player *player, float dt) {
     player->dash_cooldown_timer = DASH_COOLDOWN; 
     // printf("Dashing %f:\n", player->dash_timer);
     if (player->inverted) {
-        player->velocity.x = -DASH_STRENGTH;  
+        player->velocity.x = -DASH_STRENGTH;
     } else {
-        player->velocity.x = DASH_STRENGTH;   
+        player->velocity.x = DASH_STRENGTH;
     } 
-    player->velocity.y = 0;
+    player->velocity.y = player->velocity.y > 0 ? 0 : player->velocity.y;
   }
   player->dash_timer -= dt;
   player->dash_cooldown_timer -= dt;
