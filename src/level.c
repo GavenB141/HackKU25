@@ -162,6 +162,9 @@ Level getLevel(int level_index) {
     case 10:
       return level_10();
       break;
+    case 11:
+      return level_11();
+      break;
     default:
       return tutorial_0();
       break;
@@ -423,6 +426,37 @@ Level level_10() {
   return level;
 }
 
-level_11(){
+Level level_11(){
+  Level level = {0};
+  level.id = 11;
+  level.startingPosition = (Vector2){50, 185};
+
+  level.sensors[0] = (Sensor){(Rectangle){0, 0, 400, 220}, 0};
+  level.platforms[0] = (Platform){(Rectangle){0, 208, 6*16, 32}};
+  level.platforms[1] = (Platform){(Rectangle){0, 0, 2, 208}};
+  level.platforms[2] = (Platform){(Rectangle){318, 0, 2, 160}};
+  level.platforms[3] = (Platform){(Rectangle){0, 0, 320, 32}};
+
+  level.transition[0] = (Transition){(Rectangle){338, 160, 1000, 48}, 0};
+  level.platforms[4] = (Platform){(Rectangle){14*16, 208, 32*4, 32}};
+
+  level.platforms[5] = (Platform){(Rectangle){300-12, 176, 32, 32},0,1, true}; 
+  level.platforms[6] = (Platform){(Rectangle){300-12, 176-32*6, 32, 32+32*5}};
+  level.platforms[7] = (Platform){(Rectangle){0, -16, 32*9, 64}};
+
+  level.platforms[8] = (Platform){(Rectangle){32*4 -16, 32*5-16 , 32*2, 32}};
+
+  level.platforms[9] = (Platform){(Rectangle){0, 32*4-16 , 32, 32}};
+  level.platforms[10] = (Platform){(Rectangle){32*8, 32*4-16 , 32, 32}};
+
+  level.orbs[0] = construct_orb((Vector2){280, 200}, 10.0, false, false);
+  level.orbs[1] = construct_orb((Vector2){280, 32*3}, 10.0, false, false);
+  level.orbs[2] = construct_orb((Vector2){10, 32*3}, 10.0, false, false);
+
+  level.orbs_count = 3;
+  level.sensor_count = 1;
+  level.transition_count = 1;
+  level.platform_count = 11;
   
+  return level;
 }
