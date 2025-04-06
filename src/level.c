@@ -5,8 +5,6 @@
 #include "raylib.h"
 #include "raymath.h"
 
-static Texture2D spike = {0};
-
 void level_draw(Level *level, Player *player, float dt) {
   static Font foont = {0};
   static Texture ground_texture = {0};
