@@ -114,23 +114,8 @@ int main () {
       state.player.position = state.level.startingPosition;
       state.fade = 0.8f;
     }
-    if (IsKeyPressed(KEY_FIVE)){
-      state.level = getLevel(5);
-      state.player.position = state.level.startingPosition;
-      state.fade = 0.8f;
-    }
-    if (IsKeyPressed(KEY_TWO)){
-      state.level = getLevel(2);
-      state.player.position = state.level.startingPosition;
-      state.fade = 0.8f;
-    }
-    if (IsKeyPressed(KEY_THREE)){
-      state.level = getLevel(3);
-      state.player.position = state.level.startingPosition;
-      state.fade = 0.8f;
-    }
-    if (IsKeyPressed(KEY_FOUR)){
-      state.level = getLevel(4);
+    if (IsKeyPressed(KEY_MINUS)){
+      state.level = getLevel(state.level.id+1);
       state.player.position = state.level.startingPosition;
       state.fade = 0.8f;
     }
