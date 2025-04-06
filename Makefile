@@ -23,10 +23,10 @@ $(BIN_NAME): $(COMP_FILES)
 
 RAYLIB := $(HOME)/pkg/raylib/src/
 web: $(COMP_FILES)
-	emcc -o web/$(BIN_NAME).html $(COMP_FILES) -Os -Wall $(RAYLIB)libraylib.web.a -I. -I$(RAYLIB) -L. -L$(RAYLIB)libraylib.web.a -lm -Iinclude -s USE_GLFW=3 -s ASYNCIFY -DPLATFORM_WEB --preload-file assets -DGRAPHICS_API_OPENGL_100 --shell-file web/game.html
+	emcc -o public/$(BIN_NAME).html $(COMP_FILES) -Os -Wall $(RAYLIB)libraylib.web.a -I. -I$(RAYLIB) -L. -L$(RAYLIB)libraylib.web.a -lm -Iinclude -s USE_GLFW=3 -s ASYNCIFY -DPLATFORM_WEB --preload-file assets -DGRAPHICS_API_OPENGL_100 --shell-file public/game.html
 
 clean:
-	@rm -f $(BIN_NAME) web/$(BIN_NAME).data web/$(BIN_NAME).js web/$(BIN_NAME).wasm
+	@rm -f $(BIN_NAME) public/$(BIN_NAME).data public/$(BIN_NAME).js public/$(BIN_NAME).wasm
 
 run: $(BIN_NAME)
 	@./$(BIN_NAME)
