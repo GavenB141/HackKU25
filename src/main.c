@@ -11,6 +11,7 @@ static Vector2 resolution = {640, 480};
  */
 typedef struct {
   Player player;
+  Player dragon;
   Level level;
   Camera2D camera;
   float fade;
@@ -20,10 +21,12 @@ static GameState state = {0};
 
 void initialize_state(int level_index) {
   state.player.sprite = load_player_sprite();
+  state.dragon.sprite = load_dragon_sprite();
 
   state.fade = FADE_VAL;
   state.level = getLevel(0);
   state.player.position = state.level.startingPosition;
+  state.dragon.position = (Vector2){150, 100};
   state.player.velocity = (Vector2){0, 0};
 
   state.camera.zoom = 2.0f;
@@ -82,15 +85,18 @@ int main () {
     float dt = GetFrameTime();
     level_update(&state.level, dt);
     player_update(&state.player, &state.level, dt);
+    if (state.level.id == 13) player_update(&state.dragon, &state.level, dt); // dragon
 
     // Render the frame to texture
     BeginTextureMode(render_tex);
     set_camera_zoom(&state);
     BeginMode2D(state.camera);
     ClearBackground(DARKGRAY);
-    // printf("Drawing player at: %d")
+    level_draw(&state.level, &state.player, dt);
     level_draw(&state.level, &state.player, dt);
     player_draw(&state.player);
+    if (state.level.id == 13) player_draw(&state.dragon); // dragon
+
     fade_in(state.fade, (Rectangle){0, 0, resolution.x, resolution.y});
     state.fade -= dt / 2;
     EndMode2D();

@@ -115,6 +115,10 @@ void level_draw(Level *level, Player *player, float dt) {
     break;
     case 10: DrawTextEx(foont, "Press R to RESET", (Vector2){85,40},16, 1, WHITE);
     break;
+    case 13: 
+      DrawTextEx(foont, "CONGRATULATIONS!!!", (Vector2){85,40},16, 1, WHITE);
+      DrawTextEx(foont, "You saved the dragon!", (Vector2){70,60},16, 1, WHITE);
+      DrawTextEx(foont, "Arrow keys to MOONWALK, = TO REPLAY", (Vector2){10,80},16, 1, WHITE);
     default: break;
   }
 }
@@ -172,6 +176,9 @@ Level getLevel(int level_index) {
       return level_11();
     case 12:
       return level_12();
+      break;
+    case 13:
+      return victory_room();
       break;
     default:
       return tutorial_0();
@@ -500,5 +507,22 @@ Level level_12(){
   level.transition_count = 1;
   level.spikes_count = 2;
   level.platform_count = 7;
+  return level;
+}
+
+
+
+Level victory_room() {
+  Level level = {0};
+  level.id = 13;
+  level.startingPosition = (Vector2){50, 185};
+  level.platforms[0] = (Platform){(Rectangle){0, 208, 320, 32}};
+  level.platforms[1] = (Platform){(Rectangle){0, 0, 2, 208}};
+  level.platforms[2] = (Platform){(Rectangle){318, 0, 2, 160}};
+  level.platforms[3] = (Platform){(Rectangle){0, 0, 320, 32}};
+
+  level.transition_count = 0;
+  level.platform_count = 4;
+  
   return level;
 }

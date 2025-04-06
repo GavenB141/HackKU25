@@ -1,5 +1,6 @@
 #include "animation.h"
 #include "raylib.h"
+#include "raymath.h"
 #include <math.h>
 #include <stdbool.h>
 

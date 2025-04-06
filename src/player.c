@@ -10,6 +10,8 @@
 
 #define PLAYER_WIDTH 39
 #define PLAYER_HEIGHT 19
+#define DRAGON_WIDTH 100
+#define DRAGON_HEIGHT 97
 #define JUMP_STRENGTH 2000
 #define MOVE_STRENGTH 400
 #define VEL_X_MAX 125
@@ -22,10 +24,10 @@
 // For physics (doesn't include tail)
 Rectangle get_player_bounds(const Player *player) {
   return (Rectangle) {
-    player->position.x - PLAYER_WIDTH / 2.0 + (player->inverted ? 0 : 11),
-    player->position.y - PLAYER_HEIGHT / 2.0,
-    PLAYER_WIDTH - TAIL_SPACE,
-    PLAYER_HEIGHT
+    player->sprite.sprite_size.x == 100 ? player->position.x - DRAGON_WIDTH / 2.0 + (player->inverted ? 0 : 11) : player->position.x - PLAYER_WIDTH / 2.0 + (player->inverted ? 0 : 11),
+    player->sprite.sprite_size.x == 100 ? player->position.y - DRAGON_HEIGHT / 2.0 : player->position.y - PLAYER_HEIGHT / 2.0,
+    player->sprite.sprite_size.x == 100 ? DRAGON_WIDTH : PLAYER_WIDTH - TAIL_SPACE,
+    player->sprite.sprite_size.x == 100 ? DRAGON_HEIGHT : PLAYER_HEIGHT
   };
 }
 
@@ -33,7 +35,7 @@ Rectangle get_player_bounds(const Player *player) {
 Rectangle get_player_sprite_bounds(const Player *player) {
   return (Rectangle) {
     player->position.x - PLAYER_WIDTH / 2.0,
-    player->position.y - PLAYER_HEIGHT / 2.0,
+    player->sprite.sprite_size.x == 100 ? player->position.y - DRAGON_HEIGHT / 2.0 + 2: player->position.y - PLAYER_HEIGHT / 2.0,
     PLAYER_WIDTH,
     PLAYER_HEIGHT
   };
@@ -47,6 +49,8 @@ void player_draw(Player* player) {
 
 
 void move(Player *player, float dt) {
+  bool is_dragon = player->sprite.sprite_size.x == 100;
+  if (!is_dragon) {
   if((IsKeyDown(KEY_W) || IsKeyDown(KEY_SPACE)) && (player->jumptime > 0)){
     player->velocity.y -= JUMP_STRENGTH * dt;
     player->jumptime -= dt;
@@ -60,18 +64,39 @@ void move(Player *player, float dt) {
     player->velocity.x -= MOVE_STRENGTH * dt;
     if (player->velocity.x > 0) player->velocity.x = 0;
     player->inverted = true;
-    if (player->velocity.x > 0) player->velocity.x = 0;
-    player->inverted = true;
   }
   if(IsKeyDown(KEY_D)){
     player->velocity.x += MOVE_STRENGTH * dt;
     if (player->velocity.x < 0) player->velocity.x = 0;
     player->inverted = false;
-    if (player->velocity.x < 0) player->velocity.x = 0;
-    player->inverted = false;
+  }
+  }
+  else {
+    if((IsKeyDown(KEY_UP) || IsKeyDown(KEY_SPACE)) && (player->jumptime > 0)){
+      player->velocity.y -= JUMP_STRENGTH * dt;
+      player->jumptime -= dt;
+  }
+  else player->jumptime = 0;
+  if((IsKeyDown(KEY_UP) || IsKeyDown(KEY_SPACE)) && player->grounded){
+      player->velocity.y -= JUMP_STRENGTH * dt * 0.4;
+      player->jumptime = 10.0 / 60.0;
+  }
+  if(IsKeyDown(KEY_LEFT)){
+      player->velocity.x -= MOVE_STRENGTH * dt;
+      if (player->velocity.x > 0) player->velocity.x = 0;
+      player->inverted = false;
+  }
+  if(IsKeyDown(KEY_RIGHT)){
+      player->velocity.x += MOVE_STRENGTH * dt;
+      if (player->velocity.x < 0) player->velocity.x = 0;
+      player->inverted = true;
+  }
   }
   if(player->grounded){
-    if (!(IsKeyDown(KEY_A) || IsKeyDown(KEY_D))) player->velocity.x /= FRICTION * dt;
+    if (is_dragon) {
+      if (!(IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_RIGHT))) player->velocity.x /= FRICTION * dt;
+    }
+    else if (!(IsKeyDown(KEY_A) || IsKeyDown(KEY_D))) player->velocity.x /= FRICTION * dt;
   }
   if(fabs(player->velocity.x) > VEL_X_MAX) player->velocity.x *= VEL_X_MAX/fabs(player->velocity.x);
 }
@@ -377,6 +402,8 @@ void player_update(Player *player, Level *level, float dt) {
     player_reset(player, level);
   }
 
+  
+  // if (player->sprite.sprite_size.x != 100)
   move(player, dt);
   orb_manipulation(player, level);
 
@@ -397,3 +424,15 @@ AnimationController load_player_sprite(){
   };
 }
 
+AnimationController load_dragon_sprite() {
+  return (AnimationController) {
+    .spritesheet = LoadTexture("assets/dragon.png"),
+    .sprite_size = (Vector2){100, 97},
+    .current_frame = 0,
+    .frame_time = 0.1,
+    .current_time = 0,
+    .frames = 1,
+    .indices = {0},
+    .origin = Vector2Zero()
+  };
+}
