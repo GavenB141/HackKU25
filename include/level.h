@@ -10,7 +10,7 @@ Level tutorial_1();
 Level tutorial_2();
 Level tutorial_3();
 Level spikes4();
-Level gaven_level();
+Level tutorial_4();
 
 void level_draw(Level *level, Player *player, float dt);
 void level_update(Level *level, float dt);
