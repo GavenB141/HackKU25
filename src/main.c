@@ -3,10 +3,8 @@
 #include "level.h"
 #include "player.h"
 
-#define TOTAL_LEVELS 3
 #define FADE_VAL 0.5f
 static const Vector2 resolution = {320, 240};
-static Level levels[TOTAL_LEVELS];
 
 /**
  * Main game state
@@ -24,7 +22,7 @@ void initialize_state(int level_index) {
   state.player.sprite = load_player_sprite();
 
   state.fade = FADE_VAL;
-  state.level = getLevel(6);
+  state.level = getLevel(0);
   state.player.position = state.level.startingPosition;
   state.player.velocity = (Vector2){0, 0};
 
@@ -57,9 +55,6 @@ Rectangle calculate_screen_target(Vector2 resolution) {
 int main () {
   InitWindow(resolution.x * 3, resolution.y * 3, "HackKU 2025");
 
-  for(int i = 0; i < TOTAL_LEVELS; i++){
-    levels[i] = getLevel(i);
-  }
   // Program state
   initialize_state(0);
   RenderTexture2D render_tex = LoadRenderTexture(resolution.x, resolution.y);

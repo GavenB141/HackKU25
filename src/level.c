@@ -128,6 +128,12 @@ Level getLevel(int level_index) {
     case 6:
       return static_magnets();
       break;
+    case 7:
+      return back_and_forth();
+      break;
+    case 8:
+      return level_8();
+      break;
     default:
       return tutorial_0();
       break;
@@ -246,7 +252,7 @@ Level spikes4() {
 Level tutorial_4() {
   Level level = {0};
   level.id = 4;
-  level.startingPosition = (Vector2){20, 200};
+  level.startingPosition = (Vector2){30, 200};
   
   level.platforms[0] = (Platform){(Rectangle){0, 208, 320, 32}};
   level.platforms[1] = (Platform){(Rectangle){0, 0, 2, 320}};
@@ -282,5 +288,56 @@ Level static_magnets() {
   level.orbs[1] = construct_orb((Vector2){40, 200}, 60.0, true, false); 
   level.orbs_count = 2;
 
+  return level;
+}
+
+Level back_and_forth() {
+  Level level = {0};
+  level.id = 7;
+  level.startingPosition = (Vector2){40, 185};
+  level.platforms[0] = (Platform){(Rectangle){0, 208, 320, 32}};
+  level.platforms[1] = (Platform){(Rectangle){0, 0, 2, 208}};
+  level.platforms[2] = (Platform){(Rectangle){318, 0, 2, 174}};
+  level.platforms[3] = (Platform){(Rectangle){0, 0, 320, 32}};
+  level.platforms[4] = (Platform){(Rectangle){300-12, 176, 32, 32},0,1}; 
+
+
+  level.transition[0] = (Transition){(Rectangle){338, 160, 1000, 48}, 1};
+  level.spikes[0] = (Spike){(Rectangle){160-32*3, 176, 32, 32}, get_spike_animation()};
+  level.spikes[1] = (Spike){(Rectangle){192-32, 176, 32, 32}, get_spike_animation()};
+  level.spikes[2] = (Spike){(Rectangle){224-32, 176, 32, 32}, get_spike_animation()};
+
+  level.sensors[0] = (Sensor){(Rectangle){0, 180, 32, 32}, 0};
+  level.sensor_count = 1;
+
+  level.orbs[0] = construct_orb((Vector2){280, 200}, 60.0, true, false);
+
+  level.orbs_count = 1;
+  level.spikes_count = 3;
+  level.transition_count = 1;
+  level.platform_count = 5;
+
+  return level;
+}
+
+Level level_8() {
+  Level level = {0};
+  level.id = 8;
+  level.startingPosition = (Vector2){30, 200};
+  level.platforms[0] = (Platform){(Rectangle){0, 208, 320, 32}};
+  level.platforms[1] = (Platform){(Rectangle){0, 0, 2, 208}};
+  level.platforms[2] = (Platform){(Rectangle){318, 0, 2, 160}};
+  level.platforms[3] = (Platform){(Rectangle){0, 0, 320, 32}};
+
+  level.platforms[4] = (Platform){(Rectangle){128+64, 80, 64, 128}};
+  level.platforms[5] = (Platform){(Rectangle){128, 80+32*3, 64, 32}};
+  level.platforms[6] = (Platform){(Rectangle){128, 80, 64, 32}};
+  level.platforms[7] = (Platform){(Rectangle){0, 80+32, 64, 64}};
+
+  level.transition[0] = (Transition){(Rectangle){338, 100, 1000, 100}, 1};
+
+  level.transition_count = 1;
+  level.platform_count = 8;
+  
   return level;
 }
