@@ -315,7 +315,7 @@ void orb_manipulation(Player *player, Level *level) {
     return;
   }
 
-  float min_distance = 15;
+  float min_distance = 25;
   int selectable_orb = -1;
 
   // Find nearest orb within a range
