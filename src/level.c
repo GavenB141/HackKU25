@@ -84,8 +84,10 @@ void level_draw(Level *level, Player *player, float dt) {
     break;
     case 3: DrawTextEx(foont, "Avoid Hazards", (Vector2){100,110},16, 1, WHITE);
     break;
-    case 4: DrawTextEx(foont, "Move the ball to open the gate", (Vector2){20,20},16, 1, WHITE);
-    DrawTextEx(foont, "Pickup or drop the magnets with SHIFT", (Vector2){20+24,36+6},16, 1, WHITE);
+    case 4: 
+    DrawTextEx(foont, "Move the ball to open the gate", (Vector2){20,20},16, 1, WHITE);
+    DrawTextEx(foont, "Pickup or drop the", (Vector2){20+24,36+6},16, 1, WHITE);
+    DrawTextEx(foont, "magnets with SHIFT", (Vector2){20+24,52+6},16, 1, WHITE);
     break;
     default: break;
   }

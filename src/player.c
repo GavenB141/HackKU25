@@ -294,6 +294,7 @@ void orb_manipulation(Player *player, Level *level) {
 
     if(IsKeyPressed(KEY_LEFT_SHIFT)) {
       orb->free = true;
+      orb->position.y += 5;
       player->is_holding_orb = false;
     } 
 
