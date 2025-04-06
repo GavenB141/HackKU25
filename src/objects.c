@@ -144,7 +144,7 @@ void orb_update(MagneticOrb *orb, Level *level, float dt) {
   orb_check_sensors(orb, level);
 
   if (orb->free && !orb->is_static) {
-    if (orb->strong_pull.y >= 0) {
+    if (orb->strong_pull.y + orb->weak_pull.y >= 0) {
       orb->velocity.y += ORB_GRAVITY * dt;
     }
 

@@ -19,10 +19,18 @@ endif
 BIN_NAME := game
 
 $(BIN_NAME): $(COMP_FILES)
-	$(CC) $(COMP_FILES) -o $(BIN_NAME) $(LDFLAGS) -lm -Iinclude
+	$(CC) $(COMP_FILES) -o $(BIN_NAME) $(LDFLAGS) -lm -Iinclude -DGRAPHICS_API_OPENGL_10
+
+RAYLIB := $(HOME)/pkg/raylib/src/
+$(BIN_NAME).html: $(COMP_FILES)
+	emcc -o $(BIN_NAME).html $(COMP_FILES) -Os -Wall $(RAYLIB)libraylib.web.a -I. -I$(RAYLIB) -L. -L$(RAYLIB)libraylib.web.a -lm -Iinclude -s USE_GLFW=3 -s ASYNCIFY -DPLATFORM_WEB --preload-file assets -DGRAPHICS_API_OPENGL_10
+
+web: $(BIN_NAME).html
 
 clean:
-	rm $(BIN_NAME)
+	@rm -f $(BIN_NAME) $(BIN_NAME).html $(BIN_NAME).js $(BIN_NAME).wasm $(BIN_NAME).data
 
 run: $(BIN_NAME)
-	./$(BIN_NAME)
+	@./$(BIN_NAME)
+
+.PHONY: clean run web

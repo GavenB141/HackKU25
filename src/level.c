@@ -12,13 +12,16 @@ void level_draw(Level *level, Player *player, float dt) {
   static Texture positive_orb_texture = {0};
   static Texture negative_orb_texture = {0};
   static Shader highlight_shader = {0};
+  static Shader repeat_shader = {0};
 
   if (ground_texture.id == 0) {
-    gate_texture = LoadTexture("assets/gate_texture_sprite.png"); //replace with path to gate image
+    // Load drawing assets for duration of process
+    gate_texture = LoadTexture("assets/gate_texture_sprite.png");
     ground_texture = LoadTexture("assets/metal_crate_sprite.png");
     positive_orb_texture = LoadTexture("assets/positive_orb_sprite.png");
     negative_orb_texture = LoadTexture("assets/negative_orb_sprite.png");
     highlight_shader = LoadShader(0, "assets/shaders/highlight_outline.fs.glsl");
+    repeat_shader = LoadShader(0, "assets/shaders/texture_repeat.fs.glsl");
     foont = LoadFont("assets/setback.png");
   }
 
@@ -34,6 +37,7 @@ void level_draw(Level *level, Player *player, float dt) {
     animation_draw(&spike->sprite, (Vector2){level->spikes[i].bounds.x, level->spikes[i].bounds.y}, false, spike->rotation);
   }
 
+  BeginShaderMode(repeat_shader);
   for (int i = 0; i < level->platform_count; i++) {
     Rectangle bounds = level->platforms[i].bounds;
     Vector2 position = (Vector2){bounds.x, bounds.y};
@@ -47,6 +51,7 @@ void level_draw(Level *level, Player *player, float dt) {
       DrawTextureRec(ground_texture, bounds, position, WHITE);
     }
   }
+  EndShaderMode();
 
   for (int i = 0; i < level->orbs_count; i++) {
     MagneticOrb *orb = &level->orbs[i];
@@ -84,8 +89,8 @@ void level_draw(Level *level, Player *player, float dt) {
     break;
     case 4: 
     DrawTextEx(foont, "Move the ball to open the gate", (Vector2){20,20},16, 1, WHITE);
-    DrawTextEx(foont, "Pickup or drop the", (Vector2){20+24,36+6},16, 1, WHITE);
-    DrawTextEx(foont, "magnets with SHIFT", (Vector2){20+24,52+6},16, 1, WHITE);
+    DrawTextEx(foont, "Pickup or drop the", (Vector2){75,36+6},16, 1, WHITE);
+    DrawTextEx(foont, "magnets with SHIFT", (Vector2){75,52+6},16, 1, WHITE);
     break;
     default: break;
   }
@@ -127,6 +132,15 @@ Level getLevel(int level_index) {
       break;
     case 6:
       return static_magnets();
+      break;
+    case 7:
+      return back_and_forth();
+      break;
+    case 8:
+      return level_8();
+      break;
+    case 10:
+      return level_10();
       break;
 
 
@@ -232,7 +246,7 @@ Level spikes4() {
   level.platforms[1] = (Platform){(Rectangle){0, 0, 2, 320}};
   level.platforms[2] = (Platform){(Rectangle){318, 0, 2, 160}};
   level.platforms[3] = (Platform){(Rectangle){0, 0, 320, 32}};
-  level.transition[0] = (Transition){(Rectangle){338, 160, 1000, 48}, 0};
+  level.transition[0] = (Transition){(Rectangle){338, 160, 1000, 48}, 6};
 
   level.spikes[0] = (Spike){(Rectangle){160-32, 176, 32, 32}, get_spike_animation()};
   level.spikes[1] = (Spike){(Rectangle){160, 176, 32, 32}, get_spike_animation()};
@@ -251,16 +265,16 @@ Level spikes4() {
 Level tutorial_4() {
   Level level = {0};
   level.id = 4;
-  level.startingPosition = (Vector2){20, 200};
+  level.startingPosition = (Vector2){30, 200};
   
   level.platforms[0] = (Platform){(Rectangle){0, 208, 320, 32}};
   level.platforms[1] = (Platform){(Rectangle){0, 0, 2, 320}};
   level.platforms[2] = (Platform){(Rectangle){318, 0, 2, 176}};
   level.platforms[3] = (Platform){(Rectangle){0, 144, 320, 32}};
-  level.platforms[4] = (Platform){(Rectangle){300, 176, 32, 32},0,1}; // gate reading sensor 0
+  level.platforms[4] = (Platform){(Rectangle){300-12, 176, 32, 32},0,1}; // gate reading sensor 0
   level.platform_count = 5;
 
-  level.transition[0] = (Transition){(Rectangle){338, 160, 1000, 48}, 1};
+  level.transition[0] = (Transition){(Rectangle){338, 160, 1000, 48}, 6};
   level.transition_count = 1;
 
   level.sensors[0] = (Sensor){(Rectangle){0, 112, 32, 32}, 0};
@@ -290,6 +304,61 @@ Level static_magnets() {
   level.orbs[1] = construct_orb((Vector2){40, 200}, 60.0, true, false); 
   level.orbs_count = 2;
 
+  level.transition[0] = (Transition){(Rectangle){338, 160, 1000, 48}, 7};
+  level.transition_count = 1;
+
+  return level;
+}
+
+Level back_and_forth() {
+  Level level = {0};
+  level.id = 7;
+  level.startingPosition = (Vector2){40, 185};
+  level.platforms[0] = (Platform){(Rectangle){0, 208, 320, 32}};
+  level.platforms[1] = (Platform){(Rectangle){0, 0, 2, 208}};
+  level.platforms[2] = (Platform){(Rectangle){318, 0, 2, 174}};
+  level.platforms[4] = (Platform){(Rectangle){300-12, 176, 32, 32},0,1}; 
+  level.platforms[3] = (Platform){(Rectangle){300-12, 176-32*6, 32, 32+32*5}};
+  level.platforms[5] = (Platform){(Rectangle){0, -16, 32*9, 64}};
+
+
+  level.transition[0] = (Transition){(Rectangle){338, 160, 1000, 48}, 8};
+  level.spikes[0] = (Spike){(Rectangle){160-32*3, 176, 32, 32}, get_spike_animation()};
+  level.spikes[1] = (Spike){(Rectangle){192-32, 176, 32, 32}, get_spike_animation()};
+  level.spikes[2] = (Spike){(Rectangle){224-32, 176, 32, 32}, get_spike_animation()};
+
+  level.sensors[0] = (Sensor){(Rectangle){0, 180, 32, 32}, 0};
+  level.sensor_count = 1;
+
+  level.orbs[0] = construct_orb((Vector2){280, 200}, 60.0, true, false);
+
+  level.orbs_count = 1;
+  level.spikes_count = 3;
+  level.transition_count = 1;
+  level.platform_count = 6;
+
+  return level;
+}
+
+Level level_8() {
+  Level level = {0};
+  level.id = 8;
+  level.startingPosition = (Vector2){30, 200};
+  level.platforms[0] = (Platform){(Rectangle){0, 208, 320, 32}};
+  level.platforms[1] = (Platform){(Rectangle){0, 0, 2, 208}};
+  level.platforms[2] = (Platform){(Rectangle){318, 0, 2, 160}};
+  level.platforms[3] = (Platform){(Rectangle){0, 0, 320, 32}};
+
+  level.platforms[4] = (Platform){(Rectangle){128+64, 80, 64, 128}};
+  level.platforms[5] = (Platform){(Rectangle){128, 80+32*3, 64, 32}};
+  level.platforms[6] = (Platform){(Rectangle){128, 80, 64, 32}};
+  level.platforms[7] = (Platform){(Rectangle){0, 80+32, 64, 64}};
+
+  level.transition[0] = (Transition){(Rectangle){338, 100, 1000, 100}, 9};
+
+  level.transition_count = 1;
+  level.platform_count = 8;
+  
   return level;
 }
 
@@ -311,5 +380,30 @@ Level repulse_fly() {
   level.transition[0] = (Transition){(Rectangle){338, 160, 1000, 48}, 1};
   level.transition_count = 1;
 
+  return level;
+}
+
+Level level_10() {
+  Level level = {0};
+  level.id = 10;
+  level.startingPosition = (Vector2){30, 200};
+  
+  level.platforms[0] = (Platform){(Rectangle){0, 208, 64, 32}};
+  level.platforms[1] = (Platform){(Rectangle){256, 208, 64, 32}};
+  level.platforms[2] = (Platform){(Rectangle){0, 144-36+16, 320, 32}};
+  level.platforms[3] = (Platform){(Rectangle){32*2, 208, 32*6, 32},0,1};
+
+  level.transition[0] = (Transition){(Rectangle){338, 100, 1000, 100}, 11};
+
+  level.sensors[0] = (Sensor){(Rectangle){0, 144-36-10+16+5, 320, 5}};
+
+  level.orbs[0] = construct_orb((Vector2){30, 200}, 50.0, true, false);
+  level.orbs[1] = construct_orb((Vector2){170-36*2, 144-36-5+16}, 50.0, true, false);
+
+  level.orbs_count = 2;
+  level.transition_count = 1;
+  level.sensor_count = 1;
+  level.platform_count = 5;
+  
   return level;
 }

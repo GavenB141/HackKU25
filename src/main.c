@@ -3,7 +3,6 @@
 #include "level.h"
 #include "player.h"
 
-#define TOTAL_LEVELS 9
 #define FADE_VAL 0.5f
 static Vector2 resolution = {640, 480};
 static Level levels[TOTAL_LEVELS];
@@ -24,7 +23,7 @@ void initialize_state(int level_index) {
   state.player.sprite = load_player_sprite();
 
   state.fade = FADE_VAL;
-  state.level = getLevel(9); // (level_index)
+  state.level = getLevel(0);
   state.player.position = state.level.startingPosition;
   state.player.velocity = (Vector2){0, 0};
 
@@ -65,9 +64,6 @@ void set_camera_zoom() {
 int main () {
   InitWindow(resolution.x * 3, resolution.y * 3, "HackKU 2025");
 
-  for(int i = 0; i < TOTAL_LEVELS; i++){
-    levels[i] = getLevel(i);
-  }
   // Program state
   initialize_state(0);
   RenderTexture2D render_tex = LoadRenderTexture(resolution.x, resolution.y);
@@ -124,6 +120,11 @@ int main () {
     }
     if (IsKeyPressed(KEY_MINUS)){
       state.level = getLevel(state.level.id+1);
+      state.fade = FADE_VAL;
+      player_reset(&state.player, &state.level);
+    }
+    if (IsKeyPressed(KEY_ZERO)){
+      state.level = getLevel(state.level.id-1);
       state.fade = FADE_VAL;
       player_reset(&state.player, &state.level);
     }
