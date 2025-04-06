@@ -20,6 +20,8 @@ Level level_10();
 Level level_11();
 Level level_12();
 Level victory_room();
+Level level_13();
+Level level_14();
 
 void level_draw(Level *level, Player *player, float dt);
 void level_update(Level *level, float dt);

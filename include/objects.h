@@ -27,8 +27,6 @@ typedef struct {
   bool is_static;
   bool free;
 
-  // Gravitational component of velocity, preserved
-  float grav_velocity;
   float range;
 
   // Pull by other orbs, overridden by player

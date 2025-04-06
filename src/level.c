@@ -139,50 +139,22 @@ void fade_in(float fade, Rectangle screen){
 
 Level getLevel(int level_index) {
   switch (level_index) {
-    case 0:
-      return tutorial_0();
-      break;
-    case 1:
-      return tutorial_1();
-      break;
-    case 2:
-      return tutorial_2();
-      break;
-    case 3:
-      return tutorial_3();
-      break;
-    case 4:
-      return tutorial_4();
-      break;
-    case 5:
-      return spikes4();
-      break;
-    case 6:
-      return static_magnets();
-      break;
-    case 7:
-      return back_and_forth();
-      break;
-    case 8:
-      return level_8();
-      break;
-    case 9:
-      return repulse_fly();
-      break;
-    case 10:
-      return level_10();
-      break;
-    case 11:
-      return level_11();
-    case 12:
-      return level_12();
-      break;
-    case 13:
-      return victory_room();
-      break;
-    default:
-      return tutorial_0();
-      break;
+    case 0: return tutorial_0();
+    case 1: return tutorial_1();
+    case 2: return tutorial_2();
+    case 3: return tutorial_3();
+    case 4: return tutorial_4();
+    case 5: return spikes4();
+    case 6: return static_magnets();
+    case 7: return back_and_forth();
+    case 8: return level_8();
+    case 9: return repulse_fly();
+    case 10: return level_10();
+    case 11: return level_11();
+    case 12: return level_12();
+    case 13: return level_13();
+    case 14: return level_14();
+    default: return tutorial_0();
   }
 }
 
@@ -274,7 +246,7 @@ Level tutorial_3() {
 Level spikes4() {
   Level level = {0};
   level.id = 5;
-  level.startingPosition = (Vector2){50, 185};
+  level.startingPosition = (Vector2){30, 185};
   level.platforms[0] = (Platform){(Rectangle){0, 208, 320, 32}};
   level.platforms[1] = (Platform){(Rectangle){0, 0, 2, 320}};
   level.platforms[2] = (Platform){(Rectangle){318, 0, 2, 160}};
@@ -285,10 +257,16 @@ Level spikes4() {
   level.spikes[1] = (Spike){(Rectangle){160, 176, 32, 32}, get_spike_animation()};
   level.spikes[2] = (Spike){(Rectangle){192, 176, 32, 32}, get_spike_animation()};
   level.spikes[3] = (Spike){(Rectangle){224, 176, 32, 32}, get_spike_animation()};
+  level.spikes[4] = (Spike){(Rectangle){224+32, 176, 32, 32}, get_spike_animation()};
+  level.spikes[5] = (Spike){(Rectangle){224-32*4, 176, 32, 32}, get_spike_animation()};
 
-  level.spikes_count = 4;
+  level.orbs[0] = construct_orb((Vector2){192-32*4+48+32, 176+32}, 50.0, true, true);
+  level.orbs[2] = construct_orb((Vector2){192+48, 176+32}, 50.0, true, true); 
+  level.orbs[1] = construct_orb((Vector2){40, 200}, 40.0, true, false); 
+  level.orbs[3] = construct_orb((Vector2){192+16, 32}, 100.0, false, true); 
 
-  
+  level.orbs_count = 4;
+  level.spikes_count = 6;
   level.transition_count = 1;
   level.platform_count = 4;
   
@@ -307,7 +285,7 @@ Level tutorial_4() {
   level.platforms[4] = (Platform){(Rectangle){300-12, 176, 32, 32},0,1}; // gate reading sensor 0
   level.platform_count = 5;
 
-  level.transition[0] = (Transition){(Rectangle){338, 160, 1000, 48}, 6};
+  level.transition[0] = (Transition){(Rectangle){338, 160, 1000, 48}, 5};
   level.transition_count = 1;
 
   level.sensors[0] = (Sensor){(Rectangle){0, 112, 32, 32}, 0};
@@ -452,7 +430,7 @@ Level level_11(){
   level.platforms[2] = (Platform){(Rectangle){318, 0, 2, 160}};
   level.platforms[3] = (Platform){(Rectangle){0, 0, 320, 32}};
 
-  level.transition[0] = (Transition){(Rectangle){338, 160, 1000, 48}, 0};
+  level.transition[0] = (Transition){(Rectangle){338, 160, 1000, 48}, 12};
   level.platforms[4] = (Platform){(Rectangle){14*16, 208, 32*4, 32}};
 
   level.platforms[5] = (Platform){(Rectangle){300-12, 176, 32, 32},0,1, true}; 
@@ -491,11 +469,11 @@ Level level_12(){
   level.platforms[5] = (Platform){(Rectangle){318-62, 176, 32, 32},1,1,0};
   level.platforms[6] = (Platform){(Rectangle){318-62+32, 176, 32, 32},0,1,0};
 
-  level.spikes[0] = (Spike){(Rectangle){32*3, 208-32, 32, 32}, get_spike_animation()};
-  level.spikes[1] = (Spike){(Rectangle){32*4, 208-32, 32, 32}, get_spike_animation()};
+  level.spikes[0] = (Spike){(Rectangle){32*3, 208-28, 32, 32}, get_spike_animation()};
+  level.spikes[1] = (Spike){(Rectangle){32*4, 208-28, 32, 32}, get_spike_animation()};
 
-  level.orbs[0] = construct_orb((Vector2){15, 215}, 25.0, true, false);
-  level.orbs[1] = construct_orb((Vector2){75, 215}, 25.0, true, false);
+  level.orbs[0] = construct_orb((Vector2){10, 215}, 22.0, true, false);
+  level.orbs[1] = construct_orb((Vector2){75, 215}, 22.0, false, false);
 
   level.sensors[1] = (Sensor){(Rectangle){318-62-32, 176, 32, 32}, 0};
   level.sensors[0] = (Sensor){(Rectangle){318-62-32*3, 176, 32, 32}, 0};
@@ -523,6 +501,146 @@ Level victory_room() {
 
   level.transition_count = 0;
   level.platform_count = 4;
+  
+  return level;
+}
+
+Level level_13() {
+  Level level = {0};
+  level.id = 13;
+  level.startingPosition = (Vector2){30, 400};
+
+  level.is_big_level = true;
+
+  level.platforms[0] = (Platform){(Rectangle){0, 416, 640, 64}};
+  level.platforms[1] = (Platform){(Rectangle){0, 0, 640, 64}};
+  level.platforms[2] = (Platform){(Rectangle){0, 208, 416, 64}};
+  level.platforms[3] = (Platform){(Rectangle){576, 64, 64, 512}};
+  level.platforms[4] = (Platform){(Rectangle){512, 256, 64, 32}};
+  level.platform_count = 5;
+
+  for (int i = 0; i < 8; i++) {
+    int offset = 32 * (12 - (i < 4 ? i : i + 2));
+    level.spikes[i] = (Spike){(Rectangle){640 - offset, 480 - 32 * 3, 32, 32}, get_spike_animation(), 0};
+  }
+  level.spikes[8] = (Spike){(Rectangle){544, 224, 32, 32}, get_spike_animation(), 270.0f};
+  level.spikes[9] = (Spike){(Rectangle){544 - 32 * 4, 224, 32, 32}, get_spike_animation(), 90.0f};
+  level.spikes_count = 10;
+
+  level.orbs[0] = construct_orb((Vector2){60, 400}, 60.0, false, false);
+  level.orbs[1] = construct_orb((Vector2){640 - 7 * 32, 480 - 32}, 160.0, false, true);
+  level.orbs[2] = construct_orb((Vector2){640 - 32, 240}, 240.0, true, true);
+  level.orbs_count = 3;
+
+  level.transition[0] = (Transition){(Rectangle){-1018, 64, 1000, 160}, 14};
+  level.transition_count = 1;
+
+  return level;
+}
+
+Level level_14() {
+  Level level = {0};
+  level.id = 14;
+  level.startingPosition = (Vector2){270,63};
+  level.platforms[0] = (Platform){(Rectangle){-16, 208+16, 320+16, 32}};
+  level.platforms[1] = (Platform){(Rectangle){0, 0-16, 2, 208}};
+  level.platforms[2] = (Platform){(Rectangle){318, -16, 2, 160}};
+  level.platforms[3] = (Platform){(Rectangle){0, -16, 320, 32}};
+
+  level.platforms[4] = (Platform){(Rectangle){128, 64, 64*4, 32*3}};
+  level.platforms[5] = (Platform){(Rectangle){-16, 64, 32*2, 32*5}};
+  level.platforms[6] = (Platform){(Rectangle){320-32, 200-32-8, 32, 32*2}, 0, 1, 1};
+
+  level.spikes[0]  = (Spike){(Rectangle){32*1, 32*2+2, 32, 32}, get_spike_animation(), 90.0f};
+  level.spikes[1]  = (Spike){(Rectangle){32*3.5, 32*2, 32, 32}, get_spike_animation(), 270.0f};
+  level.spikes[2]  = (Spike){(Rectangle){32*1, 32*3, 32, 32}, get_spike_animation(), 90.0f};
+  level.spikes[3]  = (Spike){(Rectangle){32*3.5, 32*3, 32, 32}, get_spike_animation(), 270.0f};
+  level.spikes[4]  = (Spike){(Rectangle){32*1, 32*4, 32, 32}, get_spike_animation(), 90.0f};
+  level.spikes[5]  = (Spike){(Rectangle){32*3.5, 32*4, 32, 32}, get_spike_animation(), 270.0f};
+  level.spikes[6]  = (Spike){(Rectangle){32*1, 32*5, 32, 32}, get_spike_animation(), 90.0f};
+  level.spikes[7]  = (Spike){(Rectangle){32*1, 32*6, 32, 32}, get_spike_animation(), 90.0f};
+  
+  level.orbs[0] = construct_orb((Vector2){40-24, 60}, 5, true, false);
+
+  level.sensors[0] = (Sensor){(Rectangle){0,16,48,48}};
+
+  level.transition[0] = (Transition){(Rectangle){340, 100, 1000, 200}, 15};
+
+  level.spikes_count = 8;
+  level.sensor_count = 1;
+  level.orbs_count = 1;
+  level.transition_count = 1;
+  level.platform_count = 7;
+  
+  return level;
+}
+
+Level level_13() {
+  Level level = {0};
+  level.id = 13;
+  level.startingPosition = (Vector2){30, 400};
+
+  level.is_big_level = true;
+
+  level.platforms[0] = (Platform){(Rectangle){0, 416, 640, 64}};
+  level.platforms[1] = (Platform){(Rectangle){0, 0, 640, 64}};
+  level.platforms[2] = (Platform){(Rectangle){0, 208, 416, 64}};
+  level.platforms[3] = (Platform){(Rectangle){576, 64, 64, 512}};
+  level.platforms[4] = (Platform){(Rectangle){512, 256, 64, 32}};
+  level.platform_count = 5;
+
+  for (int i = 0; i < 8; i++) {
+    int offset = 32 * (12 - (i < 4 ? i : i + 2));
+    level.spikes[i] = (Spike){(Rectangle){640 - offset, 480 - 32 * 3, 32, 32}, get_spike_animation(), 0};
+  }
+  level.spikes[8] = (Spike){(Rectangle){544, 224, 32, 32}, get_spike_animation(), 270.0f};
+  level.spikes[9] = (Spike){(Rectangle){544 - 32 * 4, 224, 32, 32}, get_spike_animation(), 90.0f};
+  level.spikes_count = 10;
+
+  level.orbs[0] = construct_orb((Vector2){60, 400}, 60.0, false, false);
+  level.orbs[1] = construct_orb((Vector2){640 - 7 * 32, 480 - 32}, 160.0, false, true);
+  level.orbs[2] = construct_orb((Vector2){640 - 32, 240}, 240.0, true, true);
+  level.orbs_count = 3;
+
+  level.transition[0] = (Transition){(Rectangle){-1018, 64, 1000, 160}, 14};
+  level.transition_count = 1;
+
+  return level;
+}
+
+Level level_14() {
+  Level level = {0};
+  level.id = 14;
+  level.startingPosition = (Vector2){270,63};
+  level.platforms[0] = (Platform){(Rectangle){-16, 208+16, 320+16, 32}};
+  level.platforms[1] = (Platform){(Rectangle){0, 0-16, 2, 208}};
+  level.platforms[2] = (Platform){(Rectangle){318, -16, 2, 160}};
+  level.platforms[3] = (Platform){(Rectangle){0, -16, 320, 32}};
+
+  level.platforms[4] = (Platform){(Rectangle){128, 64, 64*4, 32*3}};
+  level.platforms[5] = (Platform){(Rectangle){-16, 64, 32*2, 32*5}};
+  level.platforms[6] = (Platform){(Rectangle){320-32, 200-32-8, 32, 32*2}, 0, 1, 1};
+
+  level.spikes[0]  = (Spike){(Rectangle){32*1, 32*2+2, 32, 32}, get_spike_animation(), 90.0f};
+  level.spikes[1]  = (Spike){(Rectangle){32*3.5, 32*2, 32, 32}, get_spike_animation(), 270.0f};
+  level.spikes[2]  = (Spike){(Rectangle){32*1, 32*3, 32, 32}, get_spike_animation(), 90.0f};
+  level.spikes[3]  = (Spike){(Rectangle){32*3.5, 32*3, 32, 32}, get_spike_animation(), 270.0f};
+  level.spikes[4]  = (Spike){(Rectangle){32*1, 32*4, 32, 32}, get_spike_animation(), 90.0f};
+  level.spikes[5]  = (Spike){(Rectangle){32*3.5, 32*4, 32, 32}, get_spike_animation(), 270.0f};
+  level.spikes[6]  = (Spike){(Rectangle){32*1, 32*5, 32, 32}, get_spike_animation(), 90.0f};
+  level.spikes[7]  = (Spike){(Rectangle){32*1, 32*6, 32, 32}, get_spike_animation(), 90.0f};
+  
+  level.orbs[0] = construct_orb((Vector2){40-24, 60}, 5, true, false);
+
+  level.sensors[0] = (Sensor){(Rectangle){0,16,48,48}};
+
+  level.transition[0] = (Transition){(Rectangle){340, 100, 1000, 200}, 15};
+
+  level.spikes_count = 8;
+  level.sensor_count = 1;
+  level.orbs_count = 1;
+  level.transition_count = 1;
+  level.platform_count = 7;
   
   return level;
 }
