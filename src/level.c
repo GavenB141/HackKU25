@@ -148,13 +148,11 @@ Level getLevel(int level_index) {
     case 8:
       return level_8();
       break;
-    case 10:
-      return level_10();
-      break;
-
-
     case 9:
       return repulse_fly();
+      break;
+    case 10:
+      return level_10();
       break;
     default:
       return tutorial_0();
