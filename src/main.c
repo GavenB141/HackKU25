@@ -5,7 +5,6 @@
 
 #define FADE_VAL 0.5f
 static Vector2 resolution = {640, 480};
-static Level levels[TOTAL_LEVELS];
 
 /**
  * Main game state
