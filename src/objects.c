@@ -130,7 +130,7 @@ void orb_check_sensors(MagneticOrb *orb, Level *level) {
   for(int i = 0; i < level->sensor_count; i++){
     if (CheckCollisionRecs(orb_bounds, level->sensors[i].bounds)) {
       level->sensors[i].sensed = 1;
-      printf("Sensed! %f\n", GetTime());
+      //printf("Sensed! %f\n", GetTime());
     }
   }
 }  

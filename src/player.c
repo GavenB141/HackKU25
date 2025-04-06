@@ -180,6 +180,9 @@ void detect_stage_collisions(Player *player, Level *level, double dt) {
   const Vector2 translation = Vector2Scale(player->velocity, dt);
 
   for (int i = 0; i < level->platform_count; i++) {
+    if(level->platforms[i].gate){
+      if(level->sensors[level->platforms->sensor_idx].sensed) { continue; }
+    }
     const Rectangle plat_bounds = level->platforms[i].bounds;
     const Rectangle overlap = GetCollisionRec(player_bounds, plat_bounds);
     if (overlap.width == 0 || overlap.height == 0) {

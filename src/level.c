@@ -10,11 +10,13 @@ static Texture2D spike = {0};
 void level_draw(Level *level, Player *player, float dt) {
   static Font foont = {0};
   static Texture ground_texture = {0};
+  static Texture gate_texture = {0};
   static Texture positive_orb_texture = {0};
   static Texture negative_orb_texture = {0};
   static Shader highlight_shader = {0};
 
   if (ground_texture.id == 0) {
+    gate_texture = LoadTexture("assets/metal_crate_sprite.png"); //replace with path to gate image
     ground_texture = LoadTexture("assets/metal_crate_sprite.png");
     positive_orb_texture = LoadTexture("assets/positive_orb_sprite.png");
     negative_orb_texture = LoadTexture("assets/negative_orb_sprite.png");
@@ -38,7 +40,14 @@ void level_draw(Level *level, Player *player, float dt) {
     Rectangle bounds = level->platforms[i].bounds;
     Vector2 position = (Vector2){bounds.x, bounds.y};
     bounds.x = 0, bounds.y = 0;
-    DrawTextureRec(ground_texture, bounds, position, WHITE);
+    float alpha = 1;
+    if(level->platforms[i].gate){
+      if(level->sensors[level->platforms->sensor_idx].sensed) { alpha = 0.25; }
+      DrawTextureRec(gate_texture, bounds, position, ColorAlpha(WHITE, alpha));
+    }
+    else{
+      DrawTextureRec(ground_texture, bounds, position, WHITE);
+    }
   }
 
   for (int i = 0; i < level->orbs_count; i++) {
@@ -236,7 +245,8 @@ Level gaven_level() {
   level.platforms[1] = (Platform){(Rectangle){0, 0, 2, 176}};
   level.platforms[2] = (Platform){(Rectangle){318, 0, 2, 176}};
   level.platforms[3] = (Platform){(Rectangle){0, 144, 320, 32}};
-  level.platform_count = 4;
+  level.platforms[4] = (Platform){(Rectangle){300, 176, 32, 32},0,1}; // gate reading sensor 0
+  level.platform_count = 5;
 
   level.sensors[0] = (Sensor){(Rectangle){0, 112, 32, 32}, 0};
   level.sensor_count = 1;

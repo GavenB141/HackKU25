@@ -38,6 +38,8 @@ typedef struct {
 
 typedef struct {
   Rectangle bounds;
+  int sensor_idx;
+  bool gate;
 } Platform;
 
 typedef struct {
