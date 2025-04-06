@@ -5,6 +5,8 @@
 #include "raylib.h"
 #include "raymath.h"
 
+
+
 void level_draw(Level *level, Player *player, float dt) {
   static Font foont = {0};
   static Texture ground_texture = {0};
@@ -173,7 +175,7 @@ static MagneticOrb construct_orb(Vector2 position, float range, bool positive, b
 Level tutorial_0() {
   Level level = {0};
   level.id = 0;
-  level.startingPosition = (Vector2){50, 185};
+  level.startingPosition = (Vector2){50, 184};
   level.platforms[0] = (Platform){(Rectangle){0, 208, 320, 32}};
   level.platforms[1] = (Platform){(Rectangle){0, 0, 2, 208}};
   level.platforms[2] = (Platform){(Rectangle){318, 0, 2, 160}};
@@ -189,7 +191,7 @@ Level tutorial_0() {
 Level tutorial_1() {
   Level level = {0};
   level.id = 1;
-  level.startingPosition = (Vector2){50, 185};
+  level.startingPosition = (Vector2){50, 184};
 
   level.platforms[0] = (Platform){(Rectangle){0, 208, 320, 32}};
   level.platforms[1] = (Platform){(Rectangle){0, 0, 2, 208}};
@@ -206,7 +208,7 @@ Level tutorial_1() {
 Level tutorial_2() {
   Level level = {0};
   level.id = 2;
-  level.startingPosition = (Vector2){50, 185};
+  level.startingPosition = (Vector2){50, 184};
   level.platforms[0] = (Platform){(Rectangle){0, 208, 6*16, 32}};
   level.platforms[1] = (Platform){(Rectangle){0, 0, 2, 208}};
   level.platforms[2] = (Platform){(Rectangle){318, 0, 2, 160}};
@@ -224,7 +226,7 @@ Level tutorial_2() {
 Level tutorial_3() {
   Level level = {0};
   level.id = 3;
-  level.startingPosition = (Vector2){50, 185};
+  level.startingPosition = (Vector2){50, 184};
   level.platforms[0] = (Platform){(Rectangle){0, 208, 320, 32}};
   level.platforms[1] = (Platform){(Rectangle){0, 0, 2, 208}};
   level.platforms[2] = (Platform){(Rectangle){318, 0, 2, 160}};
@@ -248,7 +250,7 @@ Level tutorial_3() {
 Level spikes4() {
   Level level = {0};
   level.id = 5;
-  level.startingPosition = (Vector2){30, 185};
+  level.startingPosition = (Vector2){30, 184};
   level.platforms[0] = (Platform){(Rectangle){0, 208, 320, 32}};
   level.platforms[1] = (Platform){(Rectangle){0, 0, 2, 320}};
   level.platforms[2] = (Platform){(Rectangle){318, 0, 2, 160}};
@@ -278,7 +280,7 @@ Level spikes4() {
 Level tutorial_4() {
   Level level = {0};
   level.id = 4;
-  level.startingPosition = (Vector2){30, 200};
+  level.startingPosition = (Vector2){30, 199};
   
   level.platforms[0] = (Platform){(Rectangle){0, 208, 320, 32}};
   level.platforms[1] = (Platform){(Rectangle){0, 0, 2, 320}};
@@ -304,7 +306,7 @@ Level static_magnets() {
   Level level = {0};
 
   level.id = 6;
-  level.startingPosition = (Vector2){20, 200};
+  level.startingPosition = (Vector2){20, 199};
   level.platforms[0] = (Platform){(Rectangle){0, 208, 64, 32}};
   level.platforms[1] = (Platform){(Rectangle){256, 208, 64, 32}};
   level.platforms[2] = (Platform){(Rectangle){0, 0, 320, 96}};
@@ -326,7 +328,7 @@ Level static_magnets() {
 Level back_and_forth() {
   Level level = {0};
   level.id = 7;
-  level.startingPosition = (Vector2){20, 185};
+  level.startingPosition = (Vector2){20, 184};
   level.platforms[0] = (Platform){(Rectangle){0, 208, 320, 32}};
   level.platforms[1] = (Platform){(Rectangle){0, 0, 2, 208}};
   level.platforms[2] = (Platform){(Rectangle){318, 0, 2, 174}};
@@ -356,7 +358,7 @@ Level back_and_forth() {
 Level level_8() {
   Level level = {0};
   level.id = 8;
-  level.startingPosition = (Vector2){30, 200};
+  level.startingPosition = (Vector2){30, 199};
   level.platforms[0] = (Platform){(Rectangle){0, 208, 320, 32}};
   level.platforms[1] = (Platform){(Rectangle){0, 0, 2, 208}};
   level.platforms[2] = (Platform){(Rectangle){318, 0, 2, 160}};
@@ -379,7 +381,7 @@ Level repulse_fly() {
   Level level = {0};
 
   level.id = 9;
-  level.startingPosition = (Vector2){20, 200};
+  level.startingPosition = (Vector2){20, 199};
   level.platforms[0] = (Platform){(Rectangle){0, 208, 64, 32}};
   level.platforms[1] = (Platform){(Rectangle){256, 208, 64, 32}};
   level.platforms[2] = (Platform){(Rectangle){0, 0, 320, 32}};
@@ -398,7 +400,7 @@ Level repulse_fly() {
 Level level_10() {
   Level level = {0};
   level.id = 10;
-  level.startingPosition = (Vector2){30, 200};
+  level.startingPosition = (Vector2){30, 199};
   
   level.platforms[0] = (Platform){(Rectangle){0, 208, 64, 32}};
   level.platforms[1] = (Platform){(Rectangle){256, 208, 64, 32}};
@@ -423,7 +425,7 @@ Level level_10() {
 Level level_11(){
   Level level = {0};
   level.id = 11;
-  level.startingPosition = (Vector2){50, 185};
+  level.startingPosition = (Vector2){50, 184};
 
   level.sensors[0] = (Sensor){(Rectangle){0, 0, 400, 220}, 0};
   level.platforms[0] = (Platform){(Rectangle){0, 208, 6*16, 32}};
@@ -458,7 +460,7 @@ Level level_11(){
 Level level_12(){
   Level level = {0};
   level.id = 12;
-  level.startingPosition = (Vector2){30, 200};
+  level.startingPosition = (Vector2){30, 199};
   
   level.platforms[0] = (Platform){(Rectangle){0, 208, 320, 32}};
   level.platforms[1] = (Platform){(Rectangle){0, -16, 2, 370}};
@@ -494,7 +496,7 @@ Level level_12(){
 Level victory_room() {
   Level level = {0};
   level.id = 15;
-  level.startingPosition = (Vector2){50, 185};
+  level.startingPosition = (Vector2){50, 184};
   level.platforms[0] = (Platform){(Rectangle){0, 208, 320, 32}};
   level.platforms[1] = (Platform){(Rectangle){0, 0, 2, 208}};
   level.platforms[2] = (Platform){(Rectangle){318, 0, 2, 160}};
@@ -509,7 +511,7 @@ Level victory_room() {
 Level level_13() {
   Level level = {0};
   level.id = 13;
-  level.startingPosition = (Vector2){30, 400};
+  level.startingPosition = (Vector2){30, 399};
 
   level.is_big_level = true;
 
@@ -542,7 +544,7 @@ Level level_13() {
 Level level_14() {
   Level level = {0};
   level.id = 14;
-  level.startingPosition = (Vector2){270,63};
+  level.startingPosition = (Vector2){270,62};
   level.platforms[0] = (Platform){(Rectangle){-16, 208+16, 320+16, 32}};
   level.platforms[1] = (Platform){(Rectangle){0, 0-16, 2, 208}};
   level.platforms[2] = (Platform){(Rectangle){318, -16, 2, 160}};
