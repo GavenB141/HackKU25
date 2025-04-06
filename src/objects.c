@@ -112,8 +112,9 @@ void orb_calculate_pull(MagneticOrb *orb, Level *level) {
 
     // Check if in range
     float distance = Vector2Distance(orb->position, other->position);
+    float ratio = distance / (orb->range + other->range);
 
-    if (distance > orb->range + other->range) {
+    if (ratio > 1.0) {
       continue;
     }
     
@@ -122,9 +123,9 @@ void orb_calculate_pull(MagneticOrb *orb, Level *level) {
       pull = Vector2Negate(pull);
     }
     if (other->is_static) {
-      orb->strong_pull = Vector2Scale(Vector2Normalize(pull), MAGNET_STRENGTH);
+      orb->strong_pull = Vector2Scale(Vector2Normalize(pull), MAGNET_STRENGTH * ratio);
     } else {
-      orb->weak_pull = Vector2Scale(Vector2Normalize(pull), MAGNET_STRENGTH);
+      orb->weak_pull = Vector2Scale(Vector2Normalize(pull), MAGNET_STRENGTH * ratio);
     }
   }
 }
@@ -143,10 +144,8 @@ void orb_update(MagneticOrb *orb, Level *level, float dt) {
   orb_check_sensors(orb, level);
 
   if (orb->free && !orb->is_static) {
-    orb->velocity.y += ORB_GRAVITY * dt;
-
-    if (orb->strong_pull.y < 0) {
-      orb->velocity.y -= ORB_GRAVITY * dt;
+    if (orb->strong_pull.y >= 0) {
+      orb->velocity.y += ORB_GRAVITY * dt;
     }
 
     Vector2 total_pull = Vector2Add(orb->weak_pull, orb->strong_pull);

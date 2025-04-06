@@ -24,7 +24,7 @@ void initialize_state(int level_index) {
   state.player.sprite = load_player_sprite();
 
   state.fade = FADE_VAL;
-  state.level = getLevel(0);
+  state.level = getLevel(6);
   state.player.position = state.level.startingPosition;
   state.player.velocity = (Vector2){0, 0};
 
