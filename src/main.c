@@ -85,7 +85,7 @@ int main () {
     float dt = GetFrameTime();
     level_update(&state.level, dt);
     player_update(&state.player, &state.level, dt);
-    if (state.level.id == 13) player_update(&state.dragon, &state.level, dt); // dragon
+    if (state.level.id == 15) player_update(&state.dragon, &state.level, dt); // dragon
 
     // Render the frame to texture
     BeginTextureMode(render_tex);
@@ -95,7 +95,7 @@ int main () {
     level_draw(&state.level, &state.player, dt);
     level_draw(&state.level, &state.player, dt);
     player_draw(&state.player);
-    if (state.level.id == 13) player_draw(&state.dragon); // dragon
+    if (state.level.id == 15) player_draw(&state.dragon); // dragon
 
     fade_in(state.fade, (Rectangle){0, 0, resolution.x, resolution.y});
     state.fade -= dt / 2;
