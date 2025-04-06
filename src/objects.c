@@ -96,7 +96,7 @@ void orb_handle_stage_collisions(MagneticOrb *orb, Level *level, double dt) {
 }
 
 #define ORB_GRAVITY 600
-#define MAGNET_STRENGTH 300
+#define MAGNET_STRENGTH 100
 
 void orb_calculate_pull(MagneticOrb *orb, Level *level) {
   orb->weak_pull = Vector2Zero();
@@ -121,7 +121,11 @@ void orb_calculate_pull(MagneticOrb *orb, Level *level) {
     if (other->positive == orb->positive) {
       pull = Vector2Negate(pull);
     }
-    orb->weak_pull = Vector2ClampValue(Vector2Scale(Vector2Normalize(pull), MAGNET_STRENGTH), 0, distance);
+    if (other->is_static) {
+      orb->strong_pull = Vector2Scale(Vector2Normalize(pull), MAGNET_STRENGTH);
+    } else {
+      orb->weak_pull = Vector2Scale(Vector2Normalize(pull), MAGNET_STRENGTH);
+    }
   }
 }
 
@@ -130,7 +134,6 @@ void orb_check_sensors(MagneticOrb *orb, Level *level) {
   for(int i = 0; i < level->sensor_count; i++){
     if (CheckCollisionRecs(orb_bounds, level->sensors[i].bounds)) {
       level->sensors[i].sensed = 1;
-      //printf("Sensed! %f\n", GetTime());
     }
   }
 }  
@@ -139,7 +142,7 @@ void orb_update(MagneticOrb *orb, Level *level, float dt) {
   orb_calculate_pull(orb, level);
   orb_check_sensors(orb, level);
 
-  if (orb->free) {
+  if (orb->free && !orb->is_static) {
     orb->velocity.y += ORB_GRAVITY * dt;
 
     Vector2 total_pull = Vector2Add(orb->weak_pull, orb->strong_pull);
