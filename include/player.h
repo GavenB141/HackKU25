@@ -1,10 +1,6 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#define DASH_STRENGTH 360     
-#define DASH_DURATION 10/60.0      
-#define DASH_COOLDOWN 1 
-
 #include "animation.h"
 #include "raylib.h"
 #include "objects.h"
@@ -24,8 +20,6 @@ typedef struct {
   bool inverted;
   float jumptime;
   PlayerState state;
-  float dash_timer;         
-  float dash_cooldown_timer; 
   int teleported;
 
   int targeted_orb;
