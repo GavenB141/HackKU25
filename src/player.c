@@ -277,6 +277,9 @@ void orb_manipulation(Player *player, Level *level) {
   if (player->is_holding_orb) {
     MagneticOrb *orb = &level->orbs[player->targeted_orb];
     orb->free = false;
+
+    // Not used while held, but will be preserved when dropped
+    // orb->velocity = player->velocity;
     orb->position = (Vector2){floor(player->position.x), floor(player->position.y) - 5}; 
 
     if(IsKeyPressed(KEY_E)) {

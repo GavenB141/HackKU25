@@ -95,7 +95,7 @@ void orb_handle_stage_collisions(MagneticOrb *orb, Level *level, double dt) {
 }
 
 #define ORB_GRAVITY 600
-// #define MAGNET_STRENGTH 200
+#define MAGNET_STRENGTH 300
 
 void orb_calculate_pull(MagneticOrb *orb, Level *level) {
   orb->weak_pull = Vector2Zero();
@@ -109,20 +109,20 @@ void orb_calculate_pull(MagneticOrb *orb, Level *level) {
       continue;
     }
 
+
     // Check if in range
     float distance = Vector2Distance(orb->position, other->position);
-    float ratio = distance / (orb->range) + (other->range);
+    float ratio = distance / (orb->range + other->range);
 
     if (ratio > 1.0) {
       continue;
     }
     
-    Vector2 pull = Vector2MoveTowards(orb->position, other->position, distance * (1 - ratio));
-    if (other->positive != orb->positive) {
+    Vector2 pull = Vector2Subtract(other->position, orb->position);
+    if (other->positive == orb->positive) {
       pull = Vector2Negate(pull);
     }
-    orb->weak_pull = pull;
-    printf("%f %f\n", pull.x, pull.y);
+    orb->weak_pull = Vector2Scale(Vector2Normalize(pull), MAGNET_STRENGTH * (1 - ratio));
   }
 }
 
@@ -130,12 +130,13 @@ void orb_update(MagneticOrb *orb, Level *level, float dt) {
   orb_calculate_pull(orb, level);
 
   if (orb->free) {
-    orb->grav_velocity = orb->velocity.y + ORB_GRAVITY * dt;
-    orb->velocity = Vector2Add(Vector2Add(orb->weak_pull, orb->strong_pull), (Vector2){0, orb->grav_velocity});
+    orb->velocity.y += ORB_GRAVITY * dt;
+
+    Vector2 total_pull = Vector2Add(orb->weak_pull, orb->strong_pull);
+    orb->velocity = Vector2Add(total_pull, orb->velocity);
     orb->position = Vector2Add(orb->position, Vector2Scale(orb->velocity, dt));
     orb_handle_stage_collisions(orb, level, dt);
-  } else {
-    orb->velocity = Vector2Zero();
+    orb->velocity = Vector2Subtract(orb->velocity, total_pull);
   }
 }
 

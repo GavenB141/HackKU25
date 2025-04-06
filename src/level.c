@@ -36,13 +36,19 @@ void level_draw(Level *level, Player *player, float dt) {
   }
 
   for (int i = 0; i < level->orbs_count; i++) {
+    MagneticOrb *orb = &level->orbs[i];
+    Color aura = orb->positive ? BLUE : RED;
+
+    DrawCircleV(orb->position, orb->range, ColorAlpha(aura, 0.25));
+    DrawCircleLinesV(orb->position, orb->range, ColorAlpha(aura, 0.5));
+
     if (i == player->targeted_orb && !player->is_holding_orb)
       BeginShaderMode(highlight_shader);
 
     DrawTexturePro(
-       level->orbs[i].positive ? positive_orb_texture : negative_orb_texture,
+       orb->positive ? positive_orb_texture : negative_orb_texture,
        (Rectangle) {0, 0, 16, 16},
-       get_orb_bounds(&level->orbs[i]),
+       get_orb_bounds(orb),
        Vector2Zero(),
        0,
        WHITE
@@ -67,6 +73,8 @@ void level_draw(Level *level, Player *player, float dt) {
 void level_update(Level *level, float dt) {
   for (int i = 0; i < level->orbs_count; i++) {
     orb_update(&level->orbs[i], level, dt);
+    if (i == 0)
+      printf("%f %f\n", level->orbs[0].weak_pull.x, level->orbs[0].weak_pull.y);
   }
   for (int i = 0; i < level->spikes_count; i++) {
     animation_update(&level->spikes[i].sprite, dt);
@@ -99,6 +107,15 @@ Level getLevel(int level_index) {
       return tutorial_0();
       break;
   }
+}
+
+static MagneticOrb construct_orb(Vector2 position, float range, bool positive) {
+  MagneticOrb orb = {0};
+  orb.position = position;
+  orb.positive = positive;
+  orb.free = true;
+  orb.range = range;
+  return orb;
 }
 
 Level tutorial_0() {
@@ -188,16 +205,14 @@ Level gaven_level() {
   level.platforms[4] = (Platform){(Rectangle){256, 176, 64, 32}};
   level.platform_count = 5;
 
-  level.spikes[0] = (Spike){(Rectangle){160, 176, 32, 32}, get_spike_animation()};
-  level.spikes[1] = (Spike){(Rectangle){192, 176, 32, 32}, get_spike_animation()};
-  level.spikes[2] = (Spike){(Rectangle){224, 176, 32, 32}, get_spike_animation()};
-  level.spikes_count = 3;
+  // level.spikes[0] = (Spike){(Rectangle){160, 176, 32, 32}, get_spike_animation()};
+  // level.spikes[1] = (Spike){(Rectangle){192, 176, 32, 32}, get_spike_animation()};
+  // level.spikes[2] = (Spike){(Rectangle){224, 176, 32, 32}, get_spike_animation()};
+  // level.spikes_count = 3;
 
-  level.orbs[0] = (MagneticOrb){{20, 20}, (Vector2){0, 0}, false, true};
-  level.orbs[1] = (MagneticOrb){{300, 20}, (Vector2){0, 0}, true,  true};
+  level.orbs[0] = construct_orb((Vector2){20, 20}, 60.0, true);
+  level.orbs[1] = construct_orb((Vector2){300, 20}, 60.0, false);
   level.orbs_count = 2;
 
   return level;
 }
-
-//level.spikes[0] = (Spike){(Rectangle){160, 176, 32, 32}, get_spike_animation()};
