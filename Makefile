@@ -22,13 +22,11 @@ $(BIN_NAME): $(COMP_FILES)
 	$(CC) $(COMP_FILES) -o $(BIN_NAME) $(LDFLAGS) -lm -Iinclude -DGRAPHICS_API_OPENGL_100
 
 RAYLIB := $(HOME)/pkg/raylib/src/
-$(BIN_NAME).html: $(COMP_FILES)
-	emcc -o $(BIN_NAME).html $(COMP_FILES) -Os -Wall $(RAYLIB)libraylib.web.a -I. -I$(RAYLIB) -L. -L$(RAYLIB)libraylib.web.a -lm -Iinclude -s USE_GLFW=3 -s ASYNCIFY -DPLATFORM_WEB --preload-file assets -DGRAPHICS_API_OPENGL_100
-
-web: $(BIN_NAME).html
+web: $(COMP_FILES)
+	emcc -o public/index.html $(COMP_FILES) -Os -Wall $(RAYLIB)libraylib.web.a -I. -I$(RAYLIB) -L. -L$(RAYLIB)libraylib.web.a -lm -Iinclude -s USE_GLFW=3 -s ASYNCIFY -DPLATFORM_WEB --preload-file assets -DGRAPHICS_API_OPENGL_100 --shell-file public/index.html
 
 clean:
-	@rm -f $(BIN_NAME) $(BIN_NAME).html $(BIN_NAME).js $(BIN_NAME).wasm $(BIN_NAME).data
+	@rm -f $(BIN_NAME) public/index.data public/index.js public/index.wasm
 
 run: $(BIN_NAME)
 	@./$(BIN_NAME)

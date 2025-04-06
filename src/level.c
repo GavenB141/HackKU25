@@ -76,6 +76,10 @@ void level_draw(Level *level, Player *player, float dt) {
 
     DrawCircleV(orb->position, orb->range, ColorAlpha(aura, 0.25));
     DrawCircleLinesV(orb->position, orb->range, ColorAlpha(aura, 0.5));
+  }
+
+  for (int i = 0; i < level->orbs_count; i++) {
+    MagneticOrb *orb = &level->orbs[i];
 
     if (i == player->targeted_orb && !player->is_holding_orb)
       BeginShaderMode(highlight_shader);
@@ -331,7 +335,7 @@ Level static_magnets() {
 Level back_and_forth() {
   Level level = {0};
   level.id = 7;
-  level.startingPosition = (Vector2){40, 185};
+  level.startingPosition = (Vector2){20, 185};
   level.platforms[0] = (Platform){(Rectangle){0, 208, 320, 32}};
   level.platforms[1] = (Platform){(Rectangle){0, 0, 2, 208}};
   level.platforms[2] = (Platform){(Rectangle){318, 0, 2, 174}};
