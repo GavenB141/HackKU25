@@ -328,7 +328,7 @@ Level static_magnets() {
 Level back_and_forth() {
   Level level = {0};
   level.id = 7;
-  level.startingPosition = (Vector2){40, 185};
+  level.startingPosition = (Vector2){20, 185};
   level.platforms[0] = (Platform){(Rectangle){0, 208, 320, 32}};
   level.platforms[1] = (Platform){(Rectangle){0, 0, 2, 208}};
   level.platforms[2] = (Platform){(Rectangle){318, 0, 2, 174}};
