@@ -84,6 +84,9 @@ void level_draw(Level *level, Player *player, float dt) {
     break;
     case 3: DrawTextEx(foont, "Avoid Hazards", (Vector2){100,110},16, 1, WHITE);
     break;
+    case 4: DrawTextEx(foont, "Move the ball to open the gate", (Vector2){20,20},16, 1, WHITE);
+    DrawTextEx(foont, "Pickup the magnets with E", (Vector2){20+24,36+6},16, 1, WHITE);
+    break;
     default: break;
   }
 }
@@ -117,7 +120,7 @@ Level getLevel(int level_index) {
       return tutorial_3();
       break;
     case 4:
-      return gaven_level();
+      return tutorial_4();
       break;
     case 5:
       return spikes4();
@@ -196,7 +199,7 @@ Level tutorial_3() {
   level.platforms[1] = (Platform){(Rectangle){0, 0, 2, 208}};
   level.platforms[2] = (Platform){(Rectangle){318, 0, 2, 160}};
   level.platforms[3] = (Platform){(Rectangle){0, 0, 320, 32}};
-  level.transition[0] = (Transition){(Rectangle){318, 160, 1000, 48}, 0};
+  level.transition[0] = (Transition){(Rectangle){318, 160, 1000, 48}, 4};
 
   level.spikes[0] = (Spike){(Rectangle){160-32*2, 176, 32, 32}, get_spike_animation()};
   level.spikes[1] = (Spike){(Rectangle){160+32*4, 176-64, 32, 32}, get_spike_animation(), 270.0f};
@@ -236,7 +239,7 @@ Level spikes4() {
   return level;
 }
 
-Level gaven_level() {
+Level tutorial_4() {
   Level level = {0};
   level.id = 4;
   level.startingPosition = (Vector2){20, 200};
@@ -247,6 +250,9 @@ Level gaven_level() {
   level.platforms[3] = (Platform){(Rectangle){0, 144, 320, 32}};
   level.platforms[4] = (Platform){(Rectangle){300, 176, 32, 32},0,1}; // gate reading sensor 0
   level.platform_count = 5;
+
+  level.transition[0] = (Transition){(Rectangle){322, 160, 1000, 48}, 5};
+  level.transition_count = 1;
 
   level.sensors[0] = (Sensor){(Rectangle){0, 112, 32, 32}, 0};
   level.sensor_count = 1;
