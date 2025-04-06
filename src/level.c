@@ -198,7 +198,7 @@ Level tutorial_3() {
 
 Level spikes4() {
   Level level = {0};
-  level.id = 4;
+  level.id = 5;
   level.startingPosition = (Vector2){50, 185};
   level.platforms[0] = (Platform){(Rectangle){0, 208, 320, 32}};
   level.platforms[1] = (Platform){(Rectangle){0, 0, 2, 208}};
@@ -222,7 +222,7 @@ Level spikes4() {
 
 Level gaven_level() {
   Level level = {0};
-  level.id = 6969;
+  level.id = 4;
   level.startingPosition = (Vector2){20, 200};
   
   level.platforms[0] = (Platform){(Rectangle){0, 208, 320, 32}};

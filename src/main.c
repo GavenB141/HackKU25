@@ -104,6 +104,7 @@ int main () {
       WHITE
     );
     if (IsKeyPressed(KEY_R) || state.player.teleported == 1) {
+      state.level = getLevel(state.level.id);
       state.player.position = state.level.startingPosition;
       state.player.velocity = (Vector2){0,0};
       state.fade = 0.8f;
