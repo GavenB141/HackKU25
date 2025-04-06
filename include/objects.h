@@ -22,7 +22,9 @@ typedef struct {
 
   // Real velocity, computed for collision purposes
   Vector2 velocity;
+
   bool positive;
+  bool is_static;
   bool free;
 
   // Gravitational component of velocity, preserved

@@ -16,8 +16,8 @@ void level_draw(Level *level, Player *player, float dt) {
   static Shader highlight_shader = {0};
 
   if (ground_texture.id == 0) {
-    gate_texture = LoadTexture("assets/metal_crate_sprite.png"); //replace with path to gate image
-    ground_texture = LoadTexture("assets/green_tile_sprite.png");
+    gate_texture = LoadTexture("assets/gate_texture_sprite.png"); //replace with path to gate image
+    ground_texture = LoadTexture("assets/metal_crate_sprite.png");
     positive_orb_texture = LoadTexture("assets/positive_orb_sprite.png");
     negative_orb_texture = LoadTexture("assets/negative_orb_sprite.png");
     highlight_shader = LoadShader(0, "assets/shaders/highlight_outline.fs.glsl");
@@ -125,18 +125,22 @@ Level getLevel(int level_index) {
     case 5:
       return spikes4();
       break;
+    case 6:
+      return static_magnets();
+      break;
     default:
       return tutorial_0();
       break;
   }
 }
 
-static MagneticOrb construct_orb(Vector2 position, float range, bool positive) {
+static MagneticOrb construct_orb(Vector2 position, float range, bool positive, bool is_static) {
   MagneticOrb orb = {0};
   orb.position = position;
   orb.positive = positive;
   orb.free = true;
   orb.range = range;
+  orb.is_static = is_static;
   return orb;
 }
 
@@ -148,7 +152,7 @@ Level tutorial_0() {
   level.platforms[1] = (Platform){(Rectangle){0, 0, 2, 208}};
   level.platforms[2] = (Platform){(Rectangle){318, 0, 2, 160}};
   level.platforms[3] = (Platform){(Rectangle){0, 0, 320, 32}};
-  level.transition[0] = (Transition){(Rectangle){318, 160, 1000, 48}, 1};
+  level.transition[0] = (Transition){(Rectangle){338, 160, 1000, 48}, 1};
 
   level.transition_count = 1;
   level.platform_count = 4;
@@ -166,7 +170,7 @@ Level tutorial_1() {
   level.platforms[2] = (Platform){(Rectangle){256, 112, 64, 96}};
   level.platforms[3] = (Platform){(Rectangle){256-64-64, 112+48+16, 64, 96-48-16}};
   level.platforms[4] = (Platform){(Rectangle){0, 0, 320, 32}};
-  level.transition[0] = (Transition){(Rectangle){318, 100, 1000, 100}, 2};
+  level.transition[0] = (Transition){(Rectangle){338, 100, 1000, 100}, 2};
 
   level.transition_count = 1;
   level.platform_count = 5;
@@ -251,14 +255,31 @@ Level tutorial_4() {
   level.platforms[4] = (Platform){(Rectangle){300, 176, 32, 32},0,1}; // gate reading sensor 0
   level.platform_count = 5;
 
-  level.transition[0] = (Transition){(Rectangle){322, 160, 1000, 48}, 5};
+  level.transition[0] = (Transition){(Rectangle){338, 160, 1000, 48}, 1};
   level.transition_count = 1;
 
   level.sensors[0] = (Sensor){(Rectangle){0, 112, 32, 32}, 0};
   level.sensor_count = 1;
 
-  level.orbs[0] = construct_orb((Vector2){40, 200}, 60.0, true);
-  level.orbs[1] = construct_orb((Vector2){300, 20}, 60.0, false);
+  level.orbs[0] = construct_orb((Vector2){40, 200}, 60.0, true, false);
+  level.orbs[1] = construct_orb((Vector2){300, 20}, 60.0, false, false);
+  level.orbs_count = 2;
+
+  return level;
+}
+
+Level static_magnets() {
+  Level level = {0};
+
+  level.id = 6;
+  level.startingPosition = (Vector2){20, 200};
+  level.platforms[0] = (Platform){(Rectangle){0, 208, 64, 32}};
+  level.platforms[1] = (Platform){(Rectangle){256, 208, 64, 32}};
+  level.platforms[2] = (Platform){(Rectangle){0, 64, 320, 32}};
+  level.platform_count = 3;
+
+  level.orbs[0] = construct_orb((Vector2){160, 80}, 90.0, false, true); 
+  level.orbs[1] = construct_orb((Vector2){40, 200}, 60.0, true, false); 
   level.orbs_count = 2;
 
   return level;
