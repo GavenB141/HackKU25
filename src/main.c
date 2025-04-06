@@ -4,7 +4,7 @@
 #include "player.h"
 
 #define TOTAL_LEVELS 3
-
+#define FADE_VAL 0.5f
 static const Vector2 resolution = {320, 240};
 static Level levels[TOTAL_LEVELS];
 
@@ -23,7 +23,7 @@ static GameState state = {0};
 void initialize_state(int level_index) {
   state.player.sprite = load_player_sprite();
 
-  state.fade = 0.8f;
+  state.fade = FADE_VAL;
   state.level = getLevel(0);
   state.player.position = state.level.startingPosition;
   state.player.velocity = (Vector2){0, 0};
@@ -107,17 +107,17 @@ int main () {
       state.level = getLevel(state.level.id);
       state.player.position = state.level.startingPosition;
       state.player.velocity = (Vector2){0,0};
-      state.fade = 0.8f;
+      state.fade = FADE_VAL;
     }
     if (IsKeyPressed(KEY_EQUAL)){
       state.level = getLevel(0);
       state.player.position = state.level.startingPosition;
-      state.fade = 0.8f;
+      state.fade = FADE_VAL;
     }
     if (IsKeyPressed(KEY_MINUS)){
       state.level = getLevel(state.level.id+1);
       state.player.position = state.level.startingPosition;
-      state.fade = 0.8f;
+      state.fade = FADE_VAL;
     }
     EndDrawing();
   }
