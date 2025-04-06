@@ -150,6 +150,7 @@ void player_reset(Player *player, Level *level) {
   player->position = level->startingPosition;
   player->velocity = (Vector2){0, 0};
   player->grounded = false;
+  player->inverted = false;
   player->jumptime = 0;
   player->teleported = 1;
 }

@@ -108,6 +108,7 @@ int main () {
       state.player.position = state.level.startingPosition;
       state.player.velocity = (Vector2){0,0};
       state.fade = FADE_VAL;
+      state.player.inverted = false;
     }
     if (IsKeyPressed(KEY_EQUAL)){
       state.level = getLevel(0);

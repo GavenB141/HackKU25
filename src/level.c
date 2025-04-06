@@ -185,7 +185,7 @@ Level tutorial_2() {
   level.platforms[1] = (Platform){(Rectangle){0, 0, 2, 208}};
   level.platforms[2] = (Platform){(Rectangle){318, 0, 2, 160}};
   level.platforms[3] = (Platform){(Rectangle){0, 0, 320, 32}};
-  level.transition[0] = (Transition){(Rectangle){318, 160, 1000, 48}, 3};
+  level.transition[0] = (Transition){(Rectangle){338, 160, 1000, 48}, 3};
 
   level.platforms[4] = (Platform){(Rectangle){14*16, 208, 10*16, 32}};
 
@@ -203,7 +203,7 @@ Level tutorial_3() {
   level.platforms[1] = (Platform){(Rectangle){0, 0, 2, 208}};
   level.platforms[2] = (Platform){(Rectangle){318, 0, 2, 160}};
   level.platforms[3] = (Platform){(Rectangle){0, 0, 320, 32}};
-  level.transition[0] = (Transition){(Rectangle){318, 160, 1000, 48}, 4};
+  level.transition[0] = (Transition){(Rectangle){338, 160, 1000, 48}, 4};
 
   level.spikes[0] = (Spike){(Rectangle){160-32*2, 176, 32, 32}, get_spike_animation()};
   level.spikes[1] = (Spike){(Rectangle){160+32*4, 176-64, 32, 32}, get_spike_animation(), 270.0f};
@@ -227,7 +227,7 @@ Level spikes4() {
   level.platforms[1] = (Platform){(Rectangle){0, 0, 2, 320}};
   level.platforms[2] = (Platform){(Rectangle){318, 0, 2, 160}};
   level.platforms[3] = (Platform){(Rectangle){0, 0, 320, 32}};
-  level.transition[0] = (Transition){(Rectangle){318, 160, 1000, 48}, 0};
+  level.transition[0] = (Transition){(Rectangle){338, 160, 1000, 48}, 0};
 
   level.spikes[0] = (Spike){(Rectangle){160-32, 176, 32, 32}, get_spike_animation()};
   level.spikes[1] = (Spike){(Rectangle){160, 176, 32, 32}, get_spike_animation()};
