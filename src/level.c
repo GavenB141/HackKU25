@@ -51,8 +51,16 @@ void level_draw(Level *level, Player *player, float dt) {
     bounds.x = 0, bounds.y = 0;
     float alpha = 1;
     if(level->platforms[i].gate){
-      if(level->sensors[level->platforms->sensor_idx].sensed) { alpha = 0.25; }
-      DrawTextureRec(gate_texture, bounds, position, ColorAlpha(WHITE, alpha));
+      if(level->platforms[i].inverted)
+      {
+        if(!level->sensors[level->platforms->sensor_idx].sensed) { alpha = 0.25; }
+        DrawTextureRec(gate_texture, bounds, position, ColorAlpha(WHITE, alpha));
+      }
+      else
+      {
+        if(level->sensors[level->platforms->sensor_idx].sensed) { alpha = 0.25; }
+        DrawTextureRec(gate_texture, bounds, position, ColorAlpha(WHITE, alpha));
+      }
     }
     else{
       DrawTextureRec(ground_texture, bounds, position, WHITE);
@@ -415,4 +423,8 @@ Level level_10() {
   level.platform_count = 5;
   
   return level;
+}
+
+level_11(){
+  
 }

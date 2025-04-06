@@ -173,7 +173,17 @@ void detect_stage_collisions(Player *player, Level *level, double dt) {
 
   for (int i = 0; i < level->platform_count; i++) {
     if(level->platforms[i].gate){
-      if(level->sensors[level->platforms->sensor_idx].sensed) { continue; }
+      if(level->sensors[level->platforms->sensor_idx].sensed) { 
+        if(level->platforms[i].inverted) {
+        }
+        else
+        {
+          continue;
+        } 
+      }
+      if(level->sensors[level->platforms->sensor_idx].sensed == 0 && level->platforms[i].inverted) {
+        continue;
+      }
     }
     const Rectangle plat_bounds = level->platforms[i].bounds;
     const Rectangle overlap = GetCollisionRec(player_bounds, plat_bounds);

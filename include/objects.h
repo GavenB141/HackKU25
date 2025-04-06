@@ -42,6 +42,7 @@ typedef struct {
   Rectangle bounds;
   int sensor_idx;
   bool gate;
+  bool inverted;
 } Platform;
 
 typedef struct {
