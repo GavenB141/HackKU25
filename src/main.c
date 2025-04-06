@@ -61,7 +61,7 @@ void set_camera_zoom() {
 }
 
 int main () {
-  InitWindow(resolution.x * 3, resolution.y * 3, "HackKU 2025");
+  InitWindow(resolution.x, resolution.y, "HackKU 2025");
 
   // Program state
   initialize_state(0);

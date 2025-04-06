@@ -278,9 +278,9 @@ void detect_death_collisions(Player *player, Level *level) {
     const float angle = level->spikes[i].rotation;
 
     Vector2 spike_vertices[3] = {
-      Vector2Add(position, Vector2Rotate((Vector2){-16, 16}, angle)),
-      Vector2Add(position, Vector2Rotate((Vector2){16, 16}, angle)),
-      Vector2Add(position, Vector2Rotate((Vector2){0, -16}, angle)),
+      Vector2Add(position, Vector2Rotate((Vector2){-12, 12}, angle)),
+      Vector2Add(position, Vector2Rotate((Vector2){12, 12}, angle)),
+      Vector2Add(position, Vector2Rotate((Vector2){0, -12}, angle)),
     };
 
     for (int i = 0; i < 4; i++) {

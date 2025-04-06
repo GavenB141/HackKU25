@@ -76,6 +76,10 @@ void level_draw(Level *level, Player *player, float dt) {
 
     DrawCircleV(orb->position, orb->range, ColorAlpha(aura, 0.25));
     DrawCircleLinesV(orb->position, orb->range, ColorAlpha(aura, 0.5));
+  }
+
+  for (int i = 0; i < level->orbs_count; i++) {
+    MagneticOrb *orb = &level->orbs[i];
 
     if (i == player->targeted_orb && !player->is_holding_orb)
       BeginShaderMode(highlight_shader);
