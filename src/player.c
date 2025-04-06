@@ -353,12 +353,10 @@ void player_update(Player *player, Level *level, float dt) {
   if (player->is_holding_orb) {
     MagneticOrb *held = &level->orbs[player->targeted_orb];
     pull = held->strong_pull;
-    if (pull.y) {
-      player->velocity.y = 0;
+    if (pull.y < 0) {
+      player->velocity.y -= GRAVITY * dt;
     }
   }
-
-
 
   player->velocity = Vector2Add(player->velocity, pull);
 

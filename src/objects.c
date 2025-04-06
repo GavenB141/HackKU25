@@ -145,6 +145,10 @@ void orb_update(MagneticOrb *orb, Level *level, float dt) {
   if (orb->free && !orb->is_static) {
     orb->velocity.y += ORB_GRAVITY * dt;
 
+    if (orb->strong_pull.y < 0) {
+      orb->velocity.y -= ORB_GRAVITY * dt;
+    }
+
     Vector2 total_pull = Vector2Add(orb->weak_pull, orb->strong_pull);
     orb->velocity = Vector2Add(total_pull, orb->velocity);
     orb->position = Vector2Add(orb->position, Vector2Scale(orb->velocity, dt));
