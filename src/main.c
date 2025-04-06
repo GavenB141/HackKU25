@@ -3,9 +3,9 @@
 #include "level.h"
 #include "player.h"
 
-#define TOTAL_LEVELS 3
+#define TOTAL_LEVELS 9
 #define FADE_VAL 0.5f
-static const Vector2 resolution = {320, 240};
+static Vector2 resolution = {640, 480};
 static Level levels[TOTAL_LEVELS];
 
 /**
@@ -24,11 +24,11 @@ void initialize_state(int level_index) {
   state.player.sprite = load_player_sprite();
 
   state.fade = FADE_VAL;
-  state.level = getLevel(6);
+  state.level = getLevel(9); // (level_index)
   state.player.position = state.level.startingPosition;
   state.player.velocity = (Vector2){0, 0};
 
-  state.camera.zoom = 1.0f;
+  state.camera.zoom = 2.0f;
 }
 
 
@@ -52,6 +52,14 @@ Rectangle calculate_screen_target(Vector2 resolution) {
     scaled.x,
     scaled.y
   };
+}
+
+void set_camera_zoom() {
+  if (state.level.is_big_level) {
+    state.camera.zoom = 1.0f;
+  }
+  else
+    state.camera.zoom = 2.0f;
 }
 
 int main () {
@@ -82,6 +90,7 @@ int main () {
 
     // Render the frame to texture
     BeginTextureMode(render_tex);
+    set_camera_zoom(&state);
     BeginMode2D(state.camera);
     ClearBackground(DARKGRAY);
     // printf("Drawing player at: %d")

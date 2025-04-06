@@ -68,6 +68,7 @@ typedef struct {
   int sensor_count;
   Vector2 startingPosition;
   int id;
+  bool is_big_level; // should be true for a big level and false for a small level
 } Level;
 
 typedef struct {

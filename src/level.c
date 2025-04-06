@@ -128,6 +128,11 @@ Level getLevel(int level_index) {
     case 6:
       return static_magnets();
       break;
+
+
+    case 9:
+      return repulse_fly();
+      break;
     default:
       return tutorial_0();
       break;
@@ -278,9 +283,33 @@ Level static_magnets() {
   level.platforms[2] = (Platform){(Rectangle){0, 0, 320, 96}};
   level.platform_count = 3;
 
+  level.transition[0] = (Transition){(Rectangle){338, 160, 1000, 48}, 1};
+  level.transition_count = 1;
+
   level.orbs[0] = construct_orb((Vector2){160, 80}, 90.0, false, true); 
   level.orbs[1] = construct_orb((Vector2){40, 200}, 60.0, true, false); 
   level.orbs_count = 2;
+
+  return level;
+}
+
+Level repulse_fly() {
+  Level level = {0};
+  level.is_big_level = true;
+
+  level.id = 9;
+  level.startingPosition = (Vector2){20, 200};
+  level.platforms[0] = (Platform){(Rectangle){0, 208, 64, 32}};
+  level.platforms[1] = (Platform){(Rectangle){256, 208, 64, 32}};
+  level.platforms[2] = (Platform){(Rectangle){0, 0, 320, 32}};
+  level.platform_count = 3;
+
+  level.orbs[0] = construct_orb((Vector2){20, 210}, 100.0, true, true); 
+  level.orbs[1] = construct_orb((Vector2){20, 210}, 100.0, true, false); 
+  level.orbs_count = 2;
+
+  level.transition[0] = (Transition){(Rectangle){338, 160, 1000, 48}, 1};
+  level.transition_count = 1;
 
   return level;
 }

@@ -13,6 +13,7 @@ Level spikes4();
 Level tutorial_4();
 Level gaven_level();
 Level static_magnets();
+Level repulse_fly();
 
 void level_draw(Level *level, Player *player, float dt);
 void level_update(Level *level, float dt);
