@@ -125,6 +125,9 @@ Level getLevel(int level_index) {
     case 5:
       return spikes4();
       break;
+    case 6:
+      return static_magnets();
+      break;
     default:
       return tutorial_0();
       break;
@@ -260,6 +263,18 @@ Level tutorial_4() {
   level.orbs[0] = construct_orb((Vector2){40, 200}, 60.0, true);
   level.orbs[1] = construct_orb((Vector2){300, 20}, 60.0, false);
   level.orbs_count = 2;
+
+  return level;
+}
+
+Level static_magnets() {
+  Level level = {0};
+
+  level.id = 6;
+  level.startingPosition = (Vector2){20, 200};
+  level.platforms[0] = (Platform){(Rectangle){0, 208, 96, 32}};
+  level.platforms[1] = (Platform){(Rectangle){224, 208, 96, 32}};
+  level.platform_count = 2;
 
   return level;
 }
