@@ -12,13 +12,16 @@ void level_draw(Level *level, Player *player, float dt) {
   static Texture positive_orb_texture = {0};
   static Texture negative_orb_texture = {0};
   static Shader highlight_shader = {0};
+  static Shader repeat_shader = {0};
 
   if (ground_texture.id == 0) {
-    gate_texture = LoadTexture("assets/gate_texture_sprite.png"); //replace with path to gate image
+    // Load drawing assets for duration of process
+    gate_texture = LoadTexture("assets/gate_texture_sprite.png");
     ground_texture = LoadTexture("assets/metal_crate_sprite.png");
     positive_orb_texture = LoadTexture("assets/positive_orb_sprite.png");
     negative_orb_texture = LoadTexture("assets/negative_orb_sprite.png");
     highlight_shader = LoadShader(0, "assets/shaders/highlight_outline.fs.glsl");
+    repeat_shader = LoadShader(0, "assets/shaders/texture_repeat.fs.glsl");
     foont = LoadFont("assets/setback.png");
   }
 
@@ -34,6 +37,7 @@ void level_draw(Level *level, Player *player, float dt) {
     animation_draw(&spike->sprite, (Vector2){level->spikes[i].bounds.x, level->spikes[i].bounds.y}, false, spike->rotation);
   }
 
+  BeginShaderMode(repeat_shader);
   for (int i = 0; i < level->platform_count; i++) {
     Rectangle bounds = level->platforms[i].bounds;
     Vector2 position = (Vector2){bounds.x, bounds.y};
@@ -47,6 +51,7 @@ void level_draw(Level *level, Player *player, float dt) {
       DrawTextureRec(ground_texture, bounds, position, WHITE);
     }
   }
+  EndShaderMode();
 
   for (int i = 0; i < level->orbs_count; i++) {
     MagneticOrb *orb = &level->orbs[i];

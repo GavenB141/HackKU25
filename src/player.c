@@ -56,7 +56,6 @@ void move(Player *player, float dt) {
     player->velocity.y -= JUMP_STRENGTH * dt * .4;
     player->jumptime = 10.0/60.0;
   }
-  float mult = 1;
   if(IsKeyDown(KEY_A)){
     player->velocity.x -= MOVE_STRENGTH * dt;
     if (player->velocity.x > 0) player->velocity.x = 0;
@@ -232,7 +231,6 @@ void resolve_stage_collisions(Player *player, Level *level) {
   player->grounded = false;
 
   for (int i = 0; i < collision_count; i++) {
-    Platform *platform = &level->platforms[platform_collisions[i].platform_id];
     Vector2 normal_depth = Vector2Multiply(platform_collisions[i].normal, platform_collisions[i].depth);
 
     player->position = Vector2Add(player->position, normal_depth);
@@ -266,7 +264,6 @@ void detect_death_collisions(Player *player, Level *level) {
   };
 
   for (int i = 0; i < level->spikes_count; i++) {
-    const Rectangle bounds = level->spikes[i].bounds;
     const Vector2 position = {level->spikes[i].bounds.x + 16, level->spikes[i].bounds.y + 16};
     const float angle = level->spikes[i].rotation;
 
