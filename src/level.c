@@ -149,6 +149,7 @@ Level getLevel(int level_index) {
     case 11: return level_11();
     case 12: return level_12();
     case 13: return level_13();
+    case 14: return level_14();
     default: return tutorial_0();
   }
 }
@@ -507,5 +508,42 @@ Level level_13() {
   level.transition[0] = (Transition){(Rectangle){-1018, 64, 1000, 160}, 14};
   level.transition_count = 1;
 
+  return level;
+}
+
+Level level_14() {
+  Level level = {0};
+  level.id = 14;
+  level.startingPosition = (Vector2){270,63};
+  level.platforms[0] = (Platform){(Rectangle){-16, 208+16, 320+16, 32}};
+  level.platforms[1] = (Platform){(Rectangle){0, 0-16, 2, 208}};
+  level.platforms[2] = (Platform){(Rectangle){318, -16, 2, 160}};
+  level.platforms[3] = (Platform){(Rectangle){0, -16, 320, 32}};
+
+  level.platforms[4] = (Platform){(Rectangle){128, 64, 64*4, 32*3}};
+  level.platforms[5] = (Platform){(Rectangle){-16, 64, 32*2, 32*5}};
+  level.platforms[6] = (Platform){(Rectangle){320-32, 200-32-8, 32, 32*2}, 0, 1, 1};
+
+  level.spikes[0]  = (Spike){(Rectangle){32*1, 32*2, 32, 32}, get_spike_animation(), 90.0f};
+  level.spikes[1]  = (Spike){(Rectangle){32*3.5, 32*2, 32, 32}, get_spike_animation(), 270.0f};
+  level.spikes[2]  = (Spike){(Rectangle){32*1, 32*3, 32, 32}, get_spike_animation(), 90.0f};
+  level.spikes[3]  = (Spike){(Rectangle){32*3.5, 32*3, 32, 32}, get_spike_animation(), 270.0f};
+  level.spikes[4]  = (Spike){(Rectangle){32*1, 32*4, 32, 32}, get_spike_animation(), 90.0f};
+  level.spikes[5]  = (Spike){(Rectangle){32*3.5, 32*4, 32, 32}, get_spike_animation(), 270.0f};
+  level.spikes[6]  = (Spike){(Rectangle){32*1, 32*5, 32, 32}, get_spike_animation(), 90.0f};
+  level.spikes[7]  = (Spike){(Rectangle){32*1, 32*6, 32, 32}, get_spike_animation(), 90.0f};
+  
+  level.orbs[0] = construct_orb((Vector2){40-24, 60}, 5, true, false);
+
+  level.sensors[0] = (Sensor){(Rectangle){0,16,48,48}};
+
+  level.transition[0] = (Transition){(Rectangle){340, 100, 1000, 200}, 15};
+
+  level.spikes_count = 8;
+  level.sensor_count = 1;
+  level.orbs_count = 1;
+  level.transition_count = 1;
+  level.platform_count = 7;
+  
   return level;
 }
