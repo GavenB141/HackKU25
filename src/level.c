@@ -168,13 +168,10 @@ Level getLevel(int level_index) {
     case 10:
       return level_10();
       break;
-<<<<<<< Updated upstream
     case 11:
       return level_11();
-=======
     case 12:
       return level_12();
->>>>>>> Stashed changes
       break;
     default:
       return tutorial_0();
@@ -437,7 +434,6 @@ Level level_10() {
   return level;
 }
 
-<<<<<<< Updated upstream
 Level level_11(){
   Level level = {0};
   level.id = 11;
@@ -472,7 +468,7 @@ Level level_11(){
   
   return level;
 }
-=======
+
 Level level_12(){
   Level level = {0};
   level.id = 12;
@@ -506,4 +502,3 @@ Level level_12(){
   level.platform_count = 7;
   return level;
 }
->>>>>>> Stashed changes
