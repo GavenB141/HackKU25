@@ -2,7 +2,6 @@
 #include "animation.h"
 #include "raylib.h"
 #include "raymath.h"
-#include <stdio.h>
 
 static Texture spike_texture = {0};
 
@@ -16,7 +15,8 @@ AnimationController get_spike_animation() {
     .sprite_size = (Vector2){32, 32},
     .indices = {0, 1, 2},
     .frames = 3,
-    .frame_time = 0.1
+    .frame_time = 0.1,
+    .origin = (Vector2){16, 16}
   };
 }
 

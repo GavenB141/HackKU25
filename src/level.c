@@ -4,7 +4,6 @@
 #include "player.h"
 #include "raylib.h"
 #include "raymath.h"
-#include <stdio.h>
 
 static Texture2D spike = {0};
 
@@ -24,8 +23,10 @@ void level_draw(Level *level, Player *player, float dt) {
   }
 
   for (int i = 0; i < level->spikes_count; i++) {
-    animation_update(&level->spikes[i].sprite, dt);
-    animation_draw(&level->spikes[i].sprite, (Vector2){level->spikes[i].bounds.x, level->spikes[i].bounds.y}, false);
+    Spike *spike = &level->spikes[i];
+
+    animation_update(&spike->sprite, dt);
+    animation_draw(&spike->sprite, (Vector2){level->spikes[i].bounds.x, level->spikes[i].bounds.y}, false, spike->rotation);
   }
 
   for (int i = 0; i < level->platform_count; i++) {
@@ -73,13 +74,6 @@ void level_draw(Level *level, Player *player, float dt) {
 void level_update(Level *level, float dt) {
   for (int i = 0; i < level->orbs_count; i++) {
     orb_update(&level->orbs[i], level, dt);
-    if (i == 0)
-      {}
-      //printf("%f %f\n", level->orbs[0].weak_pull.x, level->orbs[0].weak_pull.y);
-  }
-  for (int i = 0; i < level->spikes_count; i++) {
-    animation_update(&level->spikes[i].sprite, dt);
-    animation_draw(&level->spikes[i].sprite, (Vector2){level->spikes[i].bounds.x, level->spikes[i].bounds.y}, false);
   }
 }
 
@@ -230,7 +224,6 @@ Level gaven_level() {
   level.platforms[1] = (Platform){(Rectangle){0, 0, 2, 176}};
   level.platforms[2] = (Platform){(Rectangle){318, 0, 2, 176}};
   level.platforms[3] = (Platform){(Rectangle){0, 144, 320, 32}};
-  // level.platforms[4] = (Platform){(Rectangle){256, 176, 64, 32}};
   level.platform_count = 4;
 
   level.sensors[0] = (Sensor){(Rectangle){0, 100, 100, 76}, 0};

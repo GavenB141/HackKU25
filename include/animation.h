@@ -9,6 +9,7 @@
 typedef struct {
   Texture spritesheet;
   Vector2 sprite_size;
+  Vector2 origin;
 
   int indices[MAX_ANIMATION_LENGTH];
   int frames;
@@ -19,6 +20,6 @@ typedef struct {
 } AnimationController;
 
 void animation_update(AnimationController *controller, float dt);
-void animation_draw(AnimationController *controller, Vector2 position, bool invert);
+void animation_draw(AnimationController *controller, Vector2 position, bool invert, float rotation);
 
 #endif

@@ -14,6 +14,7 @@
 typedef struct {
   Rectangle bounds;
   AnimationController sprite;
+  float rotation;
 } Spike;
 
 typedef struct {

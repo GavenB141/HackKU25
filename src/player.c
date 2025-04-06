@@ -42,7 +42,7 @@ Rectangle get_player_sprite_bounds(const Player *player) {
 void player_draw(Player* player) {
   const Rectangle bounds = get_player_sprite_bounds(player);
 
-  animation_draw(&player->sprite, (Vector2){bounds.x, bounds.y}, player->inverted);
+  animation_draw(&player->sprite, (Vector2){bounds.x, bounds.y}, player->inverted, 0);
 }
 
 
@@ -262,14 +262,36 @@ void resolve_stage_collisions(Player *player, Level *level) {
 
 void detect_death_collisions(Player *player, Level *level) {
   const Rectangle player_bounds = get_player_bounds(player);
-  for (int i = 0; i < level->spikes_count; i++)
-  {
+  const Vector2 vertices[4] = {
+    {player_bounds.x, player_bounds.y},
+    {player_bounds.x, player_bounds.y + player_bounds.height},
+    {player_bounds.x + player_bounds.width, player_bounds.y},
+    {player_bounds.x + player_bounds.width, player_bounds.y + player_bounds.height},
+  };
+
+  for (int i = 0; i < level->spikes_count; i++) {
     const Rectangle bounds = level->spikes[i].bounds;
-    const Rectangle overlap = GetCollisionRec(player_bounds, bounds);
-    if (overlap.width < 3 || overlap.height < 7) {
-      continue;
+    const Vector2 position = {level->spikes[i].bounds.x + 16, level->spikes[i].bounds.y + 16};
+    const float angle = level->spikes[i].rotation;
+
+    Vector2 spike_vertices[3] = {
+      Vector2Add(position, Vector2Rotate((Vector2){-16, 16}, angle)),
+      Vector2Add(position, Vector2Rotate((Vector2){16, 16}, angle)),
+      Vector2Add(position, Vector2Rotate((Vector2){0, -16}, angle)),
+    };
+
+    for (int i = 0; i < 4; i++) {
+      for (int j = 0; j < 3; j++) {
+        bool touch = CheckCollisionLines(
+          vertices[i], vertices[i == 3 ? 0 : i + 1],
+          spike_vertices[j], spike_vertices[j == 2 ? 0 : j + 1], 0
+        );
+
+        if (touch) {
+          player_reset(player, level);
+        }
+      }
     }
-    player_reset(player, level);
   }
 }
 
@@ -345,7 +367,8 @@ AnimationController load_player_sprite(){
     .frame_time = 0.1,
     .current_time = 0,
     .frames = 1,
-    .indices = {0}
+    .indices = {0},
+    .origin = Vector2Zero()
   };
 }
 
