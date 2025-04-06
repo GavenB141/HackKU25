@@ -22,6 +22,11 @@ void level_draw(Level *level, Player *player, float dt) {
     foont = LoadFont("assets/setback.png");
   }
 
+  for (int i = 0; i < level->sensor_count; i++) {
+    DrawRectangleRec(level->sensors[i].bounds, ColorAlpha(level->sensors[i].sensed ? LIME : DARKGREEN, 0.25));
+    DrawRectangleLinesEx(level->sensors[i].bounds, 1, ColorAlpha(level->sensors[i].sensed ? LIME : DARKGREEN, 0.5));
+  }
+
   for (int i = 0; i < level->spikes_count; i++) {
     Spike *spike = &level->spikes[i];
 
@@ -58,6 +63,9 @@ void level_draw(Level *level, Player *player, float dt) {
     if (i == player->targeted_orb && !player->is_holding_orb)
       EndShaderMode();
   }
+
+
+
   switch (level->id){
     case 0: DrawTextEx(foont, "Press A or D to WALK", (Vector2){70,110},16, 1, WHITE);
       break;
@@ -72,6 +80,10 @@ void level_draw(Level *level, Player *player, float dt) {
 }
 
 void level_update(Level *level, float dt) {
+  for (int i = 0; i < level->sensor_count; i++) {
+    level->sensors[i].sensed = 0;
+  }
+
   for (int i = 0; i < level->orbs_count; i++) {
     orb_update(&level->orbs[i], level, dt);
   }
@@ -95,12 +107,12 @@ Level getLevel(int level_index) {
     case 3:
       return tutorial_3();
       break;
-      case 4:
-        return gaven_level();
-        break;
-        case 5:
-          return spikes4();
-          break;
+    case 4:
+      return gaven_level();
+      break;
+    case 5:
+      return spikes4();
+      break;
     default:
       return tutorial_0();
       break;
@@ -178,7 +190,7 @@ Level tutorial_3() {
   level.transition[0] = (Transition){(Rectangle){318, 160, 1000, 48}, 0};
 
   level.spikes[0] = (Spike){(Rectangle){160-32*2, 176, 32, 32}, get_spike_animation()};
-  level.spikes[1] = (Spike){(Rectangle){160+32*4, 176-64, 32, 32}, get_spike_animation()};
+  level.spikes[1] = (Spike){(Rectangle){160+32*4, 176-64, 32, 32}, get_spike_animation(), 270.0f};
   level.spikes[2] = (Spike){(Rectangle){192, 176, 32, 32}, get_spike_animation()};
   level.spikes[3] = (Spike){(Rectangle){224, 176, 32, 32}, get_spike_animation()};
 
@@ -226,7 +238,7 @@ Level gaven_level() {
   level.platforms[3] = (Platform){(Rectangle){0, 144, 320, 32}};
   level.platform_count = 4;
 
-  level.sensors[0] = (Sensor){(Rectangle){0, 100, 100, 76}, 0};
+  level.sensors[0] = (Sensor){(Rectangle){0, 112, 32, 32}, 0};
   level.sensor_count = 1;
 
   level.orbs[0] = construct_orb((Vector2){40, 200}, 60.0, true);

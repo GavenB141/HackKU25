@@ -2,6 +2,7 @@
 #include "animation.h"
 #include "raylib.h"
 #include "raymath.h"
+#include <stdio.h>
 
 static Texture spike_texture = {0};
 
@@ -127,17 +128,16 @@ void orb_calculate_pull(MagneticOrb *orb, Level *level) {
 void orb_check_sensors(MagneticOrb *orb, Level *level) {
   const Rectangle orb_bounds = get_orb_bounds(orb);
   for(int i = 0; i < level->sensor_count; i++){
-    level->sensors[i].sensed = 0;
-    const Rectangle overlap = GetCollisionRec(orb_bounds, level->sensors[i].bounds);
-    if (overlap.width == 0 && overlap.height == 0) {
-      continue;
+    if (CheckCollisionRecs(orb_bounds, level->sensors[i].bounds)) {
+      level->sensors[i].sensed = 1;
+      printf("Sensed! %f\n", GetTime());
     }
-    level->sensors[i].sensed = 1;
-    printf("SENSING");
   }
 }  
+
 void orb_update(MagneticOrb *orb, Level *level, float dt) {
   orb_calculate_pull(orb, level);
+  orb_check_sensors(orb, level);
 
   if (orb->free) {
     orb->velocity.y += ORB_GRAVITY * dt;
@@ -146,7 +146,6 @@ void orb_update(MagneticOrb *orb, Level *level, float dt) {
     orb->velocity = Vector2Add(total_pull, orb->velocity);
     orb->position = Vector2Add(orb->position, Vector2Scale(orb->velocity, dt));
     orb_handle_stage_collisions(orb, level, dt);
-    orb_check_sensors(orb, level);
     orb->velocity = Vector2Subtract(orb->velocity, total_pull);
   }
 }
