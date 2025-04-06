@@ -113,6 +113,26 @@ int main () {
       state.player.position = state.level.startingPosition;
       state.fade = 0.8f;
     }
+    if (IsKeyPressed(KEY_ONE)){
+      state.level = getLevel(1);
+      state.player.position = state.level.startingPosition;
+      state.fade = 0.8f;
+    }
+    if (IsKeyPressed(KEY_TWO)){
+      state.level = getLevel(2);
+      state.player.position = state.level.startingPosition;
+      state.fade = 0.8f;
+    }
+    if (IsKeyPressed(KEY_THREE)){
+      state.level = getLevel(3);
+      state.player.position = state.level.startingPosition;
+      state.fade = 0.8f;
+    }
+    if (IsKeyPressed(KEY_FOUR)){
+      state.level = getLevel(4);
+      state.player.position = state.level.startingPosition;
+      state.fade = 0.8f;
+    }
     EndDrawing();
   }
 
