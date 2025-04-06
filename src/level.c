@@ -74,7 +74,8 @@ void level_update(Level *level, float dt) {
   for (int i = 0; i < level->orbs_count; i++) {
     orb_update(&level->orbs[i], level, dt);
     if (i == 0)
-      printf("%f %f\n", level->orbs[0].weak_pull.x, level->orbs[0].weak_pull.y);
+      {}
+      //printf("%f %f\n", level->orbs[0].weak_pull.x, level->orbs[0].weak_pull.y);
   }
   for (int i = 0; i < level->spikes_count; i++) {
     animation_update(&level->spikes[i].sprite, dt);
@@ -232,10 +233,8 @@ Level gaven_level() {
   // level.platforms[4] = (Platform){(Rectangle){256, 176, 64, 32}};
   level.platform_count = 4;
 
-  // level.spikes[0] = (Spike){(Rectangle){160, 176, 32, 32}, get_spike_animation()};
-  // level.spikes[1] = (Spike){(Rectangle){192, 176, 32, 32}, get_spike_animation()};
-  // level.spikes[2] = (Spike){(Rectangle){224, 176, 32, 32}, get_spike_animation()};
-  // level.spikes_count = 3;
+  level.sensors[0] = (Sensor){(Rectangle){0, 100, 100, 76}, 0};
+  level.sensor_count = 1;
 
   level.orbs[0] = construct_orb((Vector2){40, 200}, 60.0, true);
   level.orbs[1] = construct_orb((Vector2){300, 20}, 60.0, false);
