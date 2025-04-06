@@ -20,8 +20,12 @@ void level_draw(Level *level, Player *player, float dt) {
     ground_texture = LoadTexture("assets/metal_crate_sprite.png");
     positive_orb_texture = LoadTexture("assets/positive_orb_sprite.png");
     negative_orb_texture = LoadTexture("assets/negative_orb_sprite.png");
-    highlight_shader = LoadShader(0, "assets/shaders/highlight_outline.fs.glsl");
+    #ifdef PLATFORM_WEB
+    highlight_shader = LoadShader(0, "assets/shaders/highlight_outline100.fs.glsl");
     repeat_shader = LoadShader(0, "assets/shaders/texture_repeat.fs.glsl");
+    #else
+    highlight_shader = LoadShader(0, "assets/shaders/highlight_outline.fs.glsl");
+    #endif
     foont = LoadFont("assets/setback.png");
   }
 
@@ -37,7 +41,10 @@ void level_draw(Level *level, Player *player, float dt) {
     animation_draw(&spike->sprite, (Vector2){level->spikes[i].bounds.x, level->spikes[i].bounds.y}, false, spike->rotation);
   }
 
+  #ifdef PLATFORM_WEB
   BeginShaderMode(repeat_shader);
+  #endif
+
   for (int i = 0; i < level->platform_count; i++) {
     Rectangle bounds = level->platforms[i].bounds;
     Vector2 position = (Vector2){bounds.x, bounds.y};
@@ -51,7 +58,9 @@ void level_draw(Level *level, Player *player, float dt) {
       DrawTextureRec(ground_texture, bounds, position, WHITE);
     }
   }
+  #ifdef PLATFORM_WEB
   EndShaderMode();
+  #endif
 
   for (int i = 0; i < level->orbs_count; i++) {
     MagneticOrb *orb = &level->orbs[i];

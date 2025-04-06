@@ -1,17 +1,16 @@
-#version 100
+#version 330 core
 
-precision mediump float;
-
-varying vec4 fragColor;
-varying vec2 fragTexCoord;
+in vec4 fragColor;
+in vec2 fragTexCoord;
+out vec4 finalColor;
 
 uniform sampler2D texture0;
 
 void main () {
-  vec4 color = texture2D(texture0, fragTexCoord);
+  vec4 color = texture(texture0, fragTexCoord);
   if (color == vec4(0.0, 0.0, 0.0, 1.0)) {
-    gl_FragColor = vec4(1.0, 1.0, 0.0, 1.0);
+    finalColor = vec4(1.0, 1.0, 0.0, 1.0);
   } else {
-    gl_FragColor = color;
+    finalColor = color;
   }
 }
