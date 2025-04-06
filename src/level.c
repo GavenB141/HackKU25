@@ -156,13 +156,11 @@ Level getLevel(int level_index) {
     case 8:
       return level_8();
       break;
-    case 10:
-      return level_10();
-      break;
-
-
     case 9:
       return repulse_fly();
+      break;
+    case 10:
+      return level_10();
       break;
     default:
       return tutorial_0();
@@ -394,7 +392,7 @@ Level repulse_fly() {
   level.orbs[1] = construct_orb((Vector2){20, 210}, 100.0, true, false); 
   level.orbs_count = 2;
 
-  level.transition[0] = (Transition){(Rectangle){338, 160, 1000, 48}, 1};
+  level.transition[0] = (Transition){(Rectangle){338, 160, 1000, 48}, 10};
   level.transition_count = 1;
 
   return level;
