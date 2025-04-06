@@ -17,9 +17,21 @@ typedef struct {
 
 typedef struct {
   Vector2 position;
+
+  // Real velocity, computed for collision purposes
   Vector2 velocity;
   bool positive;
   bool free;
+
+  // Gravitational component of velocity, preserved
+  float grav_velocity;
+  float range;
+
+  // Pull by other orbs, overridden by player
+  Vector2 weak_pull;
+
+  // Pull by fixed magnets, abusable by player
+  Vector2 strong_pull;
 } MagneticOrb;
 
 typedef struct {

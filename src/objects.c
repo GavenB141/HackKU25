@@ -2,6 +2,7 @@
 #include "animation.h"
 #include "raylib.h"
 #include "raymath.h"
+#include <stdio.h>
 
 static Texture spike_texture = {0};
 
@@ -94,10 +95,43 @@ void orb_handle_stage_collisions(MagneticOrb *orb, Level *level, double dt) {
 }
 
 #define ORB_GRAVITY 600
+// #define MAGNET_STRENGTH 200
+
+void orb_calculate_pull(MagneticOrb *orb, Level *level) {
+  orb->weak_pull = Vector2Zero();
+  orb->strong_pull = Vector2Zero();
+
+  for (int i = 0; i < level->orbs_count; i++) {
+    MagneticOrb *other = &level->orbs[i];
+
+    // ID by position for now, probably fine
+    if (Vector2Equals(orb->position, other->position)) {
+      continue;
+    }
+
+    // Check if in range
+    float distance = Vector2Distance(orb->position, other->position);
+    float ratio = distance / (orb->range) + (other->range);
+
+    if (ratio > 1.0) {
+      continue;
+    }
+    
+    Vector2 pull = Vector2MoveTowards(orb->position, other->position, distance * (1 - ratio));
+    if (other->positive != orb->positive) {
+      pull = Vector2Negate(pull);
+    }
+    orb->weak_pull = pull;
+    printf("%f %f\n", pull.x, pull.y);
+  }
+}
 
 void orb_update(MagneticOrb *orb, Level *level, float dt) {
+  orb_calculate_pull(orb, level);
+
   if (orb->free) {
-    orb->velocity.y += ORB_GRAVITY * dt;
+    orb->grav_velocity = orb->velocity.y + ORB_GRAVITY * dt;
+    orb->velocity = Vector2Add(Vector2Add(orb->weak_pull, orb->strong_pull), (Vector2){0, orb->grav_velocity});
     orb->position = Vector2Add(orb->position, Vector2Scale(orb->velocity, dt));
     orb_handle_stage_collisions(orb, level, dt);
   } else {
