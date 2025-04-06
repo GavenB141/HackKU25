@@ -135,6 +135,14 @@ void player_reset(Player *player, Level *level) {
   player->velocity = (Vector2){0, 0};
   player->grounded = false;
   player->inverted = false;
+
+  if (player->is_holding_orb) {
+    level->orbs[player->targeted_orb].free = true;
+    // level->orbs[player->targeted_orb].position.y += 5;
+  }
+
+  player->is_holding_orb = false;
+  player->targeted_orb = -1;
   player->jumptime = 0;
   player->teleported = 1;
 }

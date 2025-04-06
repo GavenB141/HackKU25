@@ -29,5 +29,6 @@ typedef struct {
 void player_update(Player *state, Level *level, float dt);
 void player_draw(Player *player);
 AnimationController load_player_sprite();
+void player_reset(Player *player, Level *level);
 
 #endif

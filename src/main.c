@@ -105,20 +105,18 @@ int main () {
     );
     if (IsKeyPressed(KEY_R) || state.player.teleported == 1) {
       state.level = getLevel(state.level.id);
-      state.player.position = state.level.startingPosition;
-      state.player.velocity = (Vector2){0,0};
       state.fade = FADE_VAL;
-      state.player.inverted = false;
+      player_reset(&state.player, &state.level);
     }
     if (IsKeyPressed(KEY_EQUAL)){
       state.level = getLevel(0);
-      state.player.position = state.level.startingPosition;
       state.fade = FADE_VAL;
+      player_reset(&state.player, &state.level);
     }
     if (IsKeyPressed(KEY_MINUS)){
       state.level = getLevel(state.level.id+1);
-      state.player.position = state.level.startingPosition;
       state.fade = FADE_VAL;
+      player_reset(&state.player, &state.level);
     }
     EndDrawing();
   }
