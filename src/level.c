@@ -118,7 +118,8 @@ void level_draw(Level *level, Player *player, float dt) {
     case 15: 
       DrawTextEx(foont, "CONGRATULATIONS!!!", (Vector2){85,40},16, 1, WHITE);
       DrawTextEx(foont, "You saved the dragon!", (Vector2){70,60},16, 1, WHITE);
-      DrawTextEx(foont, "Arrow keys to MOONWALK, = TO REPLAY", (Vector2){10,80},16, 1, WHITE);
+      DrawTextEx(foont, "Arrow keys to MOONWALK", (Vector2){55,80},16, 1, WHITE);
+      DrawTextEx(foont, "= TO REPLAY", (Vector2){100,100},16, 1, WHITE);
     default: break;
   }
 }
@@ -376,7 +377,6 @@ Level level_8() {
 
 Level repulse_fly() {
   Level level = {0};
-  level.is_big_level = true;
 
   level.id = 9;
   level.startingPosition = (Vector2){20, 200};
