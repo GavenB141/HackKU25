@@ -3,7 +3,7 @@
 
 #define DASH_STRENGTH 360     
 #define DASH_DURATION 10/60.0      
-#define DASH_COOLDOWN .5 
+#define DASH_COOLDOWN 1 
 
 #include "animation.h"
 #include "raylib.h"

@@ -57,6 +57,9 @@ void level_draw(Level *level, Player *player, float dt) {
     case 1: DrawTextEx(foont, "Press W to JUMP", (Vector2){70,120},16, 1, WHITE);
     break;
     case 2: DrawTextEx(foont, "Press R to RESET", (Vector2){70,120},16, 1, WHITE);
+    break;
+    case 3: DrawTextEx(foont, "Avoid Hazards", (Vector2){70,120},16, 1, WHITE);
+    break;
     default: break;
   }
 }
@@ -87,6 +90,9 @@ Level getLevel(int level_index) {
       return tutorial_2();
       break;
     case 3:
+      return tutorial_3();
+      break;
+    case 4:
       return gaven_level();
       break;
     default:
@@ -136,12 +142,36 @@ Level tutorial_2() {
   level.platforms[1] = (Platform){(Rectangle){0, 0, 2, 208}};
   level.platforms[2] = (Platform){(Rectangle){318, 0, 2, 160}};
   level.platforms[3] = (Platform){(Rectangle){0, 0, 320, 32}};
-  level.transition[0] = (Transition){(Rectangle){318, 160, 1000, 48}, 0};
+  level.transition[0] = (Transition){(Rectangle){318, 160, 1000, 48}, 3};
 
   level.platforms[4] = (Platform){(Rectangle){14*16, 208, 10*16, 32}};
 
   level.transition_count = 1;
   level.platform_count = 5;
+  
+  return level;
+}
+
+Level tutorial_3() {
+  Level level = {0};
+  level.id = 3;
+  level.startingPosition = (Vector2){50, 185};
+  level.platforms[0] = (Platform){(Rectangle){0, 208, 320, 32}};
+  level.platforms[1] = (Platform){(Rectangle){0, 0, 2, 208}};
+  level.platforms[2] = (Platform){(Rectangle){318, 0, 2, 160}};
+  level.platforms[3] = (Platform){(Rectangle){0, 0, 320, 32}};
+  level.transition[0] = (Transition){(Rectangle){318, 160, 1000, 48}, 0};
+
+  level.spikes[0] = (Spike){(Rectangle){160-32, 176, 32, 32}, get_spike_animation()};
+  level.spikes[1] = (Spike){(Rectangle){160, 176, 32, 32}, get_spike_animation()};
+  level.spikes[2] = (Spike){(Rectangle){192, 176, 32, 32}, get_spike_animation()};
+  level.spikes[3] = (Spike){(Rectangle){224, 176, 32, 32}, get_spike_animation()};
+
+  level.spikes_count = 4;
+
+  
+  level.transition_count = 1;
+  level.platform_count = 4;
   
   return level;
 }
