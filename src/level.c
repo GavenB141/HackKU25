@@ -386,7 +386,7 @@ Level repulse_fly() {
   level.orbs[1] = construct_orb((Vector2){20, 210}, 100.0, true, false); 
   level.orbs_count = 2;
 
-  level.transition[0] = (Transition){(Rectangle){338, 160, 1000, 48}, 1};
+  level.transition[0] = (Transition){(Rectangle){338, 160, 1000, 48}, 10};
   level.transition_count = 1;
 
   return level;
