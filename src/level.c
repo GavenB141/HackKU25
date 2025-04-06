@@ -445,7 +445,7 @@ Level level_11(){
   level.platforms[2] = (Platform){(Rectangle){318, 0, 2, 160}};
   level.platforms[3] = (Platform){(Rectangle){0, 0, 320, 32}};
 
-  level.transition[0] = (Transition){(Rectangle){338, 160, 1000, 48}, 0};
+  level.transition[0] = (Transition){(Rectangle){338, 160, 1000, 48}, 12};
   level.platforms[4] = (Platform){(Rectangle){14*16, 208, 32*4, 32}};
 
   level.platforms[5] = (Platform){(Rectangle){300-12, 176, 32, 32},0,1, true}; 
