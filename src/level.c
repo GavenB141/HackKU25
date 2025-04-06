@@ -84,8 +84,8 @@ void level_draw(Level *level, Player *player, float dt) {
     break;
     case 4: 
     DrawTextEx(foont, "Move the ball to open the gate", (Vector2){20,20},16, 1, WHITE);
-    DrawTextEx(foont, "Pickup or drop the", (Vector2){20+24,36+6},16, 1, WHITE);
-    DrawTextEx(foont, "magnets with SHIFT", (Vector2){20+24,52+6},16, 1, WHITE);
+    DrawTextEx(foont, "Pickup or drop the", (Vector2){75,36+6},16, 1, WHITE);
+    DrawTextEx(foont, "magnets with SHIFT", (Vector2){75,52+6},16, 1, WHITE);
     break;
     default: break;
   }
@@ -233,7 +233,7 @@ Level spikes4() {
   level.platforms[1] = (Platform){(Rectangle){0, 0, 2, 320}};
   level.platforms[2] = (Platform){(Rectangle){318, 0, 2, 160}};
   level.platforms[3] = (Platform){(Rectangle){0, 0, 320, 32}};
-  level.transition[0] = (Transition){(Rectangle){338, 160, 1000, 48}, 0};
+  level.transition[0] = (Transition){(Rectangle){338, 160, 1000, 48}, 6};
 
   level.spikes[0] = (Spike){(Rectangle){160-32, 176, 32, 32}, get_spike_animation()};
   level.spikes[1] = (Spike){(Rectangle){160, 176, 32, 32}, get_spike_animation()};
@@ -258,10 +258,10 @@ Level tutorial_4() {
   level.platforms[1] = (Platform){(Rectangle){0, 0, 2, 320}};
   level.platforms[2] = (Platform){(Rectangle){318, 0, 2, 176}};
   level.platforms[3] = (Platform){(Rectangle){0, 144, 320, 32}};
-  level.platforms[4] = (Platform){(Rectangle){300, 176, 32, 32},0,1}; // gate reading sensor 0
+  level.platforms[4] = (Platform){(Rectangle){300-12, 176, 32, 32},0,1}; // gate reading sensor 0
   level.platform_count = 5;
 
-  level.transition[0] = (Transition){(Rectangle){338, 160, 1000, 48}, 1};
+  level.transition[0] = (Transition){(Rectangle){338, 160, 1000, 48}, 6};
   level.transition_count = 1;
 
   level.sensors[0] = (Sensor){(Rectangle){0, 112, 32, 32}, 0};
@@ -288,6 +288,9 @@ Level static_magnets() {
   level.orbs[1] = construct_orb((Vector2){40, 200}, 60.0, true, false); 
   level.orbs_count = 2;
 
+  level.transition[0] = (Transition){(Rectangle){338, 160, 1000, 48}, 7};
+  level.transition_count = 1;
+
   return level;
 }
 
@@ -298,11 +301,12 @@ Level back_and_forth() {
   level.platforms[0] = (Platform){(Rectangle){0, 208, 320, 32}};
   level.platforms[1] = (Platform){(Rectangle){0, 0, 2, 208}};
   level.platforms[2] = (Platform){(Rectangle){318, 0, 2, 174}};
-  level.platforms[3] = (Platform){(Rectangle){0, 0, 320, 32}};
   level.platforms[4] = (Platform){(Rectangle){300-12, 176, 32, 32},0,1}; 
+  level.platforms[3] = (Platform){(Rectangle){300-12, 176-32*6, 32, 32+32*5}};
+  level.platforms[5] = (Platform){(Rectangle){0, -16, 32*9, 64}};
 
 
-  level.transition[0] = (Transition){(Rectangle){338, 160, 1000, 48}, 1};
+  level.transition[0] = (Transition){(Rectangle){338, 160, 1000, 48}, 8};
   level.spikes[0] = (Spike){(Rectangle){160-32*3, 176, 32, 32}, get_spike_animation()};
   level.spikes[1] = (Spike){(Rectangle){192-32, 176, 32, 32}, get_spike_animation()};
   level.spikes[2] = (Spike){(Rectangle){224-32, 176, 32, 32}, get_spike_animation()};
@@ -315,7 +319,7 @@ Level back_and_forth() {
   level.orbs_count = 1;
   level.spikes_count = 3;
   level.transition_count = 1;
-  level.platform_count = 5;
+  level.platform_count = 6;
 
   return level;
 }
@@ -334,7 +338,7 @@ Level level_8() {
   level.platforms[6] = (Platform){(Rectangle){128, 80, 64, 32}};
   level.platforms[7] = (Platform){(Rectangle){0, 80+32, 64, 64}};
 
-  level.transition[0] = (Transition){(Rectangle){338, 100, 1000, 100}, 1};
+  level.transition[0] = (Transition){(Rectangle){338, 100, 1000, 100}, 9};
 
   level.transition_count = 1;
   level.platform_count = 8;
