@@ -109,12 +109,10 @@ void orb_calculate_pull(MagneticOrb *orb, Level *level) {
       continue;
     }
 
-
     // Check if in range
     float distance = Vector2Distance(orb->position, other->position);
-    float ratio = distance / (orb->range + other->range);
 
-    if (ratio > 1.0) {
+    if (distance > orb->range + other->range) {
       continue;
     }
     
@@ -122,7 +120,7 @@ void orb_calculate_pull(MagneticOrb *orb, Level *level) {
     if (other->positive == orb->positive) {
       pull = Vector2Negate(pull);
     }
-    orb->weak_pull = Vector2Scale(Vector2Normalize(pull), MAGNET_STRENGTH * (1 - ratio));
+    orb->weak_pull = Vector2ClampValue(Vector2Scale(Vector2Normalize(pull), MAGNET_STRENGTH), 0, distance);
   }
 }
 

@@ -196,21 +196,21 @@ Level tutorial_3() {
 Level gaven_level() {
   Level level = {0};
   level.id = 6969;
-  level.startingPosition = (Vector2){50, 20};
+  level.startingPosition = (Vector2){20, 200};
   
   level.platforms[0] = (Platform){(Rectangle){0, 208, 320, 32}};
   level.platforms[1] = (Platform){(Rectangle){0, 0, 2, 176}};
   level.platforms[2] = (Platform){(Rectangle){318, 0, 2, 176}};
-  level.platforms[3] = (Platform){(Rectangle){0, 176, 160, 32}};
-  level.platforms[4] = (Platform){(Rectangle){256, 176, 64, 32}};
-  level.platform_count = 5;
+  level.platforms[3] = (Platform){(Rectangle){0, 144, 320, 32}};
+  // level.platforms[4] = (Platform){(Rectangle){256, 176, 64, 32}};
+  level.platform_count = 4;
 
   // level.spikes[0] = (Spike){(Rectangle){160, 176, 32, 32}, get_spike_animation()};
   // level.spikes[1] = (Spike){(Rectangle){192, 176, 32, 32}, get_spike_animation()};
   // level.spikes[2] = (Spike){(Rectangle){224, 176, 32, 32}, get_spike_animation()};
   // level.spikes_count = 3;
 
-  level.orbs[0] = construct_orb((Vector2){20, 20}, 60.0, true);
+  level.orbs[0] = construct_orb((Vector2){40, 200}, 60.0, true);
   level.orbs[1] = construct_orb((Vector2){300, 20}, 60.0, false);
   level.orbs_count = 2;
 
