@@ -139,6 +139,9 @@ Level getLevel(int level_index) {
     case 8:
       return level_8();
       break;
+    case 10:
+      return level_10();
+      break;
     default:
       return tutorial_0();
       break;
@@ -347,6 +350,31 @@ Level level_8() {
 
   level.transition_count = 1;
   level.platform_count = 8;
+  
+  return level;
+}
+
+Level level_10() {
+  Level level = {0};
+  level.id = 10;
+  level.startingPosition = (Vector2){30, 200};
+  
+  level.platforms[0] = (Platform){(Rectangle){0, 208, 64, 32}};
+  level.platforms[1] = (Platform){(Rectangle){256, 208, 64, 32}};
+  level.platforms[2] = (Platform){(Rectangle){0, 144-36+16, 320, 32}};
+  level.platforms[3] = (Platform){(Rectangle){32*2, 208, 32*6, 32},0,1};
+
+  level.transition[0] = (Transition){(Rectangle){338, 100, 1000, 100}, 11};
+
+  level.sensors[0] = (Sensor){(Rectangle){0, 144-36-10+16+5, 320, 5}};
+
+  level.orbs[0] = construct_orb((Vector2){30, 200}, 50.0, true, false);
+  level.orbs[1] = construct_orb((Vector2){170-36*2, 144-36-5+16}, 50.0, true, false);
+
+  level.orbs_count = 2;
+  level.transition_count = 1;
+  level.sensor_count = 1;
+  level.platform_count = 5;
   
   return level;
 }

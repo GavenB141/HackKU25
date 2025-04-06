@@ -15,6 +15,7 @@ Level gaven_level();
 Level static_magnets();
 Level back_and_forth();
 Level level_8();
+Level level_10();
 
 void level_draw(Level *level, Player *player, float dt);
 void level_update(Level *level, float dt);

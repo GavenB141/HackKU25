@@ -113,6 +113,11 @@ int main () {
       state.fade = FADE_VAL;
       player_reset(&state.player, &state.level);
     }
+    if (IsKeyPressed(KEY_ZERO)){
+      state.level = getLevel(state.level.id-1);
+      state.fade = FADE_VAL;
+      player_reset(&state.player, &state.level);
+    }
     EndDrawing();
   }
 
