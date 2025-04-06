@@ -224,7 +224,7 @@ Level spikes4() {
   level.id = 5;
   level.startingPosition = (Vector2){50, 185};
   level.platforms[0] = (Platform){(Rectangle){0, 208, 320, 32}};
-  level.platforms[1] = (Platform){(Rectangle){0, 0, 2, 208}};
+  level.platforms[1] = (Platform){(Rectangle){0, 0, 2, 320}};
   level.platforms[2] = (Platform){(Rectangle){318, 0, 2, 160}};
   level.platforms[3] = (Platform){(Rectangle){0, 0, 320, 32}};
   level.transition[0] = (Transition){(Rectangle){318, 160, 1000, 48}, 0};
@@ -249,7 +249,7 @@ Level tutorial_4() {
   level.startingPosition = (Vector2){20, 200};
   
   level.platforms[0] = (Platform){(Rectangle){0, 208, 320, 32}};
-  level.platforms[1] = (Platform){(Rectangle){0, 0, 2, 176}};
+  level.platforms[1] = (Platform){(Rectangle){0, 0, 2, 320}};
   level.platforms[2] = (Platform){(Rectangle){318, 0, 2, 176}};
   level.platforms[3] = (Platform){(Rectangle){0, 144, 320, 32}};
   level.platforms[4] = (Platform){(Rectangle){300, 176, 32, 32},0,1}; // gate reading sensor 0
@@ -275,7 +275,7 @@ Level static_magnets() {
   level.startingPosition = (Vector2){20, 200};
   level.platforms[0] = (Platform){(Rectangle){0, 208, 64, 32}};
   level.platforms[1] = (Platform){(Rectangle){256, 208, 64, 32}};
-  level.platforms[2] = (Platform){(Rectangle){0, 64, 320, 32}};
+  level.platforms[2] = (Platform){(Rectangle){0, 0, 320, 96}};
   level.platform_count = 3;
 
   level.orbs[0] = construct_orb((Vector2){160, 80}, 90.0, false, true); 
