@@ -17,7 +17,7 @@ void level_draw(Level *level, Player *player, float dt) {
 
   if (ground_texture.id == 0) {
     gate_texture = LoadTexture("assets/metal_crate_sprite.png"); //replace with path to gate image
-    ground_texture = LoadTexture("assets/metal_crate_sprite.png");
+    ground_texture = LoadTexture("assets/green_tile_sprite.png");
     positive_orb_texture = LoadTexture("assets/positive_orb_sprite.png");
     negative_orb_texture = LoadTexture("assets/negative_orb_sprite.png");
     highlight_shader = LoadShader(0, "assets/shaders/highlight_outline.fs.glsl");
