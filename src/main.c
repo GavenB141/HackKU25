@@ -134,6 +134,11 @@ int main () {
       state.player.position = state.level.startingPosition;
       state.fade = 0.8f;
     }
+    if (IsKeyPressed(KEY_SIX)){
+      state.level = getLevel(6);
+      state.player.position = state.level.startingPosition;
+      state.fade = 0.8f;
+    }
     EndDrawing();
   }
 

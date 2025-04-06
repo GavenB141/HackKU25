@@ -134,12 +134,13 @@ Level getLevel(int level_index) {
   }
 }
 
-static MagneticOrb construct_orb(Vector2 position, float range, bool positive) {
+static MagneticOrb construct_orb(Vector2 position, float range, bool positive, bool is_static) {
   MagneticOrb orb = {0};
   orb.position = position;
   orb.positive = positive;
   orb.free = true;
   orb.range = range;
+  orb.is_static = is_static;
   return orb;
 }
 
@@ -260,8 +261,8 @@ Level tutorial_4() {
   level.sensors[0] = (Sensor){(Rectangle){0, 112, 32, 32}, 0};
   level.sensor_count = 1;
 
-  level.orbs[0] = construct_orb((Vector2){40, 200}, 60.0, true);
-  level.orbs[1] = construct_orb((Vector2){300, 20}, 60.0, false);
+  level.orbs[0] = construct_orb((Vector2){40, 200}, 60.0, true, false);
+  level.orbs[1] = construct_orb((Vector2){300, 20}, 60.0, false, false);
   level.orbs_count = 2;
 
   return level;
@@ -272,9 +273,14 @@ Level static_magnets() {
 
   level.id = 6;
   level.startingPosition = (Vector2){20, 200};
-  level.platforms[0] = (Platform){(Rectangle){0, 208, 96, 32}};
-  level.platforms[1] = (Platform){(Rectangle){224, 208, 96, 32}};
-  level.platform_count = 2;
+  level.platforms[0] = (Platform){(Rectangle){0, 208, 64, 32}};
+  level.platforms[1] = (Platform){(Rectangle){256, 208, 64, 32}};
+  level.platforms[2] = (Platform){(Rectangle){0, 64, 320, 32}};
+  level.platform_count = 3;
+
+  level.orbs[0] = construct_orb((Vector2){160, 80}, 90.0, false, true); 
+  level.orbs[1] = construct_orb((Vector2){40, 200}, 60.0, true, false); 
+  level.orbs_count = 2;
 
   return level;
 }

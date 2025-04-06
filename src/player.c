@@ -322,6 +322,10 @@ void orb_manipulation(Player *player, Level *level) {
   for (int i = 0; i < level->orbs_count; i++) {
     MagneticOrb *orb = &level->orbs[i];
 
+    if (orb->is_static) {
+      continue;
+    }
+
     const float distance = Vector2Distance(player->position, orb->position); 
 
     if (distance <= min_distance) {
@@ -343,10 +347,28 @@ void orb_manipulation(Player *player, Level *level) {
 void player_update(Player *player, Level *level, float dt) {
   player->teleported = 0;
   player->velocity.y += GRAVITY * dt;
-  player->position = Vector2Add(player->position, Vector2Scale(player->velocity, dt));
 
+  Vector2 pull = Vector2Zero();
+  // Handle magnetic flight
+  if (player->is_holding_orb) {
+    MagneticOrb *held = &level->orbs[player->targeted_orb];
+    pull = held->strong_pull;
+    if (pull.y) {
+      player->velocity.y = 0;
+    }
+  }
+
+
+
+  player->velocity = Vector2Add(player->velocity, pull);
+
+  player->position = Vector2Add(player->position, Vector2Scale(player->velocity, dt));
   detect_stage_collisions(player, level, dt);
   resolve_stage_collisions(player, level);
+
+  player->velocity = Vector2Subtract(player->velocity, pull);
+
+
   int level_index = detect_transition_collision(player, level);
   detect_death_collisions(player, level);
   if(level_index != -1){
