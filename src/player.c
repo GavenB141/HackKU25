@@ -173,15 +173,10 @@ void detect_stage_collisions(Player *player, Level *level, double dt) {
 
   for (int i = 0; i < level->platform_count; i++) {
     if(level->platforms[i].gate){
-      if(level->sensors[level->platforms->sensor_idx].sensed) { 
-        if(level->platforms[i].inverted) {
-        }
-        else
-        {
-          continue;
-        } 
+      if(level->sensors[level->platforms[i].sensor_idx].sensed && !level->platforms[i].inverted) { 
+        continue;
       }
-      if(level->sensors[level->platforms->sensor_idx].sensed == 0 && level->platforms[i].inverted) {
+      if(level->sensors[level->platforms[i].sensor_idx].sensed == 0 && level->platforms[i].inverted) {
         continue;
       }
     }
