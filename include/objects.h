@@ -9,6 +9,7 @@
 #define MAX_TRANS 4
 #define MAX_SPIKES 10
 #define MAX_ORBS 4
+#define MAX_SENSORS 4
 
 typedef struct {
   Rectangle bounds;
@@ -40,6 +41,11 @@ typedef struct {
 
 typedef struct {
   Rectangle bounds;
+  int sensed;
+} Sensor;
+
+typedef struct {
+  Rectangle bounds;
   int transition_index;
 } Transition;
 
@@ -48,11 +54,13 @@ typedef struct {
   Transition transition[MAX_TRANS];
   Spike spikes[MAX_SPIKES];
   MagneticOrb orbs[MAX_ORBS];
+  Sensor sensors[MAX_SENSORS];
 
   int platform_count;
   int transition_count;
   int spikes_count;
   int orbs_count;
+  int sensor_count;
   Vector2 startingPosition;
   int id;
 } Level;

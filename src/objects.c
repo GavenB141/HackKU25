@@ -124,6 +124,17 @@ void orb_calculate_pull(MagneticOrb *orb, Level *level) {
   }
 }
 
+void orb_check_sensors(MagneticOrb *orb, Level *level, double dt) {
+  const Rectangle orb_bounds = get_orb_bounds(orb);
+  for(int i = 0; i < level->sensor_count; i++){
+    level->sensors[i].sensed = 0;
+    const Rectangle overlap = GetCollisionRec(orb_bounds, level->sensors[i].bounds);
+    if (overlap.width == 0 && overlap.height == 0) {
+      continue;
+    }
+    level->sensors[i].sensed = 1;
+  }
+}  
 void orb_update(MagneticOrb *orb, Level *level, float dt) {
   orb_calculate_pull(orb, level);
 
