@@ -135,47 +135,21 @@ void fade_in(float fade, Rectangle screen){
 
 Level getLevel(int level_index) {
   switch (level_index) {
-    case 0:
-      return tutorial_0();
-      break;
-    case 1:
-      return tutorial_1();
-      break;
-    case 2:
-      return tutorial_2();
-      break;
-    case 3:
-      return tutorial_3();
-      break;
-    case 4:
-      return tutorial_4();
-      break;
-    case 5:
-      return spikes4();
-      break;
-    case 6:
-      return static_magnets();
-      break;
-    case 7:
-      return back_and_forth();
-      break;
-    case 8:
-      return level_8();
-      break;
-    case 9:
-      return repulse_fly();
-      break;
-    case 10:
-      return level_10();
-      break;
-    case 11:
-      return level_11();
-    case 12:
-      return level_12();
-      break;
-    default:
-      return tutorial_0();
-      break;
+    case 0: return tutorial_0();
+    case 1: return tutorial_1();
+    case 2: return tutorial_2();
+    case 3: return tutorial_3();
+    case 4: return tutorial_4();
+    case 5: return spikes4();
+    case 6: return static_magnets();
+    case 7: return back_and_forth();
+    case 8: return level_8();
+    case 9: return repulse_fly();
+    case 10: return level_10();
+    case 11: return level_11();
+    case 12: return level_12();
+    case 13: return level_13();
+    default: return tutorial_0();
   }
 }
 
@@ -500,5 +474,38 @@ Level level_12(){
   level.transition_count = 1;
   level.spikes_count = 2;
   level.platform_count = 7;
+  return level;
+}
+
+Level level_13() {
+  Level level = {0};
+  level.id = 13;
+  level.startingPosition = (Vector2){30, 400};
+
+  level.is_big_level = true;
+
+  level.platforms[0] = (Platform){(Rectangle){0, 416, 640, 64}};
+  level.platforms[1] = (Platform){(Rectangle){0, 0, 640, 64}};
+  level.platforms[2] = (Platform){(Rectangle){0, 208, 416, 64}};
+  level.platforms[3] = (Platform){(Rectangle){576, 64, 64, 512}};
+  level.platforms[4] = (Platform){(Rectangle){512, 256, 64, 32}};
+  level.platform_count = 5;
+
+  for (int i = 0; i < 8; i++) {
+    int offset = 32 * (12 - (i < 4 ? i : i + 2));
+    level.spikes[i] = (Spike){(Rectangle){640 - offset, 480 - 32 * 3, 32, 32}, get_spike_animation(), 0};
+  }
+  level.spikes[8] = (Spike){(Rectangle){544, 224, 32, 32}, get_spike_animation(), 270.0f};
+  level.spikes[9] = (Spike){(Rectangle){544 - 32 * 4, 224, 32, 32}, get_spike_animation(), 90.0f};
+  level.spikes_count = 10;
+
+  level.orbs[0] = construct_orb((Vector2){60, 400}, 60.0, false, false);
+  level.orbs[1] = construct_orb((Vector2){640 - 7 * 32, 480 - 32}, 160.0, false, true);
+  level.orbs[2] = construct_orb((Vector2){640 - 32, 240}, 240.0, true, true);
+  level.orbs_count = 3;
+
+  level.transition[0] = (Transition){(Rectangle){-1018, 64, 1000, 160}, 14};
+  level.transition_count = 1;
+
   return level;
 }
