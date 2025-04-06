@@ -191,6 +191,10 @@ void detect_stage_collisions(Player *player, Level *level, double dt) {
       continue;
     }
 
+    if (overlap.width < 3 && overlap.height < 3) { // probably a corner
+      continue;
+    }
+
     Vector2 depth = {overlap.width, overlap.height};
     Vector2 times = {dt, dt};
 
