@@ -458,11 +458,11 @@ Level level_12(){
   level.platforms[5] = (Platform){(Rectangle){318-62, 176, 32, 32},1,1,0};
   level.platforms[6] = (Platform){(Rectangle){318-62+32, 176, 32, 32},0,1,0};
 
-  level.spikes[0] = (Spike){(Rectangle){32*3, 208-32, 32, 32}, get_spike_animation()};
-  level.spikes[1] = (Spike){(Rectangle){32*4, 208-32, 32, 32}, get_spike_animation()};
+  level.spikes[0] = (Spike){(Rectangle){32*3, 208-28, 32, 32}, get_spike_animation()};
+  level.spikes[1] = (Spike){(Rectangle){32*4, 208-28, 32, 32}, get_spike_animation()};
 
-  level.orbs[0] = construct_orb((Vector2){15, 215}, 25.0, true, false);
-  level.orbs[1] = construct_orb((Vector2){75, 215}, 25.0, true, false);
+  level.orbs[0] = construct_orb((Vector2){10, 215}, 22.0, true, false);
+  level.orbs[1] = construct_orb((Vector2){75, 215}, 22.0, false, false);
 
   level.sensors[1] = (Sensor){(Rectangle){318-62-32, 176, 32, 32}, 0};
   level.sensors[0] = (Sensor){(Rectangle){318-62-32*3, 176, 32, 32}, 0};

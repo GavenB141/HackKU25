@@ -120,8 +120,11 @@ void orb_calculate_pull(MagneticOrb *orb, Level *level) {
     
     Vector2 pull = Vector2Subtract(other->position, orb->position);
     if (other->positive == orb->positive) {
+      printf("pull:  %f %f\n", pull.x, pull.y);
       pull = Vector2Negate(pull);
+      printf("n-pull:%f %f\n\n", pull.x, pull.y);
     }
+
     if (other->is_static) {
       orb->strong_pull = Vector2Scale(Vector2Normalize(pull), MAGNET_STRENGTH * ratio);
     } else {
@@ -144,6 +147,9 @@ void orb_update(MagneticOrb *orb, Level *level, float dt) {
   orb_check_sensors(orb, level);
 
   if (orb->free && !orb->is_static) {
+    if (orb->velocity.y < 0.1)
+      orb->velocity.x = 0;
+
     if (orb->strong_pull.y + orb->weak_pull.y >= 0) {
       orb->velocity.y += ORB_GRAVITY * dt;
     }
